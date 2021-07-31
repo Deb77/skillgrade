@@ -1,11 +1,18 @@
 require('dotenv').config();
-const app = require('express')();
+const express = require('express');
+const cors = require('cors');
 const port = process.env.PORT;
+const db = require('./models');
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+const app = express();
+
+// middleware
+app.use(cors());
+app.use(express.json());
+
+// test route
+app.get('/test', (req, res) => {
+  db.Users.findAll().then((users) => res.json(users));
 });
 
-app.listen(port, () => {
-  console.log(`Server listening on PORT ${port}`);
-});
+app.listen(port, () => console.log(`Server listening on PORT ${port}`));
