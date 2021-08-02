@@ -1,12 +1,21 @@
 import './App.css';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import PrivateRoute from './components/Common/PrivateRoute';
 
-function App() {
-  console.log(process.env);
+const Landing = lazy(() => import('./pages/landing'));
+
+const App = () => {
   return (
-    <div className="App">
-      <h1>Hello World</h1>
-    </div>
+    <Router>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch>
+          <Route exact path="/" component={Landing} />
+          <PrivateRoute exact path="/test" component={Landing} />
+        </Switch>
+      </Suspense>
+    </Router>
   );
-}
+};
 
 export default App;
