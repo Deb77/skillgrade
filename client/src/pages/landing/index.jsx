@@ -14,48 +14,44 @@ const useStyles = makeStyles({
     fontFamily: 'Poppins',
     padding: '0px 40px',
     '&:hover': {
-      backgroundColor: 'white',
-    },
-  },
+      backgroundColor: 'white'
+    }
+  }
 });
 
-const googleSuccess = async (res) => {
+const googleSuccess = async res => {
   const { name, email, imageUrl } = await res.profileObj;
   const token = await res.tokenId;
   const params = {
     name,
     email,
     imageUrl,
-    token,
+    token
   };
-  console.log(params);
+  localStorage.setItem('skill_grade_token', token);
 };
 
-const googleFailure = async (error) => {
+const googleFailure = async error => {
   console.log(error);
 };
 
 const Landing = () => {
   const classes = useStyles();
   return (
-    <div className='landing'>
-      <div className='content'>
+    <div className="landing">
+      <div className="content">
         <h1>SKILL GRADE</h1>
         <h2>Where learning meets talent</h2>
         <GoogleLogin
-          clientId='416360586846-278arhu16n1nlcr7he6ek1jdm5aj52q2.apps.googleusercontent.com'
-          render={(renderProps) => (
-            <Button
-              className={classes.root}
-              onClick={renderProps.onClick}
-              disabled={renderProps.disabled}
-            >
+          clientId="416360586846-278arhu16n1nlcr7he6ek1jdm5aj52q2.apps.googleusercontent.com"
+          render={renderProps => (
+            <Button className={classes.root} onClick={renderProps.onClick} disabled={renderProps.disabled}>
               Get Started
             </Button>
           )}
           onSuccess={googleSuccess}
           onFailure={googleFailure}
-          cookiePolicy='single_host_origin'
+          cookiePolicy="single_host_origin"
         />
       </div>
     </div>
