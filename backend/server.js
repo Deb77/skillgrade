@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const port = process.env.PORT;
-const db = require('./models');
+const userRoutes = require('./routes/user');
 
 const app = express();
 
@@ -10,9 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// test route
-app.get('/test', (req, res) => {
-  db.Users.findAll().then(users => res.json(users));
-});
+//routes
+app.use('/user', userRoutes);
 
 app.listen(port, () => console.log(`Server listening on PORT ${port}`));
