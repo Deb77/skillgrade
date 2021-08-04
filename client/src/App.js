@@ -1,9 +1,9 @@
 import './App.css';
-import React, { Suspense, lazy, useState, useEffect } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './components/Common/PrivateRoute';
 const Landing = lazy(() => import('./pages/landing'));
-const Dashboard = lazy(() => import('./pages/dashboard/dashboard'));
+const Dashboard = lazy(() => import('./pages/dashboard'));
 const App = () => {
   return (
     <Router>

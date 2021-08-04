@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/Common/Navbar';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles, responsiveFontSizes, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Carousel_img1 from '../../assets/Carousel_img1.png';
 import CustomCards from '../../components/CustomCards';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
@@ -92,7 +92,7 @@ const Dashboard = () => {
   const [carddetails, setCarddetails] = useState([]);
   useEffect(() => {
     setCarddetails(ActiveCarddetails);
-  });
+  }, []);
 
   const classes = useStyles();
 
@@ -110,11 +110,11 @@ const Dashboard = () => {
           <div className="carousel" style={{ width: '100%' }}>
             <Carousel autoPlay={true} infiniteLoop={true} showStatus={false} showThumbs={false} width="100%">
               <div>
-                <img src={Carousel_img1} style={{ height: '40vh' }} />
+                <img src={Carousel_img1} style={{ height: '40vh' }} alt="carousel_img_1" />
                 <h1 className={classes.tagline}>Create.. Learn.. Explore..</h1>
               </div>
               <div>
-                <img src={Carousel_img1} style={{ height: '40vh' }} />
+                <img src={Carousel_img1} style={{ height: '40vh' }} alt="carousel_img2" />
               </div>
             </Carousel>
           </div>

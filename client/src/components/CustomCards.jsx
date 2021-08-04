@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -61,12 +61,12 @@ const CustomCards = props => {
 
   //function for setting color of card based on its category
   const setColor = title => {
-    if (title == 'UI Design') return classes.purple;
-    if (title == 'Content Writing') return classes.red;
-    if (title == 'Web Dev') return classes.orange;
-    if (title == 'Sketching') return classes.blue;
-    if (title == 'Java') return classes.green;
-    if (title == 'Dev Ops') return classes.magenta;
+    if (title === 'UI Design') return classes.purple;
+    if (title === 'Content Writing') return classes.red;
+    if (title === 'Web Dev') return classes.orange;
+    if (title === 'Sketching') return classes.blue;
+    if (title === 'Java') return classes.green;
+    if (title === 'Dev Ops') return classes.magenta;
   };
   return (
     <>

@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
@@ -105,7 +105,6 @@ const useStyles = makeStyles(theme => ({
 //component
 const Navbar = () => {
   const classes = useStyles();
-  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [user, setUser] = React.useState({ name: 'name', url: 'url' });
   const handleDrawerOpen = () => {
