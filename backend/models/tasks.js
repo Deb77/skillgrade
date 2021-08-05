@@ -1,7 +1,13 @@
 'use strict';
-module.exports = {
-  up: async (queryInterface, DataTypes) => {
-    await queryInterface.createTable('ContentWritingTasks', {
+const { Model } = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Tasks extends Model {
+    static associate(models) {
+      // define association here
+    }
+  }
+  Tasks.init(
+    {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -10,6 +16,12 @@ module.exports = {
       },
       name: {
         type: DataTypes.STRING,
+        allowNull: false
+      },
+      course_name: {
+        type: DataTypes.ENUM({
+          values: ['WEB_DEV', 'UI_DESIGN', 'SKETCHING', 'CONTENT_WRITING']
+        }),
         allowNull: false
       },
       description: {
@@ -45,18 +57,12 @@ module.exports = {
       upvotes: {
         type: DataTypes.ARRAY(DataTypes.STRING),
         defaultValue: []
-      },
-      createdAt: {
-        allowNull: false,
-        type: DataTypes.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: DataTypes.DATE
       }
-    });
-  },
-  down: async (queryInterface, DataTypes) => {
-    await queryInterface.dropTable('ContentWritingTasks');
-  }
+    },
+    {
+      sequelize,
+      modelName: 'Tasks'
+    }
+  );
+  return Tasks;
 };
