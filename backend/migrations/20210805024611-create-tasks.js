@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, DataTypes) => {
-    await queryInterface.createTable('WebDevTasks', {
+    await queryInterface.createTable('Tasks', {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -10,6 +10,12 @@ module.exports = {
       },
       name: {
         type: DataTypes.STRING,
+        allowNull: false
+      },
+      course_name: {
+        type: DataTypes.ENUM({
+          values: ['WEB_DEV', 'UI_DESIGN', 'SKETCHING', 'CONTENT_WRITING']
+        }),
         allowNull: false
       },
       description: {
@@ -57,6 +63,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, DataTypes) => {
-    await queryInterface.dropTable('WebDevTasks');
+    await queryInterface.dropTable('Tasks');
   }
 };

@@ -8,12 +8,6 @@ module.exports = {
         allowNull: false,
         primaryKey: true
       },
-      course_type: {
-        type: DataTypes.ENUM({
-          values: ['WEB_DEV', 'UI_DESIGN', 'SKETCHING', 'CONTENT_WRITING']
-        }),
-        allowNull: false
-      },
       status: {
         type: DataTypes.ENUM({
           values: ['IN_PROGRESS', 'COMPLETE']
@@ -25,7 +19,11 @@ module.exports = {
       },
       task_id: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: 'Tasks',
+          key: 'id'
+        }
       },
       user_id: {
         type: DataTypes.UUID,
