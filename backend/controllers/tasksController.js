@@ -1,4 +1,5 @@
 const DB = require('../models');
+const { QueryTypes } = require('sequelize');
 
 const addTask = (req, res) => {
   const {
@@ -52,9 +53,21 @@ const getTasks = (req, res) => {
     default:
       course_name = null;
   }
-  DB.Tasks.findAll({
-    ...(course_name && { where: { course_name } })
-  })
+
+  let where_clause = '';
+
+  if (course_name) where_clause = `where course_name = '${course_name}'`;
+
+  const query = `select p.*,
+    case when count(q) = 0 then '[]'
+    else json_agg(json_build_object('work_upload',q.work_upload, 'description',q.description, 'upvotes',q.upvotes))
+    end
+    as feed from "Tasks" p
+    left join "TaskFeeds" q on p.id = q.task_id
+    ${where_clause} group by p.id, q.task_id`;
+
+  DB.sequelize
+    .query(query, { type: QueryTypes.SELECT })
     .then(data => res.status(200).json({ tasks: data }))
     .catch(err => {
       console.log(err);
