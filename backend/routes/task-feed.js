@@ -1,6 +1,6 @@
 const Router = require('express').Router();
-const { addTaskFeed } = require('../controllers/taskFeedController');
+const { addTaskFeed, upvoteTaskFeed } = require('../controllers/taskFeedController');
 
-Router.post('/', addTaskFeed);
+Router.post('/', addTaskFeed).post('/upvote', upvoteTaskFeed);
 
 module.exports = Router;
