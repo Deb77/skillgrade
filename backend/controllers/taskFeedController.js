@@ -23,7 +23,7 @@ const upvoteTaskFeed = (req, res) => {
         where id = '${task_feed_id}'`;
   DB.sequelize
     .query(query, { type: QueryTypes.UPDATE })
-    .then(data => res.status(200).json({ message: 'Upvoted' }))
+    .then(() => res.status(200).json({ message: 'Upvoted' }))
     .catch(err => {
       console.log(err);
       res.status(500).json('Internal server error');
