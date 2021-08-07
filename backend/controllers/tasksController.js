@@ -60,7 +60,7 @@ const getTasks = (req, res) => {
 
   const query = `select p.*,
     case when count(q) = 0 then '[]'
-    else json_agg(json_build_object('work_upload',q.work_upload, 'description',q.description))
+    else json_agg(json_build_object('work_upload',q.work_upload, 'description',q.description, 'upvotes',q.upvotes))
     end
     as feed from "Tasks" p
     left join "TaskFeeds" q on p.id = q.task_id
