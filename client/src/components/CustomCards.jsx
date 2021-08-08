@@ -13,8 +13,13 @@ const useStyles = makeStyles({
   root: {
     minWidth: '240px',
     height: '170px',
-    color: 'white'
+    color: 'white',
+    transition: '0.3s',
+    '&:hover': {
+      transform: 'translateY(-20px)'
+    }
   },
+
   title: {
     fontSize: 26,
     fontWeight: 600
@@ -22,12 +27,14 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12
   },
+
   subtitle: {
     fontSize: 16,
     fontWeight: 400,
     letterSpacing: '0px',
     lineHeight: '19px'
   },
+
   card: {
     padding: '1.5rem'
   },
@@ -71,7 +78,7 @@ const CustomCards = props => {
   return (
     <>
       <div className="Customcards">
-        <Card className={`${classes.root} ${setColor(title)}`}>
+        <Card raised="true" className={`${classes.root} ${setColor(title)}`}>
           <CardContent className={classes.card}>
             <Typography className={classes.title} gutterBottom>
               {title}

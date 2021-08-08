@@ -19,7 +19,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-
+import { connect } from 'react-redux';
 //Navbar styling
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -103,10 +103,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 //component
-const Navbar = () => {
+const Navbar = ({ name, url }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [user, setUser] = React.useState({ name: 'name', url: 'url' });
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -140,8 +139,8 @@ const Navbar = () => {
             SKILL GRADE
           </Typography>
           <Typography variant="h6" noWrap>
-            {user.url}
-            {user.name}
+            {name}
+            {url}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -202,4 +201,11 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+const mapStateToProps = state => {
+  return {
+    name: state.auth.name,
+    url: state.auth.imageUrl
+  };
+};
+
+export default connect(mapStateToProps)(Navbar);
