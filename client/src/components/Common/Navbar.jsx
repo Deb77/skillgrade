@@ -19,6 +19,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
 //Navbar styling
 const drawerWidth = 240;
@@ -99,6 +101,10 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     textAlign: 'center',
     fontFamily: 'Ribeye Marrow'
+  },
+  small: {
+    width: theme.spacing(4),
+    height: theme.spacing(4)
   }
 }));
 
@@ -138,9 +144,13 @@ const Navbar = ({ name, url }) => {
           <Typography className={classes.title} variant="h6" noWrap>
             SKILL GRADE
           </Typography>
-          <Typography variant="h6" noWrap>
-            {name}
-            {url}
+          <Typography>
+            <Grid container justifyContent="center" alignItems="center" spacing="2">
+              <Grid item>{name}</Grid>
+              <Grid item>
+                <Avatar alt={name} src={url} className={classes.small} />
+              </Grid>
+            </Grid>
           </Typography>
         </Toolbar>
       </AppBar>

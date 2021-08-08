@@ -1,11 +1,12 @@
 import { loginService } from '../services';
 
-export const login = params => dispatch =>
+export const login = (params, history) => dispatch =>
   loginService(params)
     .then(res =>
       dispatch({
         type: 'LOGIN_SUCCESS',
-        payload: params
+        payload: params,
+        history: history
       })
     )
     .catch(err =>

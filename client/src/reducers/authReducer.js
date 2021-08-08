@@ -1,22 +1,25 @@
 const initialState = {
-  name: localStorage.getItem('name'),
-  loginErrors: {},
+  name: null,
+  email: null,
   imageUrl: null,
   token: null
 };
-const authReducer = (state = initialState, { type, payload }) => {
+const authReducer = (state = initialState, actions) => {
+  const { type, payload, history } = actions;
   switch (type) {
     case 'LOGIN_SUCCESS':
       localStorage.setItem('token', payload.token);
       localStorage.setItem('name', payload.name);
+      localStorage.setItem('imageUrl', payload.imageUrl);
+      history.push('/dashboard');
       return {
         ...state,
         token: payload.token,
         name: payload.name,
-        isAuthenticated: true,
-        loginErrors: payload.errors,
-        imageUrl: payload.imageUrl
+        imageUrl: payload.imageUrl,
+        email: payload.email
       };
+
     default:
       return state;
   }

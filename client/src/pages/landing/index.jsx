@@ -24,6 +24,7 @@ const useStyles = makeStyles({
 
 const Landing = ({ authActions }) => {
   const classes = useStyles();
+  const history = useHistory();
   const googleSuccess = async res => {
     const { name, email, imageUrl } = await res.profileObj;
     const token = await res.tokenId;
@@ -33,8 +34,9 @@ const Landing = ({ authActions }) => {
       imageUrl,
       token
     };
+
     localStorage.setItem('skill_grade_token', token);
-    authActions.login(params);
+    authActions.login(params, history);
   };
 
   const googleFailure = async error => {
