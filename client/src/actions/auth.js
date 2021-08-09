@@ -6,8 +6,7 @@ export const login = (params, history) => dispatch =>
       history.push('/dashboard');
       dispatch({
         type: 'LOGIN_SUCCESS',
-        payload: params,
-        history: history
+        payload: params
       });
     })
     .catch(err =>
