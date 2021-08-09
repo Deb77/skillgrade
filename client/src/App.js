@@ -11,7 +11,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div></div>}>
           <Switch>
             <Route exact path="/" component={Landing} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />

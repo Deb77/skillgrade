@@ -11,7 +11,7 @@ const authReducer = (state = initialState, actions) => {
       localStorage.setItem('token', payload.token);
       localStorage.setItem('name', payload.name);
       localStorage.setItem('imageUrl', payload.imageUrl);
-      history.push('/dashboard');
+
       return {
         ...state,
         token: payload.token,

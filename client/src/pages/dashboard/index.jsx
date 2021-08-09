@@ -7,7 +7,9 @@ import CustomCards from '../../components/CustomCards';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import Typography from '@material-ui/core/Typography';
-
+import * as IncompleteTasksActionCreator from '../../actions/IncompleteTasks';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 //additional styling
 
 const useStyles = makeStyles(theme => ({
@@ -48,6 +50,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 //data
+
 const CategoryCards = [
   {
     title: 'UI Design',
@@ -88,8 +91,10 @@ const ActiveCarddetails = [
 ];
 
 //component
-const Dashboard = () => {
+const Dashboard = ({ IncompleteTasksAction }) => {
   const [carddetails, setCarddetails] = useState([]);
+  const data = IncompleteTasksAction.IncompleteTasks();
+  console.log(data);
   useEffect(() => {
     setCarddetails(ActiveCarddetails);
   }, []);
@@ -102,6 +107,7 @@ const Dashboard = () => {
         {/* navbar */}
 
         <Navbar></Navbar>
+
         <main className={classes.content}>
           <div className={classes.toolbar} />
 
@@ -159,4 +165,8 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+const mapDispatchToProps = dispatch => ({
+  IncompleteTasksAction: bindActionCreators(IncompleteTasksActionCreator, dispatch)
+});
+
+export default connect(null, mapDispatchToProps)(Dashboard);
