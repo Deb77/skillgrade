@@ -78,7 +78,7 @@ const CustomCards = props => {
   return (
     <>
       <div className="Customcards">
-        <Card raised="true" className={`${classes.root} ${setColor(title)}`}>
+        <Card raised={true} className={`${classes.root} ${setColor(title)}`}>
           <CardContent className={classes.card}>
             <Typography className={classes.title} gutterBottom>
               {title}

@@ -18,7 +18,6 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: {
     display: 'flex',
-
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
@@ -77,28 +76,10 @@ const CategoryCards = [
     desc: 'Coming soon'
   }
 ];
-const ActiveCarddetails = [
-  {
-    title: 'UI Design',
-    desc: 'Make a UI Design of Medical tracker app',
-    deadline: '2 days'
-  },
-  {
-    title: 'Web Dev',
-    desc: 'Make a UI Design of Medical tracker app',
-    deadline: '2 days'
-  }
-];
 
 //component
-const Dashboard = ({ IncompleteTasksAction }) => {
-  const [carddetails, setCarddetails] = useState([]);
-  const data = IncompleteTasksAction.IncompleteTasks();
-  console.log(data);
-  useEffect(() => {
-    setCarddetails(ActiveCarddetails);
-  }, []);
-
+const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
+  IncompleteTasksAction.IncompleteTasks();
   const classes = useStyles();
 
   return (
@@ -132,14 +113,13 @@ const Dashboard = ({ IncompleteTasksAction }) => {
 
             <Typography className={classes.heading}>YOUR TASKS</Typography>
             <Grid container spacing={5} style={{ marginBottom: '2rem' }}>
-              {carddetails.map(card => {
+              {Carddetails.map((card, index) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                     <CustomCards
-                      title={card.title}
-                      deadline={card.deadline}
-                      desc={card.desc}
-                      active="true"
+                      title={card.course_name}
+                      deadline={card.days_left}
+                      desc={card.description}
                     ></CustomCards>
                   </Grid>
                 );
@@ -150,9 +130,9 @@ const Dashboard = ({ IncompleteTasksAction }) => {
 
             <Typography className={classes.heading}>CATEGORIES</Typography>
             <Grid container spacing={5} style={{ marginBottom: '2rem' }}>
-              {CategoryCards.map(card => {
+              {CategoryCards.map((card, index) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                     <CustomCards title={card.title} desc={card.desc}></CustomCards>
                   </Grid>
                 );
@@ -164,9 +144,13 @@ const Dashboard = ({ IncompleteTasksAction }) => {
     </>
   );
 };
-
+const mapStateToProps = state => {
+  return {
+    Carddetails: state.IncompleteTasks.carddata
+  };
+};
 const mapDispatchToProps = dispatch => ({
   IncompleteTasksAction: bindActionCreators(IncompleteTasksActionCreator, dispatch)
 });
 
-export default connect(null, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

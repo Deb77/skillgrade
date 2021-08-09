@@ -5,7 +5,7 @@ const initialState = {
   token: null
 };
 const authReducer = (state = initialState, actions) => {
-  const { type, payload, history } = actions;
+  const { type, payload } = actions;
   switch (type) {
     case 'LOGIN_SUCCESS':
       localStorage.setItem('token', payload.token);

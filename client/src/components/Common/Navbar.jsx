@@ -144,14 +144,14 @@ const Navbar = ({ name, url }) => {
           <Typography className={classes.title} variant="h6" noWrap>
             SKILL GRADE
           </Typography>
-          <Typography>
-            <Grid container justifyContent="center" alignItems="center" spacing="2">
+          <div>
+            <Grid container justifyContent="center" alignItems="center" spacing={2}>
               <Grid item>{name}</Grid>
               <Grid item>
                 <Avatar alt={name} src={url} className={classes.small} />
               </Grid>
             </Grid>
-          </Typography>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
