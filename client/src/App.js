@@ -6,6 +6,7 @@ import store from './store';
 import { Provider } from 'react-redux';
 const Landing = lazy(() => import('./pages/landing'));
 const Dashboard = lazy(() => import('./pages/dashboard'));
+const Admin = lazy(() => import('./pages/admin'));
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Suspense fallback={<div></div>}>
           <Switch>
             <Route exact path="/" component={Landing} />
+            <Route exact path="/admin" component={Admin} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
           </Switch>
         </Suspense>
