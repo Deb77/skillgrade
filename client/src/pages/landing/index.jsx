@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { GoogleLogin } from 'react-google-login';
+import { loginService } from '../../services';
 import './landing.css';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -22,9 +23,14 @@ const useStyles = makeStyles({
   }
 });
 
+
 const Landing = ({ authActions }) => {
   const classes = useStyles();
   const history = useHistory();
+
+
+
+
   const googleSuccess = async res => {
     const { name, email, imageUrl } = await res.profileObj;
     const token = await res.tokenId;
@@ -37,6 +43,8 @@ const Landing = ({ authActions }) => {
 
     localStorage.setItem('skill_grade_token', token);
     authActions.login(params, history);
+
+
   };
 
   const googleFailure = async error => {
@@ -49,7 +57,7 @@ const Landing = ({ authActions }) => {
         <h1>SKILL GRADE</h1>
         <h2>Where learning meets talent</h2>
         <GoogleLogin
-          clientId="416360586846-278arhu16n1nlcr7he6ek1jdm5aj52q2.apps.googleusercontent.com"
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
           render={renderProps => (
             <Button className={classes.root} onClick={renderProps.onClick} disabled={renderProps.disabled}>
               Get Started
