@@ -133,11 +133,7 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
               {CategoryCards.map((card, index) => {
                 return (
                   <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                    <CustomCards
-                      title={card.title}
-                      desc={card.desc}
-                      course_name={card.course_name}
-                    ></CustomCards>
+                    <CustomCards desc={card.desc} course_name={card.course_name}></CustomCards>
                   </Grid>
                 );
               })}
