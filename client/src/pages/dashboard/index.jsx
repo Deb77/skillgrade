@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Navbar from '../../components/Common/Navbar';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -52,27 +52,27 @@ const useStyles = makeStyles(theme => ({
 
 const CategoryCards = [
   {
-    title: 'UI Design',
+    course_name: 'UI_DESIGN',
     desc: 'Hone your designing skills by creating eyestrucking visualsfor your favourite apps.'
   },
   {
-    title: 'Content Writing',
+    course_name: 'CONTENT_WRITING',
     desc: 'Hone your designing skills by creating eyestrucking visualsfor your favourite apps.'
   },
   {
-    title: 'Web Dev',
+    course_name: 'WEB_DEV',
     desc: 'Design and create basic to advance website. Its your time to learn the web.'
   },
   {
-    title: 'Sketching',
+    course_name: 'SKETCHING',
     desc: 'Hone your designing skills by creating eyestrucking visualsfor your favourite apps.'
   },
   {
-    title: 'Java',
+    course_name: 'JAVA',
     desc: 'Coming soon'
   },
   {
-    title: 'Dev Ops',
+    course_name: 'DEV_OPS',
     desc: 'Coming soon'
   }
 ];
@@ -117,7 +117,7 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
                 return (
                   <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                     <CustomCards
-                      title={card.course_name}
+                      course_name={card.course_name}
                       deadline={card.days_left}
                       desc={card.description}
                     ></CustomCards>
@@ -133,7 +133,11 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
               {CategoryCards.map((card, index) => {
                 return (
                   <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                    <CustomCards title={card.title} desc={card.desc}></CustomCards>
+                    <CustomCards
+                      title={card.title}
+                      desc={card.desc}
+                      course_name={card.course_name}
+                    ></CustomCards>
                   </Grid>
                 );
               })}

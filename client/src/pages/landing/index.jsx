@@ -1,7 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { GoogleLogin } from 'react-google-login';
-import { loginService } from '../../services';
 import './landing.css';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -23,13 +22,9 @@ const useStyles = makeStyles({
   }
 });
 
-
 const Landing = ({ authActions }) => {
   const classes = useStyles();
   const history = useHistory();
-
-
-
 
   const googleSuccess = async res => {
     const { name, email, imageUrl } = await res.profileObj;
@@ -43,8 +38,6 @@ const Landing = ({ authActions }) => {
 
     localStorage.setItem('skill_grade_token', token);
     authActions.login(params, history);
-
-
   };
 
   const googleFailure = async error => {

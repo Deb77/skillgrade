@@ -41,6 +41,9 @@ const useStyles = makeStyles({
   actionbtn: {
     color: 'white'
   },
+  deadline: {
+    marginTop: 10
+  },
   red: {
     background: 'linear-gradient(103.67deg, #FF6464 37.65%, #FFA2AD 108.44%)'
   },
@@ -61,34 +64,42 @@ const useStyles = makeStyles({
   }
 });
 
+const courses = {
+  UI_DESIGN: 'UI Design',
+  CONTENT_WRITING: 'Content Writing',
+  WEB_DEV: 'Web Dev',
+  SKETCHING: 'Sketching',
+  JAVA: 'Java',
+  DEV_OPS: 'Dev Ops'
+};
 //component
 const CustomCards = props => {
   const classes = useStyles();
-  const { title, desc, deadline, active } = props;
+  const { course_name, desc, deadline, active } = props;
 
   //function for setting color of card based on its category
   const setColor = title => {
-    if (title === 'UI Design') return classes.purple;
-    if (title === 'Content Writing') return classes.red;
-    if (title === 'Web Dev') return classes.orange;
-    if (title === 'Sketching') return classes.blue;
-    if (title === 'Java') return classes.green;
-    if (title === 'Dev Ops') return classes.magenta;
+    if (title === 'UI_DESIGN') return classes.purple;
+    if (title === 'CONTENT_WRITING') return classes.red;
+    if (title === 'WEB_DEV') return classes.orange;
+    if (title === 'SKETCHING') return classes.blue;
+    if (title === 'JAVA') return classes.green;
+    if (title === 'DEV_OPS') return classes.magenta;
   };
   return (
     <>
       <div className="Customcards">
-        <Card raised={true} className={`${classes.root} ${setColor(title)}`}>
+        <Card raised={true} className={`${classes.root} ${setColor(course_name)}`}>
           <CardContent className={classes.card}>
             <Typography className={classes.title} gutterBottom>
-              {title}
+              {courses[course_name]}
             </Typography>
             <Typography className={classes.subtitle} gutterBottom>
               {desc}
             </Typography>
             <Grid container direction="row" justifyContent="space-between" alignItems="center">
-              <Grid item>
-                <Typography>{deadline}</Typography>
+              <Grid item className={classes.deadline}>
+                {deadline && <Typography variant="h6">{deadline} days left</Typography>}
               </Grid>
               <Grid item>
                 <CardActions>
