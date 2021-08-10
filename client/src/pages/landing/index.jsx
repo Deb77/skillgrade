@@ -3,7 +3,10 @@ import Button from '@material-ui/core/Button';
 import { GoogleLogin } from 'react-google-login';
 import { loginService } from '../../services';
 import './landing.css';
-
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as authActionCreators from '../../actions/auth';
+import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles({
   root: {
     background: 'white',
@@ -20,8 +23,13 @@ const useStyles = makeStyles({
   }
 });
 
-const Landing = () => {
+
+const Landing = ({ authActions }) => {
   const classes = useStyles();
+  const history = useHistory();
+
+
+
 
   const googleSuccess = async res => {
     const { name, email, imageUrl } = await res.profileObj;
@@ -32,12 +40,11 @@ const Landing = () => {
       imageUrl,
       token
     };
-    loginService(params)
-      .then(({ data }) => {
-        localStorage.setItem('skill_grade_token', token);
-        // history push goes here
-      })
-      .catch(err => console.log(err));
+
+    localStorage.setItem('skill_grade_token', token);
+    authActions.login(params, history);
+
+
   };
 
   const googleFailure = async error => {
@@ -64,4 +71,7 @@ const Landing = () => {
     </div>
   );
 };
-export default Landing;
+const mapDispatchToProps = dispatch => ({
+  authActions: bindActionCreators(authActionCreators, dispatch)
+});
+export default connect(null, mapDispatchToProps)(Landing);
