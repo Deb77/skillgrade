@@ -120,6 +120,7 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
                       course_name={card.course_name}
                       deadline={card.days_left}
                       desc={card.description}
+                      active={true}
                     ></CustomCards>
                   </Grid>
                 );

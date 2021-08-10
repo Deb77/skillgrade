@@ -42,7 +42,7 @@ const useStyles = makeStyles({
     color: 'white'
   },
   deadline: {
-    marginTop: 10
+    fontSize: 16
   },
   red: {
     background: 'linear-gradient(103.67deg, #FF6464 37.65%, #FFA2AD 108.44%)'
@@ -98,8 +98,8 @@ const CustomCards = props => {
               {desc}
             </Typography>
             <Grid container direction="row" justifyContent="space-between" alignItems="center">
-              <Grid item className={classes.deadline}>
-                {deadline && <Typography variant="h6">{deadline} days left</Typography>}
+              <Grid item>
+                {deadline && <Typography className={classes.deadline}>{deadline} days left</Typography>}
               </Grid>
               <Grid item>
                 <CardActions>
