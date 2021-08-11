@@ -26,9 +26,13 @@ const getOldestIncompleteTasks = (req, res) => {
   const {
     query: { user_id }
   } = req;
-  const query = `select p.course_name, p.description, p.time_complete, min(q."createdAt") as "createdAt" 
-        from "Tasks" p inner join "UserTasks" q on p.id = q.task_id where q.status = 'IN_PROGRESS' and q.user_id = '${user_id}'
-        group by p.course_name, p.description, p.time_complete, q.user_id;`;
+
+  const query = `select p.course_name, p.description, q."createdAt" 
+        from "Tasks" p
+        inner join "UserTasks" q
+        on p.id = q.task_id
+        where q.user_id = '${user_id}' and q.status = 'IN_PROGRESS'`;
+
   DB.sequelize
     .query(query, { type: QueryTypes.SELECT })
     .then(data => {
