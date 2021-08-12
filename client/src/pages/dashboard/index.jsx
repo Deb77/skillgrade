@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '../../components/Common/Navbar';
+import Navbar from '../../components/Navbar';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Carousel_img1 from '../../assets/Carousel_img1.png';
@@ -10,8 +10,10 @@ import Typography from '@material-ui/core/Typography';
 import * as IncompleteTasksActionCreator from '../../actions/IncompleteTasks';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-//additional styling
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
+//additional styling
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex'
@@ -48,8 +50,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-//data
+//data to be sent via link based on course_name
+const courseapi = {
+  UI_DESIGN: 'ui-design',
+  CONTENT_WRITING: 'content-writing',
+  WEB_DEV: 'web-dev',
+  SKETCHING: 'sketching'
+};
 
+//data to be displayed on cards
 const CategoryCards = [
   {
     course_name: 'UI_DESIGN',
@@ -79,14 +88,17 @@ const CategoryCards = [
 
 //component
 const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
-  IncompleteTasksAction.IncompleteTasks();
   const classes = useStyles();
+
+  //dispatching action
+  useEffect(() => {
+    IncompleteTasksAction.IncompleteTasks();
+  }, [IncompleteTasksAction]);
 
   return (
     <>
       <div className="dashboard">
         {/* navbar */}
-
         <Navbar></Navbar>
 
         <main className={classes.content}>
@@ -134,7 +146,9 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
               {CategoryCards.map((card, index) => {
                 return (
                   <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                    <CustomCards desc={card.desc} course_name={card.course_name}></CustomCards>
+                    <Link style={{ textDecoration: 'none' }} to={'/tasklist/' + courseapi[card.course_name]}>
+                      <CustomCards desc={card.desc} course_name={card.course_name}></CustomCards>
+                    </Link>
                   </Grid>
                 );
               })}
@@ -145,6 +159,8 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
     </>
   );
 };
+
+//redux
 const mapStateToProps = state => {
   return {
     Carddetails: state.IncompleteTasks.carddata
