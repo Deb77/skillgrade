@@ -10,43 +10,48 @@ const useStyles = makeStyles({
   root: {
     minWidth: 275
   },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
+
   title: {
-    fontSize: 14
+    fontSize: 20,
+    textAlign: 'center'
   },
-  pos: {
-    marginBottom: 12
+  count: {
+    fontSize: 40,
+    textAlign: 'center',
+    color: '#000'
+  },
+  cardButtonContainer: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  cardButton: {
+    fontSize: 16
   }
 });
 
-export default function SimpleCard() {
+export default function SimpleCard({ title, count, openModal }) {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
 
   return (
     <Card className={classes.root}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Word of the Day
+          {title}
         </Typography>
-        <Typography variant="h5" component="h2">
-          be{bull}nev{bull}o{bull}lent
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          adjective
-        </Typography>
-        <Typography variant="body2" component="p">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
+        <Typography className={classes.count} color="textSecondary">
+          {count}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
+      <CardActions className={classes.cardButtonContainer}>
+        <Button
+          className={classes.cardButton}
+          size="small"
+          variant="contained"
+          color="primary"
+          onClick={() => openModal()}
+        >
+          +
+        </Button>
       </CardActions>
     </Card>
   );
