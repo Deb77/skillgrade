@@ -60,16 +60,20 @@ const getTasks = (req, res) => {
   if (course_name)
     where_clause = `where p.course_name = '${course_name}' and (ut.user_id = '${user_id}' or ut.user_id is NULL)`;
 
-  const query = `select p.*,ut.status ,
+  const query = `select p.*,ut.status , 
 	  case when count(q) = 0 then '[]'
-    else json_agg(json_build_object('work_upload',q.work_upload, 'description',q.description, 'upvotes',q.upvotes))
+    else json_agg(json_build_object('user',u.name, 'work_upload',q.work_upload, 'description',q.description, 'upvotes',q.upvotes))
     end as feed
     from "Tasks" p
     left join "UserTasks" ut on p.id = ut.task_id 
     left join "TaskFeeds" q on p.id = q.task_id
+    left join users u on q.user_id = u.id
     ${where_clause}
-    group by p.id,ut.status `;
+    group by p.id,ut.status,u.id`;
 
+  console.log(
+    JSON.parse('{"title":"Content Writing","link":"https://www.hubspot.com/blog-topic-generator"}')
+  );
   DB.sequelize
     .query(query, { type: QueryTypes.SELECT })
     .then(data => {
