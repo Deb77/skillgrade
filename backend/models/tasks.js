@@ -43,20 +43,22 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       docs: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.ARRAY(DataTypes.JSON),
         defaultValue: []
       },
       videos: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.ARRAY(DataTypes.JSON),
         defaultValue: []
       },
       tools_and_sources: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.ARRAY(DataTypes.JSON),
         defaultValue: []
       },
-      upvotes: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
-        defaultValue: []
+      introduction: {
+        type: DataTypes.TEXT
+      },
+      submission: {
+        type: DataTypes.TEXT
       }
     },
     {

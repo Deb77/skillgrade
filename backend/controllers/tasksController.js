@@ -67,10 +67,13 @@ const getTasks = (req, res) => {
     from "Tasks" p
     left join "UserTasks" ut on p.id = ut.task_id 
     left join "TaskFeeds" q on p.id = q.task_id
-    inner join users u on q.user_id = u.id
+    left join users u on q.user_id = u.id
     ${where_clause}
     group by p.id,ut.status,u.id`;
 
+  console.log(
+    JSON.parse('{"title":"Content Writing","link":"https://www.hubspot.com/blog-topic-generator"}')
+  );
   DB.sequelize
     .query(query, { type: QueryTypes.SELECT })
     .then(data => {
