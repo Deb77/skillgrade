@@ -9,6 +9,7 @@ import TasksModal from '../../components/Admin/TasksModal';
 
 const Admin = ({ taskAction, AllTasks }) => {
   const [open, setOpen] = useState(false);
+  const [activeTask, setActiveTask] = useState();
 
   useEffect(() => {
     taskAction();
@@ -19,14 +20,15 @@ const Admin = ({ taskAction, AllTasks }) => {
   };
 
   const handleClose = () => {
+    setActiveTask();
     setOpen(false);
   };
 
   return (
     <AdminLayout>
       <CardContainer allTasks={AllTasks} openModal={openModal} />
-      <Table allTasks={AllTasks} openModal={openModal} />
-      <TasksModal open={open} handleClose={handleClose} />
+      <Table allTasks={AllTasks} openModal={openModal} setActiveTask={setActiveTask} />
+      <TasksModal open={open} handleClose={handleClose} activeTask={activeTask} />
     </AdminLayout>
   );
 };

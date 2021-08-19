@@ -39,24 +39,44 @@ const dynamics = [
   { field: 'tools_and_sources', title: 'Tool And Sources' }
 ];
 
-const ModalForm = () => {
+const initialValues = {
+  name: '',
+  course_name: 'WEB_DEV',
+  description: '',
+  introduction: '',
+  submission: '',
+  max_points: 0,
+  time_complete: 0,
+  level: 'BEGINNER',
+  docs: [{ title: '', link: '' }],
+  videos: [{ title: '', link: '' }],
+  tools_and_sources: [{ title: '', link: '' }]
+};
+
+const ModalForm = ({ activeTask }) => {
   const classes = useStyles();
+
+  const jsonToObj = items => items.map(item => JSON.parse(item));
 
   return (
     <Formik
-      initialValues={{
-        name: '',
-        course_name: 'WEB_DEV',
-        description: '',
-        introduction: '',
-        submission: '',
-        max_points: 0,
-        time_complete: 0,
-        level: 'BEGINNER',
-        docs: [{ title: '', link: '' }],
-        videos: [{ title: '', link: '' }],
-        tools_and_sources: [{ title: '', link: '' }]
-      }}
+      initialValues={
+        activeTask
+          ? {
+              name: activeTask[0]?.name,
+              course_name: activeTask[0]?.course_name,
+              description: activeTask[0]?.description,
+              introduction: activeTask[0]?.introduction,
+              submission: activeTask[0]?.submission,
+              max_points: activeTask[0]?.max_points,
+              time_complete: activeTask[0]?.time_complete,
+              level: activeTask[0]?.level,
+              docs: jsonToObj(activeTask[0]?.docs),
+              videos: jsonToObj(activeTask[0]?.videos),
+              tools_and_sources: jsonToObj(activeTask[0]?.tools_and_sources)
+            }
+          : initialValues
+      }
       onSubmit={values => console.log(values)}
       render={({ values, handleChange, handleSubmit }) => (
         <form className={classes.root} autoComplete="off" onSubmit={handleSubmit}>

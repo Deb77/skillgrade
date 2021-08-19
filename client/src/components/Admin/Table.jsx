@@ -129,7 +129,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function EnhancedTable({ allTasks, openModal }) {
+export default function EnhancedTable({ allTasks, openModal, setActiveTask }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -220,6 +220,11 @@ export default function EnhancedTable({ allTasks, openModal }) {
 
   const isSelected = name => selected.indexOf(name) !== -1;
 
+  const openEditModal = task => {
+    setActiveTask(() => allTasks.tasks.filter(item => item.id === task.id));
+    openModal();
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -272,7 +277,7 @@ export default function EnhancedTable({ allTasks, openModal }) {
                       <TableCell align="center">{row.duration}</TableCell>
                       <TableCell align="center">{row.level}</TableCell>
                       <TableCell align="center">
-                        <EditIcon style={{ cursor: 'pointer' }} onClick={() => openModal()} />
+                        <EditIcon style={{ cursor: 'pointer' }} onClick={() => openEditModal(row)} />
                       </TableCell>
                     </TableRow>
                   );
