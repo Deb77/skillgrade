@@ -5,7 +5,7 @@ import AdminLayout from '../../components/Admin/AdminLayout';
 import CardContainer from '../../components/Admin/CardContainer';
 import Table from '../../components/Admin/Table';
 import { AllTasks } from '../../actions/allTasks';
-import TasksModal from '../../components/Admin/Table/TasksModal';
+import TasksModal from '../../components/Admin/TasksModal';
 
 const Admin = ({ taskAction, AllTasks }) => {
   const [open, setOpen] = useState(false);

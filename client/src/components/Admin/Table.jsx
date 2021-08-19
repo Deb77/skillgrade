@@ -14,7 +14,6 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import EditIcon from '@material-ui/icons/Edit';
 import TableToolBar from './Table/TableToolBar';
-import TasksModal from './Table/TasksModal';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -175,6 +174,7 @@ export default function EnhancedTable({ allTasks, openModal }) {
 
   useEffect(() => {
     setRows(getData());
+    // eslint-disable-next-line
   }, [allTasks, filter]);
 
   const handleRequestSort = (event, property) => {
