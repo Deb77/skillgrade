@@ -98,4 +98,37 @@ const getTasks = (req, res) => {
     });
 };
 
-module.exports = { addTask, getTasks };
+const updateTask = (req, res) => {
+  DB.Tasks.update(req.body, {
+    where: {
+      id: req.body.id
+    }
+  })
+    .then(() => res.status(200).json({ message: 'Task updated successfully' }))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json('Internal server error');
+    });
+};
+
+const deleteTasks = (req, res) => {
+  let { delete_array } = req.body;
+
+  let str = '';
+  for (let i = 0; i < delete_array.length; i++) {
+    if (i != delete_array.length - 1) str += `'${delete_array[i]}', `;
+    else str += `'${delete_array[i]}'`;
+  }
+
+  const query = `delete from "Tasks" where id IN (${str})`;
+
+  DB.sequelize
+    .query(query, { type: QueryTypes.DELETE })
+    .then(() => res.status(200).json('Tasks deleted successfully'))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json('Internal server error');
+    });
+};
+
+module.exports = { addTask, getTasks, updateTask, deleteTasks };
