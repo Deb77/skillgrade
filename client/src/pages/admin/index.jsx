@@ -35,6 +35,7 @@ const Admin = ({ taskAction, AllTasks }) => {
         handleClose={handleClose}
         activeTask={activeTask}
         addNewTask={taskAction.NewTask}
+        updateTask={taskAction.UpdateTask}
         activeCourse={activeCourse}
       />
     </AdminLayout>

@@ -12,7 +12,7 @@ const DynamicFormComponent = ({ values, handleChange, classes, field, title }) =
           <>
             <Typography>{title}</Typography>
             {values[field].map((doc, index) => (
-              <Grid container spacing={2}>
+              <Grid container spacing={2} key={index}>
                 <Grid item xs={5}>
                   <TextField
                     name={`${field}.${index}.title`}

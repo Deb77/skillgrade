@@ -29,7 +29,8 @@ const menuItems = [
   { key: 'web_dev', value: 'Web Development Tasks' },
   { key: 'sketching', value: 'Sketching Tasks' },
   { key: 'ui-design', value: 'UI Design Tasks' },
-  { key: 'content-writing', value: 'Content Writing Tasks' }
+  { key: 'content-writing', value: 'Content Writing Tasks' },
+  { key: 'all-tasks', value: 'All Tasks' }
 ];
 
 const TableToolBar = ({ numSelected, setFilter }) => {

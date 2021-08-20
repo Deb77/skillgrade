@@ -36,7 +36,7 @@ function getModalStyle() {
   };
 }
 
-const TasksModal = ({ open, handleClose, activeTask, activeCourse, addNewTask }) => {
+const TasksModal = ({ open, handleClose, activeTask, activeCourse, addNewTask, updateTask }) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
 
@@ -46,6 +46,7 @@ const TasksModal = ({ open, handleClose, activeTask, activeCourse, addNewTask })
       <ModalForm
         activeTask={activeTask}
         addNewTask={addNewTask}
+        updateTask={updateTask}
         handleClose={handleClose}
         activeCourse={activeCourse}
       />

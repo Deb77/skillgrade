@@ -1,4 +1,4 @@
-import { GetAllTasks, AddNewTask } from '../services';
+import { GetAllTasks, AddNewTask, UpdateExistingTask, DeleteExistingTask } from '../services';
 
 const course_keys = {
   WEB_DEV: 'web_dev_tasks',
@@ -6,6 +6,8 @@ const course_keys = {
   UI_DESIGN: 'UI_design_tasks',
   CONTENT_WRITING: 'content_writing_tasks'
 };
+
+const objToJSON = items => items && items.map(item => JSON.stringify(item));
 
 export const AllTasks = () => dispatch =>
   GetAllTasks().then(res => {
@@ -34,4 +36,26 @@ export const NewTask = newTask => (dispatch, getState) => {
       });
     })
     .catch(err => console.log(err));
+};
+
+export const UpdateTask = task => (dispatch, getState) => {
+  UpdateExistingTask(task).then(() => {
+    const course = course_keys[task.course_name];
+    let tasks = getState().allTasks.tasks;
+    let course_tasks = getState().allTasks[course];
+    const index = tasks.findIndex(item => item.id === task.id);
+    const course_task_index = course_tasks.findIndex(item => item.id === task.id);
+    const modifiedTask = {
+      ...task,
+      docs: objToJSON(task.docs),
+      videos: objToJSON(task.videos),
+      tools_and_sources: objToJSON(task.tools_and_sources)
+    };
+    tasks[index] = modifiedTask;
+    course_tasks[course_task_index] = modifiedTask;
+    dispatch({
+      type: 'UPDATE_TASK',
+      payload: { tasks, course_tasks, course }
+    });
+  });
 };

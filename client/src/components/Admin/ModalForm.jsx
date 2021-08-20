@@ -53,13 +53,14 @@ const initialValues = {
   tools_and_sources: [{ title: '', link: '' }]
 };
 
-const ModalForm = ({ activeTask, activeCourse, addNewTask, handleClose }) => {
+const ModalForm = ({ activeTask, activeCourse, addNewTask, handleClose, updateTask }) => {
   const classes = useStyles();
 
   const jsonToObj = items => items.map(item => JSON.parse(item));
 
   const onSubmit = values => {
     if (!activeTask) addNewTask(values);
+    else updateTask(values);
     handleClose();
   };
 
@@ -68,6 +69,7 @@ const ModalForm = ({ activeTask, activeCourse, addNewTask, handleClose }) => {
       initialValues={
         activeTask
           ? {
+              id: activeTask[0]?.id,
               name: activeTask[0]?.name,
               course_name: activeTask[0]?.course_name,
               description: activeTask[0]?.description,

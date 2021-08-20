@@ -10,3 +10,7 @@ export const GetIncompleteTasks = user_id =>
 export const GetAllTasks = () => axios.get(baseUrl + 'tasks');
 
 export const AddNewTask = params => axios.post(baseUrl + 'tasks/', params);
+
+export const UpdateExistingTask = params => axios.put(baseUrl + 'tasks/', params);
+
+export const DeleteExistingTask = params => axios.delete(baseUrl + 'tasks/', params);
