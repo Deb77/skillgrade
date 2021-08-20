@@ -53,10 +53,15 @@ const initialValues = {
   tools_and_sources: [{ title: '', link: '' }]
 };
 
-const ModalForm = ({ activeTask }) => {
+const ModalForm = ({ activeTask, activeCourse, addNewTask, handleClose }) => {
   const classes = useStyles();
 
   const jsonToObj = items => items.map(item => JSON.parse(item));
+
+  const onSubmit = values => {
+    if (!activeTask) addNewTask(values);
+    handleClose();
+  };
 
   return (
     <Formik
@@ -75,9 +80,11 @@ const ModalForm = ({ activeTask }) => {
               videos: jsonToObj(activeTask[0]?.videos),
               tools_and_sources: jsonToObj(activeTask[0]?.tools_and_sources)
             }
+          : activeCourse
+          ? { ...initialValues, course_name: activeCourse }
           : initialValues
       }
-      onSubmit={values => console.log(values)}
+      onSubmit={onSubmit}
       render={({ values, handleChange, handleSubmit }) => (
         <form className={classes.root} autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={3}>

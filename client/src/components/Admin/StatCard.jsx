@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -29,8 +29,17 @@ const useStyles = makeStyles({
   }
 });
 
-export default function SimpleCard({ title, count, openModal }) {
+export default function SimpleCard({ title, course_name, openModal, setActiveCourse, item, allTasks }) {
   const classes = useStyles();
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    setCount(allTasks[item].length);
+  }, [allTasks, item]);
+
+  const onClick = () => {
+    openModal();
+    setActiveCourse(course_name);
+  };
 
   return (
     <Card className={classes.root}>
@@ -48,7 +57,7 @@ export default function SimpleCard({ title, count, openModal }) {
           size="small"
           variant="contained"
           color="primary"
-          onClick={() => openModal()}
+          onClick={() => onClick()}
         >
           +
         </Button>

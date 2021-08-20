@@ -36,15 +36,19 @@ function getModalStyle() {
   };
 }
 
-const TasksModal = ({ open, handleClose, activeTask }) => {
-  console.log(activeTask);
+const TasksModal = ({ open, handleClose, activeTask, activeCourse, addNewTask }) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <h2 id="simple-modal-title">{activeTask ? 'Edit Task' : 'Add Task'}</h2>
-      <ModalForm activeTask={activeTask} />
+      <ModalForm
+        activeTask={activeTask}
+        addNewTask={addNewTask}
+        handleClose={handleClose}
+        activeCourse={activeCourse}
+      />
     </div>
   );
 

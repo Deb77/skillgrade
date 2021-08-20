@@ -4,15 +4,16 @@ import { connect } from 'react-redux';
 import AdminLayout from '../../components/Admin/AdminLayout';
 import CardContainer from '../../components/Admin/CardContainer';
 import Table from '../../components/Admin/Table';
-import { AllTasks } from '../../actions/allTasks';
+import * as Tasks from '../../actions/allTasks';
 import TasksModal from '../../components/Admin/TasksModal';
 
 const Admin = ({ taskAction, AllTasks }) => {
   const [open, setOpen] = useState(false);
   const [activeTask, setActiveTask] = useState();
+  const [activeCourse, setActiveCourse] = useState();
 
   useEffect(() => {
-    taskAction();
+    taskAction.AllTasks();
   }, [taskAction]);
 
   const openModal = () => {
@@ -21,14 +22,21 @@ const Admin = ({ taskAction, AllTasks }) => {
 
   const handleClose = () => {
     setActiveTask();
+    setActiveCourse();
     setOpen(false);
   };
 
   return (
     <AdminLayout>
-      <CardContainer allTasks={AllTasks} openModal={openModal} />
+      <CardContainer allTasks={AllTasks} openModal={openModal} setActiveCourse={setActiveCourse} />
       <Table allTasks={AllTasks} openModal={openModal} setActiveTask={setActiveTask} />
-      <TasksModal open={open} handleClose={handleClose} activeTask={activeTask} />
+      <TasksModal
+        open={open}
+        handleClose={handleClose}
+        activeTask={activeTask}
+        addNewTask={taskAction.NewTask}
+        activeCourse={activeCourse}
+      />
     </AdminLayout>
   );
 };
@@ -40,7 +48,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  taskAction: bindActionCreators(AllTasks, dispatch)
+  taskAction: bindActionCreators(Tasks, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);

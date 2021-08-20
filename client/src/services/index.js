@@ -8,3 +8,5 @@ export const GetIncompleteTasks = user_id =>
   axios.get(baseUrl + 'user-tasks/older-incomplete-tasks?user_id=' + user_id);
 
 export const GetAllTasks = () => axios.get(baseUrl + 'tasks');
+
+export const AddNewTask = params => axios.post(baseUrl + 'tasks/', params);

@@ -16,7 +16,12 @@ const AllTasksReducer = (state = initialState, { type, payload }) => {
         UI_design_tasks: payload.UI_design_tasks,
         content_writing_tasks: payload.content_writing_tasks
       };
-
+    case 'ADD_NEW_TASK':
+      return {
+        ...state,
+        tasks: payload.tasks,
+        [payload.course]: payload.course_tasks
+      };
     default:
       return state;
   }
