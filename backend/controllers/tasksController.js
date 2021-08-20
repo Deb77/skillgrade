@@ -113,7 +113,7 @@ const updateTask = (req, res) => {
 
 const deleteTasks = (req, res) => {
   let { delete_array } = req.body;
-
+  console.log(delete_array);
   let str = '';
   for (let i = 0; i < delete_array.length; i++) {
     if (i != delete_array.length - 1) str += `'${delete_array[i]}', `;
