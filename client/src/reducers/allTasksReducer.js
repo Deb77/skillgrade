@@ -8,6 +8,7 @@ const initialState = {
 const AllTasksReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case 'SET_ALL_TASKS':
+    case 'DELETE_TASKS':
       return {
         ...state,
         tasks: payload.tasks,
@@ -17,11 +18,6 @@ const AllTasksReducer = (state = initialState, { type, payload }) => {
         content_writing_tasks: payload.content_writing_tasks
       };
     case 'ADD_NEW_TASK':
-      return {
-        ...state,
-        tasks: payload.tasks,
-        [payload.course]: payload.course_tasks
-      };
     case 'UPDATE_TASK':
       return {
         ...state,

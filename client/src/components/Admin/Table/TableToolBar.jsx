@@ -33,7 +33,7 @@ const menuItems = [
   { key: 'all-tasks', value: 'All Tasks' }
 ];
 
-const TableToolBar = ({ numSelected, setFilter }) => {
+const TableToolBar = ({ numSelected, setFilter, selected, deleteTask, setSelected }) => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef();
   const classes = useToolbarStyles();
@@ -42,6 +42,12 @@ const TableToolBar = ({ numSelected, setFilter }) => {
     setOpen(() => false);
     if (key) setFilter(key);
   };
+
+  const onDelete = () => {
+    deleteTask(selected);
+    setSelected([]);
+  };
+
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -60,7 +66,7 @@ const TableToolBar = ({ numSelected, setFilter }) => {
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton aria-label="delete">
+          <IconButton aria-label="delete" onClick={() => onDelete()}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>

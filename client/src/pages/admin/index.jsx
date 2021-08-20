@@ -29,7 +29,12 @@ const Admin = ({ taskAction, AllTasks }) => {
   return (
     <AdminLayout>
       <CardContainer allTasks={AllTasks} openModal={openModal} setActiveCourse={setActiveCourse} />
-      <Table allTasks={AllTasks} openModal={openModal} setActiveTask={setActiveTask} />
+      <Table
+        allTasks={AllTasks}
+        openModal={openModal}
+        setActiveTask={setActiveTask}
+        deleteTask={taskAction.DeleteTask}
+      />
       <TasksModal
         open={open}
         handleClose={handleClose}

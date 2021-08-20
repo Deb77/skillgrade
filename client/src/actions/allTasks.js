@@ -1,5 +1,13 @@
 import { GetAllTasks, AddNewTask, UpdateExistingTask, DeleteExistingTask } from '../services';
 
+const filterTask = tasks => {
+  const web_dev_tasks = tasks.filter(({ course_name }) => course_name === 'WEB_DEV');
+  const sketching_tasks = tasks.filter(({ course_name }) => course_name === 'SKETCHING');
+  const UI_design_tasks = tasks.filter(({ course_name }) => course_name === 'UI_DESIGN');
+  const content_writing_tasks = tasks.filter(({ course_name }) => course_name === 'CONTENT_WRITING');
+  return { tasks, web_dev_tasks, sketching_tasks, UI_design_tasks, content_writing_tasks };
+};
+
 const course_keys = {
   WEB_DEV: 'web_dev_tasks',
   SKETCHING: 'sketching_tasks',
@@ -12,13 +20,10 @@ const objToJSON = items => items && items.map(item => JSON.stringify(item));
 export const AllTasks = () => dispatch =>
   GetAllTasks().then(res => {
     const tasks = res.data.tasks;
-    const web_dev_tasks = tasks.filter(({ course_name }) => course_name === 'WEB_DEV');
-    const sketching_tasks = tasks.filter(({ course_name }) => course_name === 'SKETCHING');
-    const UI_design_tasks = tasks.filter(({ course_name }) => course_name === 'UI_DESIGN');
-    const content_writing_tasks = tasks.filter(({ course_name }) => course_name === 'CONTENT_WRITING');
+
     dispatch({
       type: 'SET_ALL_TASKS',
-      payload: { tasks, web_dev_tasks, sketching_tasks, UI_design_tasks, content_writing_tasks }
+      payload: filterTask(tasks)
     });
   });
 
@@ -56,6 +61,19 @@ export const UpdateTask = task => (dispatch, getState) => {
     dispatch({
       type: 'UPDATE_TASK',
       payload: { tasks, course_tasks, course }
+    });
+  });
+};
+
+export const DeleteTask = delete_array => (dispatch, getState) => {
+  let tasks = getState().allTasks.tasks;
+  console.log({ delete_array });
+  tasks = tasks.filter(item => !delete_array.includes(item.id));
+  DeleteExistingTask({ delete_array }).then(res => {
+    console.log(res);
+    dispatch({
+      type: 'DELETE_TASKS',
+      payload: filterTask(tasks)
     });
   });
 };

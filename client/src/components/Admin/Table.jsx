@@ -129,7 +129,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function EnhancedTable({ allTasks, openModal, setActiveTask }) {
+export default function EnhancedTable({ allTasks, openModal, setActiveTask, deleteTask }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -228,7 +228,13 @@ export default function EnhancedTable({ allTasks, openModal, setActiveTask }) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <TableToolBar numSelected={selected.length} setFilter={setFilter} />
+        <TableToolBar
+          numSelected={selected.length}
+          setFilter={setFilter}
+          selected={selected}
+          deleteTask={deleteTask}
+          setSelected={setSelected}
+        />
         <TableContainer>
           <Table
             className={classes.table}
