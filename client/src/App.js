@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 const Landing = lazy(() => import('./pages/landing'));
 const Dashboard = lazy(() => import('./pages/dashboard'));
 const Tasklist = lazy(() => import('./pages/tasklist'));
+const TaskPage = lazy(() => import('./pages/taskpage'));
 const App = () => {
   return (
     <Provider store={store}>
@@ -17,6 +18,7 @@ const App = () => {
             <Route exact path="/" component={Landing} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
             <PrivateRoute exact path="/tasklist/:id" component={Tasklist} />
+            <PrivateRoute exact path="/taskpage/:id" component={TaskPage} />
           </Switch>
         </Suspense>
       </Router>

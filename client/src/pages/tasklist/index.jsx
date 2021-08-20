@@ -74,111 +74,115 @@ const Tasklist = ({ CourseTasksAction, taskdetails }) => {
   useEffect(() => {
     CourseTasksAction.CourseTasks(params.id);
   }, [CourseTasksAction, params]);
-
-  return (
-    <>
-      <div className="tasklist">
-        <Navbar></Navbar>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <div className="title">
-            <Typography className={classes.title} align="center">
-              {category[0].category_name}
-            </Typography>
-          </div>
-          <Container>
-            <div className="introduction">
-              <Typography className={classes.subheading} variant="subtitle1">
-                INTRODUCTION
-              </Typography>
-              <Typography style={{ letterSpacing: '0.04em', marginBottom: '2rem' }}>
-                {category[0].introduction}
+  if (1) {
+    return (
+      <>
+        <div className="tasklist">
+          <Navbar></Navbar>
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            <div className="title">
+              <Typography className={classes.title} align="center">
+                {category[0].category_name}
               </Typography>
             </div>
-            <div className="tasks">
-              <Typography
-                className={classes.subheading}
-                style={{ marginBottom: '2rem' }}
-                align="center"
-                variant="h6"
-              >
-                TASKS
-              </Typography>
-              <div className={classes.taskcategory}>
+            <Container>
+              <div className="introduction">
                 <Typography className={classes.subheading} variant="subtitle1">
-                  BEGINNERS
+                  INTRODUCTION
                 </Typography>
-                <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                  {taskdetails.tasks
-                    .filter(e => {
-                      return e.level === 'BEGINNER';
-                    })
-                    .map(task => {
-                      return (
-                        <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
-                          <TaskCard
-                            title={task.name}
-                            days={task.time_complete}
-                            completion={true}
-                            color="purple"
-                          ></TaskCard>
-                        </Grid>
-                      );
-                    })}
-                </Grid>
-              </div>
-              <div className={classes.taskcategory}>
-                <Typography className={classes.subheading} variant="subtitle1">
-                  INTERMEDIATE
+                <Typography style={{ letterSpacing: '0.04em', marginBottom: '2rem' }}>
+                  {category[0].introduction}
                 </Typography>
-                <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                  {taskdetails.tasks
-                    .filter(e => {
-                      return e.level === 'INTERMEDIATE';
-                    })
-                    .map(task => {
-                      return (
-                        <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
-                          <TaskCard
-                            title={task.name}
-                            days={task.time_complete}
-                            completion={task.status}
-                            color="red"
-                          ></TaskCard>
-                        </Grid>
-                      );
-                    })}
-                </Grid>
               </div>
-              <div className={classes.taskcategory}>
-                <Typography className={classes.subheading} variant="subtitle1">
-                  ADVANCED
+              <div className="tasks">
+                <Typography
+                  className={classes.subheading}
+                  style={{ marginBottom: '2rem' }}
+                  align="center"
+                  variant="h6"
+                >
+                  TASKS
                 </Typography>
-                <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                  {taskdetails.tasks
-                    .filter(e => {
-                      return e.level === 'ADVANCED';
-                    })
-                    .map(task => {
-                      return (
-                        <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
-                          <TaskCard
-                            title={task.name}
-                            days={task.time_complete}
-                            completion={false}
-                            color="orange"
-                          ></TaskCard>
-                        </Grid>
-                      );
-                    })}
-                </Grid>
+                <div className={classes.taskcategory}>
+                  <Typography className={classes.subheading} variant="subtitle1">
+                    BEGINNERS
+                  </Typography>
+                  <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
+                    {taskdetails.tasks
+                      .filter(e => {
+                        return e.level === 'BEGINNER';
+                      })
+                      .map(task => {
+                        return (
+                          <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
+                            <TaskCard
+                              title={task.name}
+                              days={task.time_complete}
+                              completion={true}
+                              color="purple"
+                              id={task.id}
+                            ></TaskCard>
+                          </Grid>
+                        );
+                      })}
+                  </Grid>
+                </div>
+                <div className={classes.taskcategory}>
+                  <Typography className={classes.subheading} variant="subtitle1">
+                    INTERMEDIATE
+                  </Typography>
+                  <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
+                    {taskdetails.tasks
+                      .filter(e => {
+                        return e.level === 'INTERMEDIATE';
+                      })
+                      .map(task => {
+                        return (
+                          <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
+                            <TaskCard
+                              title={task.name}
+                              days={task.time_complete}
+                              completion={task.status}
+                              id={task.id}
+                              color="red"
+                            ></TaskCard>
+                          </Grid>
+                        );
+                      })}
+                  </Grid>
+                </div>
+                <div className={classes.taskcategory}>
+                  <Typography className={classes.subheading} variant="subtitle1">
+                    ADVANCED
+                  </Typography>
+                  <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
+                    {taskdetails.tasks
+                      .filter(e => {
+                        return e.level === 'ADVANCED';
+                      })
+                      .map(task => {
+                        return (
+                          <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
+                            <TaskCard
+                              title={task.name}
+                              days={task.time_complete}
+                              completion={false}
+                              id={task.id}
+                              color="orange"
+                            ></TaskCard>
+                          </Grid>
+                        );
+                      })}
+                  </Grid>
+                </div>
               </div>
-            </div>
-          </Container>
-        </main>
-      </div>
-    </>
-  );
+            </Container>
+          </main>
+        </div>
+      </>
+    );
+  }
 };
 
 //redux
