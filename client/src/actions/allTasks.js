@@ -67,7 +67,6 @@ export const UpdateTask = task => (dispatch, getState) => {
 
 export const DeleteTask = delete_array => (dispatch, getState) => {
   let tasks = getState().allTasks.tasks;
-  console.log({ delete_array });
   tasks = tasks.filter(item => !delete_array.includes(item.id));
   DeleteExistingTask({ delete_array }).then(res => {
     console.log(res);
