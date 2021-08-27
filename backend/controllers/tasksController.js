@@ -57,41 +57,22 @@ const getTasks = (req, res) => {
 
   let where_clause = '';
 
-  if (course_name)
-    where_clause = `where p.course_name = '${course_name}' and (ut.user_id = '${user_id}' or ut.user_id is NULL)`;
+  if (course_name) where_clause = `where t.course_name = '${course_name}' and u.id = '${user_id}'`;
 
-  const query = `select p.*,ut.status , 
-	  case when count(q) = 0 then '[]'
-    else json_agg(json_build_object('user',u.name, 'work_upload',q.work_upload, 'description',q.description, 'upvotes',q.upvotes))
-    end as feed
-    from "Tasks" p
-    left join "UserTasks" ut on p.id = ut.task_id 
-    left join "TaskFeeds" q on p.id = q.task_id
-    left join users u on q.user_id = u.id
-    ${where_clause}
-    group by p.id,ut.status,u.id`;
+  const query = `select t.*,u.id,
+    case when ut.status = 'COMPLETE' then true else false end as status,u.id,
+    case when count(q) = 0 then '[]'
+      else json_agg(json_build_object('user',u.name, 'work_upload',q.work_upload, 'description',q.description, 'upvotes',q.upvotes))
+      end as feed
+    from "Tasks" t cross join users u 
+  left join "TaskFeeds" q on q.task_id = t.id
+  left join "UserTasks" ut on t.id = ut.task_id and ut.user_id = u.id
+  ${where_clause}
+  group by t.id,u.id,ut.status,u.id `;
 
-  console.log(
-    JSON.parse('{"title":"Content Writing","link":"https://www.hubspot.com/blog-topic-generator"}')
-  );
   DB.sequelize
     .query(query, { type: QueryTypes.SELECT })
-    .then(data => {
-      altered_data = data.map(item => {
-        delete item.createdAt;
-        delete item.updatedAt;
-        if (item.status == 'COMPLETE') {
-          item.status = true;
-        } else {
-          item.status = false;
-        }
-
-        return {
-          ...item
-        };
-      });
-      res.status(200).json({ tasks: altered_data });
-    })
+    .then(data => res.status(200).json({ tasks: data }))
     .catch(err => {
       console.log(err);
       res.status(500).json('Internal server error');
