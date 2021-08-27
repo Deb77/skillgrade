@@ -4,7 +4,7 @@ const DB = require('../models');
 
 const addTaskFeed = async (req, res) => {
   const { work_upload, description, task_id, user_id } = req.body;
-  const { url } = await await cloudinary.uploader.upload(work_upload, {
+  const { url } = await cloudinary.uploader.upload(work_upload, {
     upload_preset: process.env.CN_SKILL_SHARE_FEED
   });
   DB.TaskFeed.create({
@@ -13,7 +13,11 @@ const addTaskFeed = async (req, res) => {
     task_id,
     user_id
   })
-    .then(() => res.status(200).json({ message: 'Added to feed successfully' }))
+    .then(data =>
+      res
+        .status(200)
+        .json({ message: 'Added to feed successfully', work_upload: url, task_feed_id: data.dataValues.id })
+    )
     .catch(err => {
       console.log(err);
       res.status(500).json('Internal server error');
