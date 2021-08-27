@@ -1,10 +1,14 @@
 const { QueryTypes } = require('sequelize');
+const cloudinary = require('../utils/cloudinary');
 const DB = require('../models');
 
-const addTaskFeed = (req, res) => {
+const addTaskFeed = async (req, res) => {
   const { work_upload, description, task_id, user_id } = req.body;
+  const { url } = await await cloudinary.uploader.upload(work_upload, {
+    upload_preset: process.env.CN_SKILL_SHARE_FEED
+  });
   DB.TaskFeed.create({
-    work_upload,
+    work_upload: url,
     description,
     task_id,
     user_id
