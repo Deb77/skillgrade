@@ -1,3 +1,4 @@
+const moment = require('moment');
 const DB = require('../models');
 const { QueryTypes } = require('sequelize');
 
@@ -71,9 +72,6 @@ const getTasks = (req, res) => {
     ${where_clause}
     group by p.id,ut.status,u.id`;
 
-  console.log(
-    JSON.parse('{"title":"Content Writing","link":"https://www.hubspot.com/blog-topic-generator"}')
-  );
   DB.sequelize
     .query(query, { type: QueryTypes.SELECT })
     .then(data => {
@@ -84,6 +82,11 @@ const getTasks = (req, res) => {
           item.status = true;
         } else {
           item.status = false;
+          if (item.status == 'COMPLETE') {
+            item.status = true;
+          } else {
+            item.status = false;
+          }
         }
 
         return {
@@ -131,4 +134,42 @@ const deleteTasks = (req, res) => {
     });
 };
 
-module.exports = { addTask, getTasks, updateTask, deleteTasks };
+const getReviewTasks = (req, res) => {
+  const query = `select ut.id,ut.work_upload,ut.user_id,ut."createdAt",
+  t."name", t.course_name, t.description, t.max_points, t.time_complete, t."level"
+  from "UserTasks" ut 
+  inner join "Tasks" t ON ut.task_id = t.id
+  where ut.status = 'IN_REVIEW';`;
+  DB.sequelize
+    .query(query, { type: QueryTypes.SELECT })
+    .then(data => {
+      altered_data = data.map(item => {
+        item.days_left = moment(item.createdAt).add(item.time_complete, 'days').diff(moment(), 'days') + 1;
+        delete item.createdAt;
+        return {
+          ...item
+        };
+      });
+      res.status(200).json({ tasks: altered_data });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json('Internal server error');
+    });
+};
+
+const gradeTask = (req, res) => {
+  const { score, user_task_id } = req.body;
+  const query1 = `update users set score = score + ${score} where id = (select user_id from "UserTasks" ut where id = '${user_task_id}')`;
+  const query2 = `update "UserTasks" set status = 'COMPLETE' where id = '${user_task_id}'`;
+  const promise1 = DB.sequelize.query(query1, { type: QueryTypes.UPDATE });
+  const promise2 = DB.sequelize.query(query2, { type: QueryTypes.UPDATE });
+  Promise.all([promise1, promise2])
+    .then(() => res.status(200).json('Task marked completed'))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json('Internal server error');
+    });
+};
+
+module.exports = { addTask, getTasks, updateTask, deleteTasks, getReviewTasks, gradeTask };
