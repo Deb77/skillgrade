@@ -51,33 +51,22 @@ const getOldestIncompleteTasks = (req, res) => {
     });
 };
 
-const completeUserTask = (req, res) => {
-  const { task_id, user_id, work_upload } = req.body;
-  let query = `update "UserTasks" set status = 'COMPLETE', work_upload='${work_upload}' where user_id ='${user_id}' and task_id ='${task_id}'`;
+const completeUserTask = async (req, res) => {
+  const { task_id, user_id } = req.body;
+  const file = req.files.file;
+  const link = req.protocol + '://' + req.get('host') + '/' + file.name;
+
+  file.mv(`${__dirname}/uploads/${file.name}`, err => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send(err);
+    }
+  });
+
+  let query = `update "UserTasks" set status = 'IN_REVIEW', work_upload='${link}' where user_id ='${user_id}' and task_id ='${task_id}'`;
   DB.sequelize
     .query(query, { type: QueryTypes.INSERT })
-    .then(() => {
-      query = `select max_points from "Tasks" where id='${task_id}'`;
-      DB.sequelize
-        .query(query, { type: QueryTypes.SELECT })
-        .then(data => {
-          const max_points = data[0].max_points;
-          query = `update users set score = score + ${max_points} where id='${user_id}'`;
-          DB.sequelize
-            .query(query, { type: QueryTypes.UPDATE })
-            .then(() => {
-              res.status(200).json({ message: 'Task Completed Successfully' });
-            })
-            .catch(err => {
-              console.log(err);
-              res.status(500).json('Internal server error');
-            });
-        })
-        .catch(err => {
-          console.log(err);
-          res.status(500).json('Internal server error');
-        });
-    })
+    .then(() => res.status(200).json('Task submitted for review'))
     .catch(err => {
       console.log(err);
       res.status(500).json('Internal server error');
@@ -92,12 +81,8 @@ const getTaskStatus = (req, res) => {
   DB.sequelize
     .query(query, { type: QueryTypes.SELECT })
     .then(data => {
-      let complete;
-      if (data[0].status === 'COMPLETE') {
-        complete = true;
-      } else {
-        complete = false;
-      }
+      console.log(data);
+      let complete = data[0].status;
       res.status(200).json({ complete });
     })
     .catch(err => {
