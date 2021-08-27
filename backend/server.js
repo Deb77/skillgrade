@@ -1,7 +1,9 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 var bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 
 const port = process.env.PORT;
 const userRoutes = require('./routes/user');
@@ -17,8 +19,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 app.use(express.json());
+app.use(fileUpload());
+app.use(express.static(path.resolve(__dirname + '/controllers/uploads/')));
 
 //routes
+app.get('/static');
 app.use('/user', userRoutes);
 app.use('/tasks', taskRoutes);
 app.use('/user-tasks', userTasksRoutes);
