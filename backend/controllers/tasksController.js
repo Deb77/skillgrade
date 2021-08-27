@@ -1,5 +1,5 @@
 const DB = require('../models');
-const { QueryTypes } = require('sequelize');
+const { QueryTypes, where } = require('sequelize');
 
 const addTask = (req, res) => {
   const {
@@ -59,8 +59,8 @@ const getTasks = (req, res) => {
 
   if (course_name) where_clause = `where t.course_name = '${course_name}' and u.id = '${user_id}'`;
 
-  const query = `select t.*,u.id,
-    case when ut.status = 'COMPLETE' then true else false end as status,u.id,
+  const query = `select t.*,
+    case when ut.status = 'COMPLETE' then true else false end as status,
     case when count(q) = 0 then '[]'
       else json_agg(json_build_object('user',u.name, 'work_upload',q.work_upload, 'description',q.description, 'upvotes',q.upvotes))
       end as feed
@@ -68,11 +68,13 @@ const getTasks = (req, res) => {
   left join "TaskFeeds" q on q.task_id = t.id
   left join "UserTasks" ut on t.id = ut.task_id and ut.user_id = u.id
   ${where_clause}
-  group by t.id,u.id,ut.status,u.id `;
+  group by t.id,ut.status,u.id`;
 
   DB.sequelize
     .query(query, { type: QueryTypes.SELECT })
-    .then(data => res.status(200).json({ tasks: data }))
+    .then(data => {
+      res.status(200).json({ tasks: data });
+    })
     .catch(err => {
       console.log(err);
       res.status(500).json('Internal server error');

@@ -13,7 +13,7 @@ function App() {
       // service goes here
 
       axios
-        .post('http://localhost:7000/task-feed', {
+        .post('https://skill-grade-backend.herokuapp.com/task-feed', {
           work_upload: fileEncoded,
           description: 'text',
           task_id: '0539eb2c-37ad-4c69-a30e-96d2d92f4dc6',
