@@ -12,7 +12,7 @@ const login = (req, res) => {
         imageUrl
       }
     })
-    .then(() => res.status(200).json({ message: 'Logged in successfully' }))
+    .then(data => res.status(200).json({ user_id: data[0].dataValues.id }))
     .catch(err => {
       console.log(err);
       res.status(500).json({ message: 'Internal server error' });
