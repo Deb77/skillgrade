@@ -53,12 +53,10 @@ const getTasks = (req, res) => {
       course_name = 'CONTENT_WRITING';
       break;
     default:
-      course_name = null;
+      course_name = 'WEB_DEV';
   }
 
-  let where_clause = '';
-
-  if (course_name) where_clause = `where t.course_name = '${course_name}' and u.id = '${user_id}'`;
+  let where_clause = `where t.course_name = '${course_name}' and u.id = '${user_id}'`;
 
   const query = `select t.*,
     case when ut.status = 'COMPLETE' then true else false end as status,
@@ -71,6 +69,19 @@ const getTasks = (req, res) => {
   ${where_clause}
   group by t.id,ut.status,u.id`;
 
+  DB.sequelize
+    .query(query, { type: QueryTypes.SELECT })
+    .then(data => {
+      res.status(200).json({ tasks: data });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json('Internal server error');
+    });
+};
+
+const getAllTasks = (req, res) => {
+  const query = 'select * from "Tasks" t';
   DB.sequelize
     .query(query, { type: QueryTypes.SELECT })
     .then(data => {
@@ -153,4 +164,4 @@ const gradeTask = (req, res) => {
     });
 };
 
-module.exports = { addTask, getTasks, updateTask, deleteTasks, getReviewTasks, gradeTask };
+module.exports = { addTask, getTasks, getAllTasks, updateTask, deleteTasks, getReviewTasks, gradeTask };

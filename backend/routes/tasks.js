@@ -2,6 +2,7 @@ const Router = require('express').Router();
 const {
   addTask,
   getTasks,
+  getAllTasks,
   updateTask,
   deleteTasks,
   getReviewTasks,
@@ -9,6 +10,7 @@ const {
 } = require('../controllers/tasksController');
 
 Router.get('/', getTasks)
+  .get('/all-tasks', getAllTasks)
   .post('/', addTask)
   .put('/', updateTask)
   .delete('/', deleteTasks)
