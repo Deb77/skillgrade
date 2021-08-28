@@ -81,8 +81,12 @@ const getTaskStatus = (req, res) => {
   DB.sequelize
     .query(query, { type: QueryTypes.SELECT })
     .then(data => {
-      console.log(data);
-      let complete = data[0].status;
+      let complete;
+      if (data.length > 0) {
+        complete = data[0].status;
+      } else {
+        complete = '';
+      }
       res.status(200).json({ complete });
     })
     .catch(err => {
