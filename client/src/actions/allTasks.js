@@ -75,8 +75,7 @@ export const UpdateTask = task => (dispatch, getState) => {
 export const DeleteTask = delete_array => (dispatch, getState) => {
   let tasks = getState().allTasks.tasks;
   tasks = tasks.filter(item => !delete_array.includes(item.id));
-  DeleteExistingTask({ delete_array }).then(res => {
-    console.log(res);
+  DeleteExistingTask({ delete_array }).then(() => {
     dispatch({
       type: 'DELETE_TASKS',
       payload: filterTask(tasks)
@@ -93,6 +92,14 @@ export const ReviewTasks = () => dispatch => {
   );
 };
 
-export const MarkTaskComplete = params => dispatch => {
-  MarkTask(params).then(res => console.log(res));
+export const MarkTaskComplete = params => (dispatch, getState) => {
+  MarkTask(params).then(() => {
+    const review_tasks = getState().allTasks.review_tasks;
+    const index = review_tasks.findIndex(item => item.id === params.user_task_id);
+    review_tasks[index]['complete'] = true;
+    dispatch({
+      type: 'MARK_TASK_COMPLETE',
+      payload: review_tasks
+    });
+  });
 };

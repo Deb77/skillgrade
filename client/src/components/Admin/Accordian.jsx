@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function ControlledAccordions({ ReviewTasks }) {
+export default function ControlledAccordions({ ReviewTasks, taskAction }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const [score, setScore] = React.useState();
@@ -37,10 +37,11 @@ export default function ControlledAccordions({ ReviewTasks }) {
 
   const onSubmit = () => {
     const params = {
-      score
+      score,
+      user_task_id: expanded
     };
-    console.log(score);
-    console.log(expanded);
+    taskAction.MarkTaskComplete(params);
+    setExpanded();
   };
 
   return (
@@ -50,7 +51,7 @@ export default function ControlledAccordions({ ReviewTasks }) {
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1bh-content"
-            id="panel1bh-header"
+            id={`panel1bh-header-${k}`}
           >
             <Typography variant="h6" className={classes.heading}>
               {item.name}
@@ -60,9 +61,9 @@ export default function ControlledAccordions({ ReviewTasks }) {
             </Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.details}>
-            <Grid style={{ width: '100%', display: 'flex' }} justifyContent="space-between">
+            <Grid container style={{ width: '100%', display: 'flex' }} justifyContent="space-between">
               <Typography>
-                <a href={item.work_upload} target="_blank">
+                <a href={item.work_upload} target="_blank" rel="noreferrer">
                   Click to preview
                 </a>
               </Typography>
@@ -76,16 +77,23 @@ export default function ControlledAccordions({ ReviewTasks }) {
             <Grid container spacing={3} alignItems="center" style={{ marginTop: 10 }}>
               <Grid item xs={6}>
                 <TextField
-                  id="outlined-basic"
+                  id={`outlined-basic-${k}`}
                   label="Enter score"
                   variant="outlined"
                   fullWidth={true}
-                  onChange={e => setScore(e.target.value)}
+                  onChange={e => setScore(Number(e.target.value))}
+                  disabled={item?.complete}
                 />
               </Grid>
               <Grid item xs={6}>
-                <Button variant="contained" color="primary" size="large" onClick={onSubmit}>
-                  Submit
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  onClick={onSubmit}
+                  disabled={item?.complete}
+                >
+                  {item?.complete ? 'Marked Complete' : 'Submit'}
                 </Button>
               </Grid>
             </Grid>

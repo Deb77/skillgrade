@@ -8,10 +8,10 @@ import AdminLayout from '../../components/Admin/AdminLayout';
 const Examine = ({ ReviewTasks, taskAction }) => {
   useEffect(() => {
     taskAction.ReviewTasks();
-  }, []);
+  }, [taskAction]);
   return (
     <AdminLayout>
-      <Accordion ReviewTasks={ReviewTasks} />
+      <Accordion ReviewTasks={ReviewTasks} taskAction={taskAction} />
     </AdminLayout>
   );
 };

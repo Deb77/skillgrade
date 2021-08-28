@@ -30,6 +30,11 @@ const AllTasksReducer = (state = initialState, { type, payload }) => {
         ...state,
         review_tasks: payload.tasks
       };
+    case 'MARK_TASK_COMPLETE':
+      return {
+        ...state,
+        review_tasks: payload
+      };
     default:
       return state;
   }
