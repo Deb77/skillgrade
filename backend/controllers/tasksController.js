@@ -26,7 +26,7 @@ const addTask = (req, res) => {
     videos,
     tools_and_sources
   })
-    .then(() => res.status(200).json({ message: 'Task added successfully' }))
+    .then(data => res.status(200).json({ message: 'Task added successfully', task_id: data.dataValues.id }))
     .catch(err => {
       console.log(err);
       res.status(500).json('Internal server error');
