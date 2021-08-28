@@ -18,3 +18,5 @@ export const DeleteExistingTask = params => axios.delete(baseUrl + 'tasks/', { d
 export const GetReviewTasks = () => axios.get(baseUrl + 'tasks/reviews');
 
 export const MarkTask = params => axios.post(baseUrl + 'tasks/gradeTask', params);
+
+export const AdminLogin = params => axios.post(baseUrl + 'admin/login', params);

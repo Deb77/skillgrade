@@ -1,8 +1,11 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import {
   AppBar,
   Container,
   CssBaseline,
+  Button,
   Divider,
   Drawer,
   Hidden,
@@ -12,11 +15,13 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
-  Typography
+  Typography,
+  Grid
 } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Home, FileCopy, Menu as MenuIcon } from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import * as adminAuth from '../../actions/adminAuth';
 
 const drawerWidth = 240;
 
@@ -90,6 +95,10 @@ const AdminLayout = props => {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
+  const onClick = () => {
+    props.authAction.logout(history);
+  };
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -104,9 +113,14 @@ const AdminLayout = props => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            Skill Share Admin
-          </Typography>
+          <Grid container justifyContent="space-between">
+            <Typography variant="h6" noWrap>
+              Skill Share Admin
+            </Typography>
+            <Button color="secondary" variant="contained" onClick={() => onClick()}>
+              Logout
+            </Button>
+          </Grid>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
@@ -148,4 +162,8 @@ const AdminLayout = props => {
   );
 };
 
-export default AdminLayout;
+const mapDispatchToProps = dispatch => ({
+  authAction: bindActionCreators(adminAuth, dispatch)
+});
+
+export default connect(null, mapDispatchToProps)(AdminLayout);
