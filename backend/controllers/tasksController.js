@@ -61,7 +61,7 @@ const getTasks = (req, res) => {
   const query = `select t.*,
     case when ut.status = 'COMPLETE' then true else false end as status,
     case when count(q) = 0 then '[]'
-      else json_agg(json_build_object('user',u.name, 'work_upload',q.work_upload, 'description',q.description, 'upvotes',q.upvotes))
+      else json_agg(json_build_object(q.id, 'user',u.name, 'work_upload',q.work_upload, 'description',q.description, 'upvotes',q.upvotes))
       end as feed
     from "Tasks" t cross join users u 
   left join "TaskFeeds" q on q.task_id = t.id
