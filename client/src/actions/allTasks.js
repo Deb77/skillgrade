@@ -36,7 +36,9 @@ export const AllTasks = () => dispatch =>
 
 export const NewTask = newTask => (dispatch, getState) => {
   AddNewTask(newTask)
-    .then(() => {
+    .then(res => {
+      newTask['id'] = res.data.task_id;
+      console.log(newTask);
       const course = course_keys[newTask.course_name];
       let course_tasks = getState().allTasks[course];
       let tasks = getState().allTasks.tasks;
