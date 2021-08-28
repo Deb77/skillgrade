@@ -127,10 +127,11 @@ const deleteTasks = (req, res) => {
 };
 
 const getReviewTasks = (req, res) => {
-  const query = `select ut.id,ut.work_upload,ut.user_id,ut."createdAt",
-  t."name", t.course_name, t.description, t.max_points, t.time_complete, t."level"
+  const query = `select ut.id,ut.work_upload,ut.user_id,ut."createdAt", u."name" as user_name,
+  t."name", t.description, t.max_points, t.time_complete
   from "UserTasks" ut 
   inner join "Tasks" t ON ut.task_id = t.id
+  left join users u on u.id = ut.user_id 
   where ut.status = 'IN_REVIEW';`;
   DB.sequelize
     .query(query, { type: QueryTypes.SELECT })
@@ -151,8 +152,8 @@ const getReviewTasks = (req, res) => {
 };
 
 const gradeTask = (req, res) => {
-  const { score, user_task_id } = req.body;
-  const query1 = `update users set score = score + ${score} where id = (select user_id from "UserTasks" ut where id = '${user_task_id}')`;
+  const { score, user_task_id, user_id } = req.body;
+  const query1 = `update users set score = score + ${score} where id = '${user_id}'`;
   const query2 = `update "UserTasks" set status = 'COMPLETE' where id = '${user_task_id}'`;
   const promise1 = DB.sequelize.query(query1, { type: QueryTypes.UPDATE });
   const promise2 = DB.sequelize.query(query2, { type: QueryTypes.UPDATE });
