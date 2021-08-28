@@ -17,14 +17,28 @@ import Container from '@material-ui/core/Container';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import * as CourseTasksActionCreator from '../../actions/CourseTasks';
 import Typography from '@material-ui/core/Typography';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-
+import { AddUserTask } from '../../services';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import TextField from '@material-ui/core/TextField';
+import { AddTaskFeed } from '../../services';
+import * as UpvoteFeedActionCreator from '../../actions/UpvoteFeed';
+
+import { checkTaskStatus } from '../../services';
 //additional styling
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex'
+  },
+  formstyle: {
+    '& > *': {
+      margin: theme.spacing(1),
+      width: '400px'
+    }
   },
   toolbar: {
     display: 'flex',
@@ -72,30 +86,41 @@ const useStyles = makeStyles(theme => ({
   spacing: {
     marginBottom: '4rem',
     marginTop: '4rem'
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3)
+  },
+  file: {
+    opacity: '0',
+    width: '0.1px',
+    height: '0.1px',
+    position: 'absolute'
+  },
+  fileinput: {
+    display: 'block',
+    position: 'relative',
+    width: '140px',
+    height: '45px',
+    borderRadius: ' 6px',
+    background: '#7A64FF',
+    display: ' flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'white',
+    fontFamily: 'Poppins',
+    cursor: 'pointer',
+    marginBottom: '2rem'
   }
 }));
-
-//data
-const feeddata = [
-  {
-    user: 'Dheeraj Gandhi',
-    desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia velit suscipit aspernatur ipsum impedit fugit illum nisi natus? Hic, exercitationem. Lorem ipsudolor sit amet consectetur adipisicing elit. Officia, velit suscipit aspernatur ipsum impe fugit illum nisi natus? Hic, exercitationem.',
-    img: feedimg,
-    upvotes: '200'
-  },
-  {
-    user: 'Deborah Mendes',
-    desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia velit suscipit aspernatur ipsum impedit fugit illum nisi natus? Hic, exercitationem. Lorem ipsudolor sit amet consectetur adipisicing elit. Officia, velit suscipit aspernatur ipsum impe fugit illum nisi natus? Hic, exercitationem.',
-    img: feedimg,
-    upvotes: '200'
-  },
-  {
-    user: 'Skillshare',
-    desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia velit suscipit aspernatur ipsum impedit fugit illum nisi natus? Hic, exercitationem. Lorem ipsudolor sit amet consectetur adipisicing elit. Officia, velit suscipit aspernatur ipsum impe fugit illum nisi natus? Hic, exercitationem.',
-    img: feedimg,
-    upvotes: '200'
-  }
-];
+//for lists
 function ListItemLink(props) {
   return (
     <ListItem
@@ -106,13 +131,86 @@ function ListItemLink(props) {
     />
   );
 }
-const Taskpage = ({ taskdetails }) => {
-  const params = useParams();
+// const formdata = formData();
+// e.target.files[0]
 
-  const carddata = taskdetails.tasks.filter(task => {
+// const formData = new FormData();
+// formData.set('encType', 'multipart/form-data');
+// formData.append('file', file);
+
+// try {
+//   const res = await axios.put('http://localhost:7000/user-tasks/complete-user-task', formData, {
+//     headers: {
+//       'Content-Type': 'multipart/form-data'
+//     }
+//   });
+// } catch (er) {
+//   console.log(er);
+// }
+
+//component
+const Taskpage = ({ taskdetails, Userdetails, UpvoteFeedAction }) => {
+  const params = useParams();
+  const [visible, setVisible] = useState(false);
+  const [description, setDiscription] = useState('');
+  const [filedata, setFiledata] = useState('');
+  const [status, setStatus] = useState('');
+  //filter tasks based on task id
+  const carddata = taskdetails.filter(task => {
     return task.id === params.id;
   });
-  console.log(carddata);
+
+  // upload a file to post
+  const onChange = e => {
+    e.preventDefault();
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onloadend = () => {
+      const fileEncoded = reader.result;
+      setFiledata(fileEncoded);
+    };
+  };
+  //data to be passed to addtaskfeed action (data to be posted to feed)
+  const uploadfeeddata = {
+    work_upload: filedata,
+    description: description,
+    task_id: params.id,
+    user_id: Userdetails
+  };
+
+  //to post to the feed on submiting the form and clicking post
+  const handleSubmit = e => {
+    e.preventDefault();
+    AddTaskFeed(uploadfeeddata);
+    handleClose();
+  };
+
+  //data to be passed to call addusertask
+  const data = { user_id: Userdetails, task_id: params.id };
+
+  //to pass data to incomplete tasks once the start button is clicked
+  const clickhandler = () => {
+    console.log(data);
+    AddUserTask(data);
+    setVisible(true);
+  };
+
+  //code for modal (opening and closing)
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  //check task status
+  React.useEffect(() => {
+    checkTaskStatus(Userdetails, params.id).then(res => {
+      setStatus(res.data.complete);
+    });
+  }, []);
+
   const classes = useStyles();
   return (
     <>
@@ -122,88 +220,122 @@ const Taskpage = ({ taskdetails }) => {
           <div className={classes.toolbar} />
           <Container style={{ marginTop: '2rem' }}>
             <Typography className={classes.heading} variant="h6">
-              {carddata[0].name}
+              {carddata.length > 0 && carddata[0].name}
             </Typography>
             <Typography style={{ letterSpacing: '0.04em', marginBottom: '1rem' }}>
-              {carddata[0].introduction}
+              {carddata.length > 0 && carddata[0].introduction}
             </Typography>
             <Typography style={{ color: '#7A64FF', marginBottom: '.3rem' }}>
-              Points: {carddata[0].max_points}
+              Points: {carddata.length > 0 && carddata[0].max_points}
             </Typography>
             <Typography style={{ color: '#7A64FF', marginBottom: '2rem' }}>
-              Time:{carddata[0].time_complete} Days
+              Time:{carddata.length > 0 && carddata[0].time_complete} Days
             </Typography>
-            <div className="resources" className={classes.spacing}>
-              <Typography className={classes.heading} variant="subtitle1">
-                RESOURCES
-              </Typography>
-              <Grid container>
-                <Grid item xs={12} sm={3} md={2} lg={3}>
-                  <List
-                    subheader={
-                      <ListSubheader className={classes.resources}>Tools and Sources </ListSubheader>
-                    }
-                  >
-                    {carddata[0].docs.map(e => {
-                      const t = JSON.parse(e);
-                      return (
-                        <ListItemLink key={carddata[0].link} href={t.link}>
-                          <ListItemText primaryTypographyProps={{ variant: 'subtitle1' }} primary={t.title} />
-                        </ListItemLink>
-                      );
-                    })}
-                  </List>
+            {status == 'IN_PROGRESS' ? (
+              <div className="resources" className={classes.spacing}>
+                <Typography className={classes.heading} variant="subtitle1">
+                  RESOURCES
+                </Typography>
+                <Grid container>
+                  <Grid item xs={12} sm={3} md={2} lg={3}>
+                    <List
+                      subheader={
+                        <ListSubheader className={classes.resources}>Tools and Sources </ListSubheader>
+                      }
+                    >
+                      {carddata[0].docs.map(e => {
+                        const t = JSON.parse(e);
+                        return (
+                          <ListItemLink key={carddata.length > 0 && carddata[0].link} href={t.link}>
+                            <ListItemText
+                              primaryTypographyProps={{ variant: 'subtitle1' }}
+                              primary={t.title}
+                            />
+                          </ListItemLink>
+                        );
+                      })}
+                    </List>
+                  </Grid>
+                  <Grid item xs={12} sm={3} md={2} lg={3}>
+                    <List
+                      subheader={
+                        <ListSubheader className={classes.resources}>Tools and Sources </ListSubheader>
+                      }
+                    >
+                      {carddata[0].videos.map(e => {
+                        const t = JSON.parse(e);
+                        return (
+                          <ListItemLink key={carddata.length > 0 && carddata[0].link} href={t.link}>
+                            <ListItemText
+                              primaryTypographyProps={{ variant: 'subtitle1' }}
+                              primary={t.title}
+                            />
+                          </ListItemLink>
+                        );
+                      })}
+                    </List>
+                  </Grid>
+                  <Grid item xs={12} sm={3} md={2} lg={3}>
+                    <List
+                      subheader={
+                        <ListSubheader className={classes.resources}>Tools and Sources </ListSubheader>
+                      }
+                    >
+                      {carddata[0].tools_and_sources.map(e => {
+                        const t = JSON.parse(e);
+                        return (
+                          <ListItemLink key={carddata.length > 0 && carddata[0].link} href={t.link}>
+                            <ListItemText
+                              primaryTypographyProps={{ variant: 'subtitle1' }}
+                              primary={t.title}
+                            />
+                          </ListItemLink>
+                        );
+                      })}
+                    </List>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={3} md={2} lg={3}>
-                  <List
-                    subheader={
-                      <ListSubheader className={classes.resources}>Tools and Sources </ListSubheader>
-                    }
-                  >
-                    {carddata[0].videos.map(e => {
-                      const t = JSON.parse(e);
-                      return (
-                        <ListItemLink key={carddata[0].link} href={t.link}>
-                          <ListItemText primaryTypographyProps={{ variant: 'subtitle1' }} primary={t.title} />
-                        </ListItemLink>
-                      );
-                    })}
-                  </List>
-                </Grid>
-                <Grid item xs={12} sm={3} md={2} lg={3}>
-                  <List
-                    subheader={
-                      <ListSubheader className={classes.resources}>Tools and Sources </ListSubheader>
-                    }
-                  >
-                    {carddata[0].tools_and_sources.map(e => {
-                      const t = JSON.parse(e);
-                      return (
-                        <ListItemLink key={carddata[0].link} href={t.link}>
-                          <ListItemText primaryTypographyProps={{ variant: 'subtitle1' }} primary={t.title} />
-                        </ListItemLink>
-                      );
-                    })}
-                  </List>
-                </Grid>
-              </Grid>
-            </div>
-            <div className="submission" className={classes.spacing}>
-              <Typography className={classes.heading} variant="subtitle1">
-                SUBMISSION
-              </Typography>
-              <Typography style={{ letterSpacing: '0.04em', marginBottom: '1rem' }}>
-                {carddata[0].submission}
-              </Typography>
-              <Button
-                variant="contained"
-                color="inherit"
-                className={classes.button}
-                startIcon={<CloudUploadIcon />}
-              >
-                Upload
+              </div>
+            ) : (
+              <Button onClick={clickhandler} variant="contained" color="inherit" className={classes.button}>
+                Start
               </Button>
-            </div>
+            )}
+            {visible && (
+              <div className="submission" className={classes.spacing}>
+                <Typography className={classes.heading} variant="subtitle1">
+                  SUBMISSION
+                </Typography>
+                <Typography style={{ letterSpacing: '0.04em', marginBottom: '1rem' }}>
+                  {carddata.length > 0 && carddata[0].submission}
+                </Typography>
+                {/* {if(status=='COMPLETE'){
+                  return(
+                    <div>helloo</div>
+                  );
+                  
+                }
+                else if(status=='IN_PROGRESS'){
+                  return(
+                    <form action="">
+                      <input type="file" id="file" className={classes.file} />
+                      <label className={classes.fileinput} for="file">
+                      <CloudUploadIcon style={{ marginRight: '.7rem' }} />
+                    SELECT FILE
+                  </label>
+                  <Button variant="contained" color="inherit" className={classes.button}>
+                    SUBMIT
+                  </Button>
+                </form>
+                  )
+                }
+                else{
+                  return(
+                    <h1>task has been completed</h1>
+                  )
+                }} */}
+              </div>
+            )}
             <Typography className={classes.heading} variant="subtitle1">
               TASK FEED
             </Typography>
@@ -215,42 +347,44 @@ const Taskpage = ({ taskdetails }) => {
                 showIndicators={false}
                 width="100%"
               >
-                {feeddata.map(feed => {
-                  return (
-                    <Grid key={feed.user} container spacing={5}>
-                      <Grid item xs={12} sm={6} md={4} lg={6}>
-                        <img src={feed.img} className={classes.image} alt="carousel_img_1" />
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={4} lg={6}>
-                        <Typography align="left" className={classes.heading} variant="subtitle1">
-                          {feed.user}
-                        </Typography>
-                        <Typography align="left" style={{ letterSpacing: '0.04em', marginBottom: '1rem' }}>
-                          {feed.desc}
-                        </Typography>
-                        <Grid container alignItems="center" spacing={1}>
-                          <Grid item>
-                            <ThumbUpAltIcon style={{ color: '#7A64FF' }}></ThumbUpAltIcon>
-                          </Grid>
-                          <Grid item>
-                            <Typography style={{ letterSpacing: '0.04em' }} variant="subtitle2">
-                              {feed.upvotes} Upvotes
-                            </Typography>
-                          </Grid>
+                {carddata.length > 0 &&
+                  carddata[0].feed.map(feed => {
+                    return (
+                      <Grid key={feed.user} container spacing={5}>
+                        <Grid item xs={12} sm={6} md={4} lg={6}>
+                          <img src={feed.work_upload} className={classes.image} alt="carousel_img_1" />
                         </Grid>
-                        <Typography align="left">
-                          <Button
-                            style={{ margin: '1rem 0rem 1rem 0rem' }}
-                            variant="contained"
-                            className={classes.button}
-                          >
-                            Upvote
-                          </Button>
-                        </Typography>
+                        <Grid item xs={12} sm={6} md={4} lg={6}>
+                          <Typography align="left" className={classes.heading} variant="subtitle1">
+                            {feed.user}
+                          </Typography>
+                          <Typography align="left" style={{ letterSpacing: '0.04em', marginBottom: '1rem' }}>
+                            {feed.description}
+                          </Typography>
+                          <Grid container alignItems="center" spacing={1}>
+                            <Grid item>
+                              <ThumbUpAltIcon style={{ color: '#7A64FF' }}></ThumbUpAltIcon>
+                            </Grid>
+                            <Grid item>
+                              <Typography style={{ letterSpacing: '0.04em' }} variant="subtitle2">
+                                {feed.upvotes.length} Upvotes
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                          <Typography align="left">
+                            <Button
+                              style={{ margin: '1rem 0rem 1rem 0rem' }}
+                              variant="contained"
+                              className={classes.button}
+                              onClick={() => UpvoteFeedAction.UpvoteFeed(params.id, feed.id, Userdetails)}
+                            >
+                              Upvote
+                            </Button>
+                          </Typography>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  );
-                })}
+                    );
+                  })}
               </Carousel>
             </div>
             <div className="sharework" className={classes.spacing}>
@@ -265,9 +399,49 @@ const Taskpage = ({ taskdetails }) => {
                 color="inherit"
                 className={classes.button}
                 startIcon={<AddBoxIcon />}
+                onClick={handleOpen}
               >
                 Post
               </Button>
+              <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                className={classes.modal}
+                open={open}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                  timeout: 500
+                }}
+              >
+                <Fade in={open}>
+                  <div className={classes.paper}>
+                    <form className={classes.formstyle} noValidate autoComplete="off">
+                      <input className={classes.button} type="file" onChange={onChange} />
+                      <br />
+                      <TextField
+                        id="outlined-multiline-static"
+                        label="Description"
+                        multiline
+                        rows={4}
+                        variant="outlined"
+                        value={description}
+                        onChange={e => setDiscription(e.target.value)}
+                      />
+                      <br />
+                      <Button
+                        variant="contained"
+                        color="inherit"
+                        onClick={handleSubmit}
+                        className={classes.button}
+                      >
+                        Upload
+                      </Button>
+                    </form>
+                  </div>
+                </Fade>
+              </Modal>
             </div>
           </Container>
         </main>
@@ -278,7 +452,13 @@ const Taskpage = ({ taskdetails }) => {
 
 const mapStateToProps = state => {
   return {
-    taskdetails: state.CourseTasks.taskdata
+    taskdetails: state.CourseTasks.taskdata,
+    Userdetails: state.auth.user_id
   };
 };
-export default connect(mapStateToProps)(Taskpage);
+const mapDispatchToProps = dispatch => ({
+  UpvoteFeedAction: bindActionCreators(UpvoteFeedActionCreator, dispatch),
+  CourseTasksAction: bindActionCreators(CourseTasksActionCreator, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Taskpage);

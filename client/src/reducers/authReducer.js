@@ -1,8 +1,9 @@
 const initialState = {
-  name: null,
-  email: null,
-  imageUrl: null,
-  token: null
+  user_id: localStorage.getItem('user_id'),
+  name: localStorage.getItem('name'),
+
+  imageUrl: localStorage.getItem('imageUrl'),
+  token: localStorage.getItem('token')
 };
 const authReducer = (state = initialState, actions) => {
   const { type, payload } = actions;
@@ -11,13 +12,14 @@ const authReducer = (state = initialState, actions) => {
       localStorage.setItem('token', payload.token);
       localStorage.setItem('name', payload.name);
       localStorage.setItem('imageUrl', payload.imageUrl);
-
+      localStorage.setItem('user_id', payload.user_id);
       return {
         ...state,
         token: payload.token,
         name: payload.name,
         imageUrl: payload.imageUrl,
-        email: payload.email
+
+        user_id: payload.user_id
       };
 
     default:

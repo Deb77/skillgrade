@@ -87,13 +87,14 @@ const CategoryCards = [
 ];
 
 //component
-const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
+const Dashboard = ({ IncompleteTasksAction, Carddetails, Userdetails }) => {
   const classes = useStyles();
-
+  console.log(Userdetails);
   //dispatching action
   useEffect(() => {
-    IncompleteTasksAction.IncompleteTasks();
-  }, [IncompleteTasksAction]);
+    IncompleteTasksAction.IncompleteTasks(Userdetails);
+    console.log(Carddetails);
+  }, []);
 
   return (
     <>
@@ -163,7 +164,8 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
 //redux
 const mapStateToProps = state => {
   return {
-    Carddetails: state.IncompleteTasks.carddata
+    Carddetails: state.IncompleteTasks.carddata,
+    Userdetails: state.auth.user_id
   };
 };
 const mapDispatchToProps = dispatch => ({

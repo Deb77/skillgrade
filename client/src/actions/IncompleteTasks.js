@@ -1,7 +1,7 @@
 import { GetIncompleteTasks } from '../services';
 
-export const IncompleteTasks = () => dispatch =>
-  GetIncompleteTasks('b180aefb-35d2-47db-8f4a-88b53a50da43').then(res => {
+export const IncompleteTasks = user_id => dispatch =>
+  GetIncompleteTasks(user_id).then(res => {
     dispatch({
       type: 'GET_INCOMPLETE_TASKS',
       payload: res.data

@@ -1,7 +1,5 @@
 const initialState = {
-  taskdata: {
-    tasks: []
-  }
+  taskdata: []
 };
 const CourseTasksReducer = (state = initialState, { type, payload }) => {
   switch (type) {

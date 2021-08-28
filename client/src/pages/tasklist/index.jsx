@@ -61,7 +61,7 @@ const data = [
 ];
 
 //component
-const Tasklist = ({ CourseTasksAction, taskdetails }) => {
+const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
   const params = useParams();
   const classes = useStyles();
 
@@ -72,44 +72,46 @@ const Tasklist = ({ CourseTasksAction, taskdetails }) => {
 
   //fetching tasks by dispatching action
   useEffect(() => {
-    CourseTasksAction.CourseTasks(params.id);
-  }, [CourseTasksAction, params]);
-  if (1) {
-    return (
-      <>
-        <div className="tasklist">
-          <Navbar></Navbar>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <div className="title">
-              <Typography className={classes.title} align="center">
-                {category[0].category_name}
+    CourseTasksAction.CourseTasks(params.id, Userdetails);
+    console.log(taskdetails);
+  }, []);
+
+  return (
+    <>
+      <div className="tasklist">
+        <Navbar></Navbar>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <div className="title">
+            <Typography className={classes.title} align="center">
+              {category[0].category_name}
+            </Typography>
+          </div>
+          <Container>
+            <div className="introduction">
+              <Typography className={classes.subheading} variant="subtitle1">
+                INTRODUCTION
+              </Typography>
+              <Typography style={{ letterSpacing: '0.04em', marginBottom: '2rem' }}>
+                {category[0].introduction}
               </Typography>
             </div>
-            <Container>
-              <div className="introduction">
+            <div className="tasks">
+              <Typography
+                className={classes.subheading}
+                style={{ marginBottom: '2rem' }}
+                align="center"
+                variant="h6"
+              >
+                TASKS
+              </Typography>
+              <div className={classes.taskcategory}>
                 <Typography className={classes.subheading} variant="subtitle1">
-                  INTRODUCTION
+                  BEGINNERS
                 </Typography>
-                <Typography style={{ letterSpacing: '0.04em', marginBottom: '2rem' }}>
-                  {category[0].introduction}
-                </Typography>
-              </div>
-              <div className="tasks">
-                <Typography
-                  className={classes.subheading}
-                  style={{ marginBottom: '2rem' }}
-                  align="center"
-                  variant="h6"
-                >
-                  TASKS
-                </Typography>
-                <div className={classes.taskcategory}>
-                  <Typography className={classes.subheading} variant="subtitle1">
-                    BEGINNERS
-                  </Typography>
-                  <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                    {taskdetails.tasks
+                <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
+                  {taskdetails.length > 0 &&
+                    taskdetails
                       .filter(e => {
                         return e.level === 'BEGINNER';
                       })
@@ -126,14 +128,15 @@ const Tasklist = ({ CourseTasksAction, taskdetails }) => {
                           </Grid>
                         );
                       })}
-                  </Grid>
-                </div>
-                <div className={classes.taskcategory}>
-                  <Typography className={classes.subheading} variant="subtitle1">
-                    INTERMEDIATE
-                  </Typography>
-                  <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                    {taskdetails.tasks
+                </Grid>
+              </div>
+              <div className={classes.taskcategory}>
+                <Typography className={classes.subheading} variant="subtitle1">
+                  INTERMEDIATE
+                </Typography>
+                <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
+                  {taskdetails.length > 0 &&
+                    taskdetails
                       .filter(e => {
                         return e.level === 'INTERMEDIATE';
                       })
@@ -150,14 +153,15 @@ const Tasklist = ({ CourseTasksAction, taskdetails }) => {
                           </Grid>
                         );
                       })}
-                  </Grid>
-                </div>
-                <div className={classes.taskcategory}>
-                  <Typography className={classes.subheading} variant="subtitle1">
-                    ADVANCED
-                  </Typography>
-                  <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                    {taskdetails.tasks
+                </Grid>
+              </div>
+              <div className={classes.taskcategory}>
+                <Typography className={classes.subheading} variant="subtitle1">
+                  ADVANCED
+                </Typography>
+                <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
+                  {taskdetails.length > 0 &&
+                    taskdetails
                       .filter(e => {
                         return e.level === 'ADVANCED';
                       })
@@ -174,21 +178,21 @@ const Tasklist = ({ CourseTasksAction, taskdetails }) => {
                           </Grid>
                         );
                       })}
-                  </Grid>
-                </div>
+                </Grid>
               </div>
-            </Container>
-          </main>
-        </div>
-      </>
-    );
-  }
+            </div>
+          </Container>
+        </main>
+      </div>
+    </>
+  );
 };
 
 //redux
 const mapStateToProps = state => {
   return {
-    taskdetails: state.CourseTasks.taskdata
+    taskdetails: state.CourseTasks.taskdata,
+    Userdetails: state.auth.user_id
   };
 };
 const mapDispatchToProps = dispatch => ({
