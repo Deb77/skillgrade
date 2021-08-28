@@ -14,6 +14,7 @@ import {
   Toolbar,
   Typography
 } from '@material-ui/core';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Home, FileCopy, Menu as MenuIcon } from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
@@ -54,6 +55,8 @@ const useStyles = makeStyles(theme => ({
 
 const AdminLayout = props => {
   const { window } = props;
+  let history = useHistory();
+  let { pathname } = useLocation();
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -68,10 +71,15 @@ const AdminLayout = props => {
       <Divider />
       <List>
         {[
-          { icon: <Home />, title: 'Overview' },
-          { icon: <FileCopy />, title: 'Examine Work' }
+          { icon: <Home />, title: 'Overview', link: '/admin/home' },
+          { icon: <FileCopy />, title: 'Examine Work', link: '/admin/examine' }
         ].map((item, index) => (
-          <ListItem button key={item.title}>
+          <ListItem
+            button
+            key={index}
+            onClick={() => history.push(item.link)}
+            disabled={pathname === item.link}
+          >
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.title} />
           </ListItem>

@@ -1,4 +1,11 @@
-import { GetAllTasks, AddNewTask, UpdateExistingTask, DeleteExistingTask } from '../services';
+import {
+  GetAllTasks,
+  AddNewTask,
+  UpdateExistingTask,
+  DeleteExistingTask,
+  GetReviewTasks,
+  MarkTask
+} from '../services';
 
 const filterTask = tasks => {
   const web_dev_tasks = tasks.filter(({ course_name }) => course_name === 'WEB_DEV');
@@ -75,4 +82,17 @@ export const DeleteTask = delete_array => (dispatch, getState) => {
       payload: filterTask(tasks)
     });
   });
+};
+
+export const ReviewTasks = () => dispatch => {
+  GetReviewTasks().then(res =>
+    dispatch({
+      type: 'GET_REVIEW_TASKS',
+      payload: res.data
+    })
+  );
+};
+
+export const MarkTaskComplete = params => dispatch => {
+  MarkTask(params).then(res => console.log(res));
 };

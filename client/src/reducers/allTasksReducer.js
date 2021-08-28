@@ -3,7 +3,8 @@ const initialState = {
   web_dev_tasks: [],
   sketching_tasks: [],
   UI_design_tasks: [],
-  content_writing_tasks: []
+  content_writing_tasks: [],
+  review_tasks: []
 };
 const AllTasksReducer = (state = initialState, { type, payload }) => {
   switch (type) {
@@ -23,6 +24,11 @@ const AllTasksReducer = (state = initialState, { type, payload }) => {
         ...state,
         tasks: payload.tasks,
         [payload.course]: payload.course_tasks
+      };
+    case 'GET_REVIEW_TASKS':
+      return {
+        ...state,
+        review_tasks: payload.tasks
       };
     default:
       return state;
