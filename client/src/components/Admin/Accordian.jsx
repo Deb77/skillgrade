@@ -38,7 +38,8 @@ export default function ControlledAccordions({ ReviewTasks, taskAction }) {
   const onSubmit = () => {
     const params = {
       score,
-      user_task_id: expanded
+      user_task_id: expanded,
+      user_id: ReviewTasks.filter(task => task.id === expanded)[0].user_id
     };
     taskAction.MarkTaskComplete(params);
     setExpanded();
@@ -54,7 +55,7 @@ export default function ControlledAccordions({ ReviewTasks, taskAction }) {
             id={`panel1bh-header-${k}`}
           >
             <Typography variant="h6" className={classes.heading}>
-              {item.name}
+              {item.user_name}
             </Typography>
             <Typography className={classes.secondaryHeading}>
               {item.name}: {item.description}
