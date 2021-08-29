@@ -73,7 +73,6 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
   //fetching tasks by dispatching action
   useEffect(() => {
     CourseTasksAction.CourseTasks(params.id, Userdetails);
-    console.log(taskdetails);
   }, []);
 
   return (
@@ -124,6 +123,7 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
                               completion={true}
                               color="purple"
                               id={task.id}
+                              coursename={params.id}
                             ></TaskCard>
                           </Grid>
                         );
@@ -149,6 +149,7 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
                               completion={task.status}
                               id={task.id}
                               color="red"
+                              coursename={params.id}
                             ></TaskCard>
                           </Grid>
                         );
@@ -173,6 +174,7 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
                               days={task.time_complete}
                               completion={false}
                               id={task.id}
+                              coursename={params.id}
                               color="orange"
                             ></TaskCard>
                           </Grid>

@@ -18,7 +18,7 @@ const App = () => {
             <Route exact path="/" component={Landing} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
             <PrivateRoute exact path="/tasklist/:id" component={Tasklist} />
-            <PrivateRoute exact path="/taskpage/:id" component={TaskPage} />
+            <PrivateRoute exact path="/taskpage/:course/:id" component={TaskPage} />
           </Switch>
         </Suspense>
       </Router>

@@ -102,7 +102,11 @@ const CustomCards = props => {
             </Typography>
             <Grid container direction="row" justifyContent="space-between" alignItems="center">
               <Grid item>
-                {deadline && <Typography className={classes.deadline}>{deadline} days left</Typography>}
+                {deadline >= 0 ? (
+                  <Typography className={classes.deadline}>{deadline} days left</Typography>
+                ) : (
+                  <Typography className={classes.deadline}>OverDue</Typography>
+                )}
               </Grid>
               <Grid item>
                 <CardActions>

@@ -89,11 +89,11 @@ const CategoryCards = [
 //component
 const Dashboard = ({ IncompleteTasksAction, Carddetails, Userdetails }) => {
   const classes = useStyles();
-  console.log(Userdetails);
+
   //dispatching action
   useEffect(() => {
     IncompleteTasksAction.IncompleteTasks(Userdetails);
-    console.log(Carddetails);
+    console.log('carddetails', Carddetails);
   }, []);
 
   return (
@@ -129,12 +129,14 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails, Userdetails }) => {
               {Carddetails.map((card, index) => {
                 return (
                   <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                    <CustomCards
-                      course_name={card.course_name}
-                      deadline={card.days_left}
-                      desc={card.description}
-                      active={true}
-                    ></CustomCards>
+                    <Link style={{ textDecoration: 'none' }} to={'/tasklist/' + courseapi[card.course_name]}>
+                      <CustomCards
+                        course_name={card.course_name}
+                        deadline={card.days_left}
+                        desc={card.description}
+                        active={true}
+                      ></CustomCards>
+                    </Link>
                   </Grid>
                 );
               })}

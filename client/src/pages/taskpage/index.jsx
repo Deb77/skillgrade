@@ -26,9 +26,9 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TextField from '@material-ui/core/TextField';
 import { AddTaskFeed } from '../../services';
-import * as UpvoteFeedActionCreator from '../../actions/UpvoteFeed';
-
+import { updateTaskCompleteStatus } from '../../services';
 import { checkTaskStatus } from '../../services';
+import Feed from '../../components/feed';
 //additional styling
 const useStyles = makeStyles(theme => ({
   root: {
@@ -66,6 +66,13 @@ const useStyles = makeStyles(theme => ({
 
     letterSpacing: '0.04em',
 
+    color: '#7A64FF'
+  },
+  taskmessage: {
+    padding: 0,
+    fontWeight: 600,
+    fontSize: '1rem',
+    letterSpacing: '0.04em',
     color: '#7A64FF'
   },
   button: {
@@ -131,34 +138,30 @@ function ListItemLink(props) {
     />
   );
 }
-// const formdata = formData();
-// e.target.files[0]
-
-// const formData = new FormData();
-// formData.set('encType', 'multipart/form-data');
-// formData.append('file', file);
-
-// try {
-//   const res = await axios.put('http://localhost:7000/user-tasks/complete-user-task', formData, {
-//     headers: {
-//       'Content-Type': 'multipart/form-data'
-//     }
-//   });
-// } catch (er) {
-//   console.log(er);
-// }
 
 //component
-const Taskpage = ({ taskdetails, Userdetails, UpvoteFeedAction }) => {
+const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction }) => {
   const params = useParams();
-  const [visible, setVisible] = useState(false);
+
+  const [carddata, setCarddata] = useState([]);
   const [description, setDiscription] = useState('');
   const [filedata, setFiledata] = useState('');
   const [status, setStatus] = useState('');
+
+  //fetching tasks by dispatching action
+  useEffect(() => {
+    CourseTasksAction.CourseTasks(params.course, Userdetails);
+  }, []);
+
   //filter tasks based on task id
-  const carddata = taskdetails.filter(task => {
-    return task.id === params.id;
-  });
+  useEffect(() => {
+    const carddata = taskdetails.filter(task => {
+      return task.id === params.id;
+    });
+    setCarddata(carddata);
+    console.log('taskdetails', taskdetails);
+    console.log('carddata', carddata);
+  }, [taskdetails]);
 
   // upload a file to post
   const onChange = e => {
@@ -181,7 +184,11 @@ const Taskpage = ({ taskdetails, Userdetails, UpvoteFeedAction }) => {
   //to post to the feed on submiting the form and clicking post
   const handleSubmit = e => {
     e.preventDefault();
-    AddTaskFeed(uploadfeeddata);
+    console.log(uploadfeeddata);
+    AddTaskFeed(uploadfeeddata).then(res => {
+      console.log(res.data);
+    });
+
     handleClose();
   };
 
@@ -190,9 +197,8 @@ const Taskpage = ({ taskdetails, Userdetails, UpvoteFeedAction }) => {
 
   //to pass data to incomplete tasks once the start button is clicked
   const clickhandler = () => {
-    console.log(data);
     AddUserTask(data);
-    setVisible(true);
+    setStatus('IN_PROGRESS');
   };
 
   //code for modal (opening and closing)
@@ -211,6 +217,22 @@ const Taskpage = ({ taskdetails, Userdetails, UpvoteFeedAction }) => {
     });
   }, []);
 
+  //to upload file for submission
+  const FileUpload = e => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.set('encType', 'multipart/form-data');
+    formData.append('file', file);
+    formData.append('user_id', Userdetails);
+    formData.append('task_id', params.id);
+
+    console.log(formData);
+    updateTaskCompleteStatus(formData).then(res => {
+      console.log(res.data);
+    });
+    setStatus('IN_REVIEW');
+  };
   const classes = useStyles();
   return (
     <>
@@ -231,22 +253,18 @@ const Taskpage = ({ taskdetails, Userdetails, UpvoteFeedAction }) => {
             <Typography style={{ color: '#7A64FF', marginBottom: '2rem' }}>
               Time:{carddata.length > 0 && carddata[0].time_complete} Days
             </Typography>
-            {status == 'IN_PROGRESS' ? (
+            {status != '' ? (
               <div className="resources" className={classes.spacing}>
                 <Typography className={classes.heading} variant="subtitle1">
                   RESOURCES
                 </Typography>
                 <Grid container>
                   <Grid item xs={12} sm={3} md={2} lg={3}>
-                    <List
-                      subheader={
-                        <ListSubheader className={classes.resources}>Tools and Sources </ListSubheader>
-                      }
-                    >
+                    <List subheader={<ListSubheader className={classes.resources}>Documents </ListSubheader>}>
                       {carddata[0].docs.map(e => {
                         const t = JSON.parse(e);
                         return (
-                          <ListItemLink key={carddata.length > 0 && carddata[0].link} href={t.link}>
+                          <ListItemLink key={carddata[0].link} href={t.link}>
                             <ListItemText
                               primaryTypographyProps={{ variant: 'subtitle1' }}
                               primary={t.title}
@@ -257,15 +275,11 @@ const Taskpage = ({ taskdetails, Userdetails, UpvoteFeedAction }) => {
                     </List>
                   </Grid>
                   <Grid item xs={12} sm={3} md={2} lg={3}>
-                    <List
-                      subheader={
-                        <ListSubheader className={classes.resources}>Tools and Sources </ListSubheader>
-                      }
-                    >
+                    <List subheader={<ListSubheader className={classes.resources}>Videos</ListSubheader>}>
                       {carddata[0].videos.map(e => {
                         const t = JSON.parse(e);
                         return (
-                          <ListItemLink key={carddata.length > 0 && carddata[0].link} href={t.link}>
+                          <ListItemLink key={carddata[0].link} href={t.link}>
                             <ListItemText
                               primaryTypographyProps={{ variant: 'subtitle1' }}
                               primary={t.title}
@@ -284,7 +298,7 @@ const Taskpage = ({ taskdetails, Userdetails, UpvoteFeedAction }) => {
                       {carddata[0].tools_and_sources.map(e => {
                         const t = JSON.parse(e);
                         return (
-                          <ListItemLink key={carddata.length > 0 && carddata[0].link} href={t.link}>
+                          <ListItemLink key={carddata[0].link} href={t.link}>
                             <ListItemText
                               primaryTypographyProps={{ variant: 'subtitle1' }}
                               primary={t.title}
@@ -301,7 +315,7 @@ const Taskpage = ({ taskdetails, Userdetails, UpvoteFeedAction }) => {
                 Start
               </Button>
             )}
-            {visible && (
+            {status != '' && (
               <div className="submission" className={classes.spacing}>
                 <Typography className={classes.heading} variant="subtitle1">
                   SUBMISSION
@@ -309,31 +323,23 @@ const Taskpage = ({ taskdetails, Userdetails, UpvoteFeedAction }) => {
                 <Typography style={{ letterSpacing: '0.04em', marginBottom: '1rem' }}>
                   {carddata.length > 0 && carddata[0].submission}
                 </Typography>
-                {/* {if(status=='COMPLETE'){
-                  return(
-                    <div>helloo</div>
-                  );
-                  
-                }
-                else if(status=='IN_PROGRESS'){
-                  return(
-                    <form action="">
-                      <input type="file" id="file" className={classes.file} />
-                      <label className={classes.fileinput} for="file">
+                {status == 'IN_PROGRESS' ? (
+                  <form action="">
+                    <input type="file" id="file" onChange={FileUpload} className={classes.file} />
+                    <label className={classes.fileinput} for="file">
                       <CloudUploadIcon style={{ marginRight: '.7rem' }} />
-                    SELECT FILE
-                  </label>
-                  <Button variant="contained" color="inherit" className={classes.button}>
-                    SUBMIT
-                  </Button>
-                </form>
-                  )
-                }
-                else{
-                  return(
-                    <h1>task has been completed</h1>
-                  )
-                }} */}
+                      UPLOAD FILE
+                    </label>
+                  </form>
+                ) : status == 'COMPLETE' ? (
+                  <Typography className={classes.taskmessage}>
+                    We love your enthusiasm, But you have already completed the task!!
+                  </Typography>
+                ) : (
+                  <Typography className={classes.taskmessage}>
+                    Your Task is being reviewed by our experts. You will be scored soon!!
+                  </Typography>
+                )}
               </div>
             )}
             <Typography className={classes.heading} variant="subtitle1">
@@ -350,39 +356,9 @@ const Taskpage = ({ taskdetails, Userdetails, UpvoteFeedAction }) => {
                 {carddata.length > 0 &&
                   carddata[0].feed.map(feed => {
                     return (
-                      <Grid key={feed.user} container spacing={5}>
-                        <Grid item xs={12} sm={6} md={4} lg={6}>
-                          <img src={feed.work_upload} className={classes.image} alt="carousel_img_1" />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4} lg={6}>
-                          <Typography align="left" className={classes.heading} variant="subtitle1">
-                            {feed.user}
-                          </Typography>
-                          <Typography align="left" style={{ letterSpacing: '0.04em', marginBottom: '1rem' }}>
-                            {feed.description}
-                          </Typography>
-                          <Grid container alignItems="center" spacing={1}>
-                            <Grid item>
-                              <ThumbUpAltIcon style={{ color: '#7A64FF' }}></ThumbUpAltIcon>
-                            </Grid>
-                            <Grid item>
-                              <Typography style={{ letterSpacing: '0.04em' }} variant="subtitle2">
-                                {feed.upvotes.length} Upvotes
-                              </Typography>
-                            </Grid>
-                          </Grid>
-                          <Typography align="left">
-                            <Button
-                              style={{ margin: '1rem 0rem 1rem 0rem' }}
-                              variant="contained"
-                              className={classes.button}
-                              onClick={() => UpvoteFeedAction.UpvoteFeed(params.id, feed.id, Userdetails)}
-                            >
-                              Upvote
-                            </Button>
-                          </Typography>
-                        </Grid>
-                      </Grid>
+                      <>
+                        <Feed feed={feed} params={params}></Feed>
+                      </>
                     );
                   })}
               </Carousel>
@@ -418,7 +394,10 @@ const Taskpage = ({ taskdetails, Userdetails, UpvoteFeedAction }) => {
                 <Fade in={open}>
                   <div className={classes.paper}>
                     <form className={classes.formstyle} noValidate autoComplete="off">
-                      <input className={classes.button} type="file" onChange={onChange} />
+                      <input type="file" id="file" onChange={onChange} className={classes.file} />
+                      <label className={classes.fileinput} style={{ marginBottom: 0 }} for="file">
+                        CHOOSE IMAGE
+                      </label>
                       <br />
                       <TextField
                         id="outlined-multiline-static"
@@ -457,7 +436,6 @@ const mapStateToProps = state => {
   };
 };
 const mapDispatchToProps = dispatch => ({
-  UpvoteFeedAction: bindActionCreators(UpvoteFeedActionCreator, dispatch),
   CourseTasksAction: bindActionCreators(CourseTasksActionCreator, dispatch)
 });
 
