@@ -1,6 +1,8 @@
 const { QueryTypes } = require('sequelize');
 const moment = require('moment');
+const uuid = require('uuid').v4;
 const DB = require('../models');
+const s3 = require('../utils/S3');
 
 const addUserTask = (req, res) => {
   const { task_id, user_id } = req.body;
@@ -27,7 +29,7 @@ const getOldestIncompleteTasks = (req, res) => {
     query: { user_id }
   } = req;
 
-  const query = `select p.course_name, p.description, q."createdAt" 
+  const query = `select p.id, p.course_name, p.description, q."createdAt" 
         from "Tasks" p
         inner join "UserTasks" q
         on p.id = q.task_id
@@ -54,7 +56,6 @@ const getOldestIncompleteTasks = (req, res) => {
 const completeUserTask = async (req, res) => {
   const { task_id, user_id } = req.body;
   const file = req.files.file;
-  const link = req.protocol + '://' + req.get('host') + '/' + file.name;
 
   file.mv(`${__dirname}/uploads/${file.name}`, err => {
     if (err) {
@@ -63,14 +64,25 @@ const completeUserTask = async (req, res) => {
     }
   });
 
-  let query = `update "UserTasks" set status = 'IN_REVIEW', work_upload='${link}' where user_id ='${user_id}' and task_id ='${task_id}'`;
-  DB.sequelize
-    .query(query, { type: QueryTypes.INSERT })
-    .then(() => res.status(200).json('Task submitted for review'))
-    .catch(err => {
-      console.log(err);
+  const params = {
+    Bucket: process.env.BUCKET_NAME,
+    Key: `${uuid()}.${file.name}`,
+    Body: file.data
+  };
+
+  s3.upload(params, (error, data) => {
+    if (error) {
       res.status(500).json('Internal server error');
-    });
+    }
+    let query = `update "UserTasks" set status = 'IN_REVIEW', work_upload='${data.Location}' where user_id ='${user_id}' and task_id ='${task_id}'`;
+    DB.sequelize
+      .query(query, { type: QueryTypes.INSERT })
+      .then(() => res.status(200).json('Task submitted for review'))
+      .catch(err => {
+        console.log(err);
+        res.status(500).json('Internal server error');
+      });
+  });
 };
 
 const getTaskStatus = (req, res) => {
