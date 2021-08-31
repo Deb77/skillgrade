@@ -1,10 +1,8 @@
 import './App.css';
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
 import PrivateRoute from './components/Common/PrivateRoute';
 import AdminPrivateRoute from './components/Common/AdminPrivateRoute';
-
 import store from './store';
 import { Provider } from 'react-redux';
 
@@ -14,7 +12,6 @@ const Dashboard = lazy(() => import('./pages/dashboard'));
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
 const Admin = lazy(() => import('./pages/admin/Home'));
 const Examine = lazy(() => import('./pages/admin/Examine'));
-
 
 const Tasklist = lazy(() => import('./pages/tasklist'));
 const TaskPage = lazy(() => import('./pages/taskpage'));
@@ -40,8 +37,7 @@ const App = () => {
         </Suspense>
       </Router>
     </Provider>
-
-
-
+  );
+};
 
 export default App;
