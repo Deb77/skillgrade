@@ -87,13 +87,14 @@ const CategoryCards = [
 ];
 
 //component
-const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
+const Dashboard = ({ IncompleteTasksAction, Carddetails, Userdetails }) => {
   const classes = useStyles();
 
   //dispatching action
   useEffect(() => {
-    IncompleteTasksAction.IncompleteTasks();
-  }, [IncompleteTasksAction]);
+    IncompleteTasksAction.IncompleteTasks(Userdetails);
+    console.log(Carddetails[0]);
+  }, []);
 
   return (
     <>
@@ -107,7 +108,14 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
           {/* Carousel */}
 
           <div className="carousel" style={{ width: '100%' }}>
-            <Carousel autoPlay={true} infiniteLoop={true} showStatus={false} showThumbs={false} width="100%">
+            <Carousel
+              showArrows={false}
+              autoPlay={true}
+              infiniteLoop={true}
+              showStatus={false}
+              showThumbs={false}
+              width="100%"
+            >
               <div>
                 <img src={Carousel_img1} style={{ height: '40vh' }} alt="carousel_img_1" />
                 <h1 className={classes.tagline}>Create.. Learn.. Explore..</h1>
@@ -123,21 +131,30 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
           <div className="tasks" style={{ margin: '5% 3%' }}>
             {/* active tasks */}
 
-            <Typography className={classes.heading}>YOUR TASKS</Typography>
-            <Grid container spacing={5} style={{ marginBottom: '2rem' }}>
-              {Carddetails.map((card, index) => {
-                return (
-                  <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                    <CustomCards
-                      course_name={card.course_name}
-                      deadline={card.days_left}
-                      desc={card.description}
-                      active={true}
-                    ></CustomCards>
-                  </Grid>
-                );
-              })}
-            </Grid>
+            {Carddetails.length > 0 ? <Typography className={classes.heading}>YOUR TASKS</Typography> : <></>}
+            {Carddetails.length > 0 ? (
+              <Grid container spacing={5} style={{ marginBottom: '2rem' }}>
+                {Carddetails.map((card, index) => {
+                  return (
+                    <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                      <Link
+                        style={{ textDecoration: 'none' }}
+                        to={'/taskpage/' + courseapi[card.course_name] + '/' + card.id}
+                      >
+                        <CustomCards
+                          course_name={card.course_name}
+                          deadline={card.days_left}
+                          desc={card.description}
+                          active={true}
+                        ></CustomCards>
+                      </Link>
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            ) : (
+              <></>
+            )}
 
             {/* categories */}
 
@@ -163,7 +180,8 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails }) => {
 //redux
 const mapStateToProps = state => {
   return {
-    Carddetails: state.IncompleteTasks.carddata
+    Carddetails: state.IncompleteTasks.carddata,
+    Userdetails: state.auth.user_id
   };
 };
 const mapDispatchToProps = dispatch => ({

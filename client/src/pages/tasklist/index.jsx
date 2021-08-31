@@ -61,7 +61,7 @@ const data = [
 ];
 
 //component
-const Tasklist = ({ CourseTasksAction, taskdetails }) => {
+const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
   const params = useParams();
   const classes = useStyles();
 
@@ -72,8 +72,8 @@ const Tasklist = ({ CourseTasksAction, taskdetails }) => {
 
   //fetching tasks by dispatching action
   useEffect(() => {
-    CourseTasksAction.CourseTasks(params.id);
-  }, [CourseTasksAction, params]);
+    CourseTasksAction.CourseTasks(params.id, Userdetails);
+  }, []);
 
   return (
     <>
@@ -109,22 +109,25 @@ const Tasklist = ({ CourseTasksAction, taskdetails }) => {
                   BEGINNERS
                 </Typography>
                 <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                  {taskdetails.tasks
-                    .filter(e => {
-                      return e.level === 'BEGINNER';
-                    })
-                    .map(task => {
-                      return (
-                        <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
-                          <TaskCard
-                            title={task.name}
-                            days={task.time_complete}
-                            completion={true}
-                            color="purple"
-                          ></TaskCard>
-                        </Grid>
-                      );
-                    })}
+                  {taskdetails.length > 0 &&
+                    taskdetails
+                      .filter(e => {
+                        return e.level === 'BEGINNER';
+                      })
+                      .map(task => {
+                        return (
+                          <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
+                            <TaskCard
+                              title={task.name}
+                              days={task.time_complete}
+                              completion={true}
+                              color="purple"
+                              id={task.id}
+                              coursename={params.id}
+                            ></TaskCard>
+                          </Grid>
+                        );
+                      })}
                 </Grid>
               </div>
               <div className={classes.taskcategory}>
@@ -132,22 +135,25 @@ const Tasklist = ({ CourseTasksAction, taskdetails }) => {
                   INTERMEDIATE
                 </Typography>
                 <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                  {taskdetails.tasks
-                    .filter(e => {
-                      return e.level === 'INTERMEDIATE';
-                    })
-                    .map(task => {
-                      return (
-                        <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
-                          <TaskCard
-                            title={task.name}
-                            days={task.time_complete}
-                            completion={task.status}
-                            color="red"
-                          ></TaskCard>
-                        </Grid>
-                      );
-                    })}
+                  {taskdetails.length > 0 &&
+                    taskdetails
+                      .filter(e => {
+                        return e.level === 'INTERMEDIATE';
+                      })
+                      .map(task => {
+                        return (
+                          <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
+                            <TaskCard
+                              title={task.name}
+                              days={task.time_complete}
+                              completion={task.status}
+                              id={task.id}
+                              color="red"
+                              coursename={params.id}
+                            ></TaskCard>
+                          </Grid>
+                        );
+                      })}
                 </Grid>
               </div>
               <div className={classes.taskcategory}>
@@ -155,22 +161,25 @@ const Tasklist = ({ CourseTasksAction, taskdetails }) => {
                   ADVANCED
                 </Typography>
                 <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                  {taskdetails.tasks
-                    .filter(e => {
-                      return e.level === 'ADVANCED';
-                    })
-                    .map(task => {
-                      return (
-                        <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
-                          <TaskCard
-                            title={task.name}
-                            days={task.time_complete}
-                            completion={false}
-                            color="orange"
-                          ></TaskCard>
-                        </Grid>
-                      );
-                    })}
+                  {taskdetails.length > 0 &&
+                    taskdetails
+                      .filter(e => {
+                        return e.level === 'ADVANCED';
+                      })
+                      .map(task => {
+                        return (
+                          <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
+                            <TaskCard
+                              title={task.name}
+                              days={task.time_complete}
+                              completion={false}
+                              id={task.id}
+                              coursename={params.id}
+                              color="orange"
+                            ></TaskCard>
+                          </Grid>
+                        );
+                      })}
                 </Grid>
               </div>
             </div>
@@ -184,7 +193,8 @@ const Tasklist = ({ CourseTasksAction, taskdetails }) => {
 //redux
 const mapStateToProps = state => {
   return {
-    taskdetails: state.CourseTasks.taskdata
+    taskdetails: state.CourseTasks.taskdata,
+    Userdetails: state.auth.user_id
   };
 };
 const mapDispatchToProps = dispatch => ({

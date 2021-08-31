@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import checkmark from '../assets/checkmark.png';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-
+import { Link } from 'react-router-dom';
 //additional styling
 const useStyles = makeStyles({
   root: {
@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 });
 
 //component
-const TaskCard = ({ title, days, completion, color }) => {
+const TaskCard = ({ title, days, completion, color, id, coursename }) => {
   const classes = useStyles();
 
   //function to set color of task based on color prop
@@ -50,23 +50,25 @@ const TaskCard = ({ title, days, completion, color }) => {
   };
   return (
     <>
-      <Card className={`${classes.root} ${setColor(color)}`}>
-        <CardContent className={classes.card}>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
-              <Typography className={classes.subtitle}>{title}</Typography>
-              <Typography>Time: {days}</Typography>
+      <Link style={{ textDecoration: 'none' }} to={'/taskpage/' + coursename + '/' + id}>
+        <Card className={`${classes.root} ${setColor(color)}`}>
+          <CardContent className={classes.card}>
+            <Grid container justifyContent="space-between" alignItems="center">
+              <Grid item>
+                <Typography className={classes.subtitle}>{title}</Typography>
+                <Typography>Time: {days}</Typography>
+              </Grid>
+              <Grid item>
+                {completion ? (
+                  <img alt="checkmark" className={classes.checkmark} src={checkmark}></img>
+                ) : (
+                  <ChevronRightIcon style={{ marginTop: '1rem' }}></ChevronRightIcon>
+                )}
+              </Grid>
             </Grid>
-            <Grid item>
-              {completion ? (
-                <img alt="checkmark" className={classes.checkmark} src={checkmark}></img>
-              ) : (
-                <ChevronRightIcon style={{ marginTop: '1rem' }}></ChevronRightIcon>
-              )}
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </Link>
     </>
   );
 };

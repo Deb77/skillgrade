@@ -6,6 +6,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as authActionCreators from '../../actions/auth';
 import { useHistory } from 'react-router-dom';
+import { Typography } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 const useStyles = makeStyles({
   root: {
     background: 'white',
@@ -19,6 +21,30 @@ const useStyles = makeStyles({
     '&:hover': {
       backgroundColor: 'white'
     }
+  },
+  title: {
+    textAlign: 'center',
+
+    fontFamily: 'Ribeye Marrow',
+    color: 'rgb(255, 255, 255)',
+    fontSize: '4rem',
+    fontWeight: 'lighter',
+    marginBottom: '0.5rem',
+    letterSpacing: '4px'
+  },
+  subtitle: {
+    textAlign: 'center',
+    fontFamily: 'Poppins',
+    color: 'rgb(255, 255, 255)',
+    fontSize: '1.3rem',
+    fontWeight: '300',
+    letterSpacing: '3px'
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
@@ -46,9 +72,9 @@ const Landing = ({ authActions }) => {
 
   return (
     <div className="landing">
-      <div className="content">
-        <h1>SKILL GRADE</h1>
-        <h2>Where learning meets talent</h2>
+      <Container className={classes.content}>
+        <Typography className={classes.title}>SKILL GRADE</Typography>
+        <Typography className={classes.subtitle}>Where learning meets talent</Typography>
         <GoogleLogin
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
           render={renderProps => (
@@ -60,7 +86,7 @@ const Landing = ({ authActions }) => {
           onFailure={googleFailure}
           cookiePolicy="single_host_origin"
         />
-      </div>
+      </Container>
     </div>
   );
 };
