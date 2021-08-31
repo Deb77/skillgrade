@@ -1,5 +1,5 @@
 import './App.css';
-import React, { Suspense } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './components/Common/PrivateRoute';
 import AdminPrivateRoute from './components/Common/AdminPrivateRoute';
