@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import checkmark from '../assets/checkmark.png';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 //additional styling
 const useStyles = makeStyles({
   root: {

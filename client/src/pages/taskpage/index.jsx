@@ -5,7 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import feedimg from '../../assets/feedimg.png';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ListItemText from '@material-ui/core/ListItemText';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -14,7 +14,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import * as AddTaskFeedActionCreator from '../../actions/PostTask';
 import * as CourseTasksActionCreator from '../../actions/CourseTasks';
 import Typography from '@material-ui/core/Typography';
 import { useEffect, useState } from 'react';
@@ -25,10 +25,10 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TextField from '@material-ui/core/TextField';
-import { AddTaskFeed } from '../../services';
+
 import { updateTaskCompleteStatus } from '../../services';
 import { checkTaskStatus } from '../../services';
-import Feed from '../../components/feed';
+import Feed from '../../components/Feed/feed';
 //additional styling
 const useStyles = makeStyles(theme => ({
   root: {
@@ -112,7 +112,6 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute'
   },
   fileinput: {
-    display: 'block',
     position: 'relative',
     width: '140px',
     height: '45px',
@@ -125,6 +124,12 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'Poppins',
     cursor: 'pointer',
     marginBottom: '2rem'
+  },
+  loader: {
+    display: 'flex',
+    '& > * + *': {
+      marginLeft: theme.spacing(2)
+    }
   }
 }));
 //for lists
@@ -140,14 +145,16 @@ function ListItemLink(props) {
 }
 
 //component
-const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction }) => {
+const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) => {
   const params = useParams();
 
   const [carddata, setCarddata] = useState([]);
   const [description, setDiscription] = useState('');
   const [filedata, setFiledata] = useState('');
   const [status, setStatus] = useState('');
-
+  const [trigger, setTrigger] = useState(false);
+  const [loader1, setLoader1] = useState(false);
+  const [loader2, setLoader2] = useState(false);
   //fetching tasks by dispatching action
   useEffect(() => {
     CourseTasksAction.CourseTasks(params.course, Userdetails);
@@ -159,8 +166,6 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction }) => {
       return task.id === params.id;
     });
     setCarddata(carddata);
-    console.log('taskdetails', taskdetails);
-    console.log('carddata', carddata);
   }, [taskdetails]);
 
   // upload a file to post
@@ -174,22 +179,19 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction }) => {
     };
   };
   //data to be passed to addtaskfeed action (data to be posted to feed)
-  const uploadfeeddata = {
-    work_upload: filedata,
-    description: description,
-    task_id: params.id,
-    user_id: Userdetails
-  };
 
   //to post to the feed on submiting the form and clicking post
   const handleSubmit = e => {
-    e.preventDefault();
-    console.log(uploadfeeddata);
-    AddTaskFeed(uploadfeeddata).then(res => {
-      console.log(res.data);
-    });
+    const feeddata = {
+      work_upload: filedata,
+      description: description,
+      task_id: params.id,
+      user_id: Userdetails
+    };
 
-    handleClose();
+    e.preventDefault();
+    setLoader2(true);
+    AddTaskFeed.PostTask(feeddata, setTrigger, setLoader2, handleClose);
   };
 
   //data to be passed to call addusertask
@@ -220,6 +222,7 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction }) => {
   //to upload file for submission
   const FileUpload = e => {
     e.preventDefault();
+    setLoader1(true);
     const file = e.target.files[0];
     const formData = new FormData();
     formData.set('encType', 'multipart/form-data');
@@ -230,8 +233,9 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction }) => {
     console.log(formData);
     updateTaskCompleteStatus(formData).then(res => {
       console.log(res.data);
+      setLoader1(false);
+      setStatus('IN_REVIEW');
     });
-    setStatus('IN_REVIEW');
   };
   const classes = useStyles();
   return (
@@ -253,8 +257,8 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction }) => {
             <Typography style={{ color: '#7A64FF', marginBottom: '2rem' }}>
               Time:{carddata.length > 0 && carddata[0].time_complete} Days
             </Typography>
-            {status != '' ? (
-              <div className="resources" className={classes.spacing}>
+            {status !== '' ? (
+              <div className={classes.spacing}>
                 <Typography className={classes.heading} variant="subtitle1">
                   RESOURCES
                 </Typography>
@@ -315,7 +319,7 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction }) => {
                 Start
               </Button>
             )}
-            {status != '' && (
+            {status !== '' && (
               <div className="submission" className={classes.spacing}>
                 <Typography className={classes.heading} variant="subtitle1">
                   SUBMISSION
@@ -323,15 +327,21 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction }) => {
                 <Typography style={{ letterSpacing: '0.04em', marginBottom: '1rem' }}>
                   {carddata.length > 0 && carddata[0].submission}
                 </Typography>
-                {status == 'IN_PROGRESS' ? (
+                {status === 'IN_PROGRESS' ? (
                   <form action="">
                     <input type="file" id="file" onChange={FileUpload} className={classes.file} />
-                    <label className={classes.fileinput} for="file">
-                      <CloudUploadIcon style={{ marginRight: '.7rem' }} />
-                      UPLOAD FILE
-                    </label>
+                    {loader1 ? (
+                      <div className={classes.loader}>
+                        <CircularProgress />
+                      </div>
+                    ) : (
+                      <label className={classes.fileinput} for="file">
+                        <CloudUploadIcon style={{ marginRight: '.7rem' }} />
+                        UPLOAD FILE
+                      </label>
+                    )}
                   </form>
-                ) : status == 'COMPLETE' ? (
+                ) : status === 'COMPLETE' ? (
                   <Typography className={classes.taskmessage}>
                     We love your enthusiasm, But you have already completed the task!!
                   </Typography>
@@ -351,6 +361,7 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction }) => {
                 showStatus={false}
                 showThumbs={false}
                 showIndicators={false}
+                autoPlay={false}
                 width="100%"
               >
                 {carddata.length > 0 &&
@@ -409,14 +420,20 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction }) => {
                         onChange={e => setDiscription(e.target.value)}
                       />
                       <br />
-                      <Button
-                        variant="contained"
-                        color="inherit"
-                        onClick={handleSubmit}
-                        className={classes.button}
-                      >
-                        Upload
-                      </Button>
+                      {loader2 ? (
+                        <div className={classes.loader}>
+                          <CircularProgress />
+                        </div>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          color="inherit"
+                          onClick={handleSubmit}
+                          className={classes.button}
+                        >
+                          Upload
+                        </Button>
+                      )}
                     </form>
                   </div>
                 </Fade>
@@ -436,7 +453,8 @@ const mapStateToProps = state => {
   };
 };
 const mapDispatchToProps = dispatch => ({
-  CourseTasksAction: bindActionCreators(CourseTasksActionCreator, dispatch)
+  CourseTasksAction: bindActionCreators(CourseTasksActionCreator, dispatch),
+  AddTaskFeed: bindActionCreators(AddTaskFeedActionCreator, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Taskpage);

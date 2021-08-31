@@ -22,6 +22,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
+import { Link, NavLink } from 'react-router-dom';
+import { useHistory } from 'react-router';
+import { useLocation } from 'react-router';
 //Navbar styling
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -105,6 +108,12 @@ const useStyles = makeStyles(theme => ({
   small: {
     width: theme.spacing(4),
     height: theme.spacing(4)
+  },
+  activelink: {
+    color: '#7A64FF'
+  },
+  inactivelink: {
+    color: 'white'
   }
 }));
 
@@ -112,6 +121,8 @@ const useStyles = makeStyles(theme => ({
 const Navbar = ({ name, url }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const history = useHistory();
+  const location = useLocation().pathname;
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -120,6 +131,43 @@ const Navbar = ({ name, url }) => {
     setOpen(false);
   };
 
+  const clickHandler = () => {
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('name');
+    localStorage.removeItem('imageUrl');
+    localStorage.removeItem('token');
+    console.log(history);
+    history.push('/');
+  };
+  const active = path => {
+    if (location == path) {
+      return classes.activelink;
+    } else {
+      return classes.inactivelink;
+    }
+  };
+  const navlinks = [
+    {
+      path: '/Dashboard',
+      key: 'Dashboard',
+      icon: <DashboardIcon />
+    },
+    {
+      path: '/leaderboard',
+      key: 'Leaderboard',
+      icon: <EqualizerIcon />
+    },
+    {
+      path: '/about',
+      key: 'About',
+      icon: <InfoIcon />
+    },
+    {
+      path: '/help',
+      key: 'Help',
+      icon: <HelpOutlineIcon />
+    }
+  ];
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -174,35 +222,52 @@ const Navbar = ({ name, url }) => {
         </div>
         <Divider />
         <List className={classes.text}>
-          <ListItem button key={'Dashboard'}>
-            <ListItemIcon>
-              <DashboardIcon className={classes.icons} />
-            </ListItemIcon>
-            <ListItemText primary={'Dashboard'} />
-          </ListItem>
-          <ListItem button key={'Leaderboard'}>
-            <ListItemIcon>
-              <EqualizerIcon className={classes.icons} />
-            </ListItemIcon>
-            <ListItemText primary={'Leaderboard'} />
-          </ListItem>
-          <ListItem button key={'About'}>
-            <ListItemIcon>
-              <InfoIcon className={classes.icons} />
-            </ListItemIcon>
-            <ListItemText primary={'About'} />
-          </ListItem>
+          {navlinks.map(obj => {
+            return (
+              <NavLink style={{ textDecoration: 'none' }} to={obj.path}>
+                <ListItem button key={obj.key}>
+                  <ListItemIcon className={active(obj.path)}>{obj.icon}</ListItemIcon>
+                  <ListItemText primary={obj.key} className={classes.text} />
+                </ListItem>
+              </NavLink>
+            );
+          })}
+          {/* <NavLink style={{ textDecoration: 'none' }} to={'/Dashboard'}>
+            <ListItem button key={'Dashboard'}>
+              <ListItemIcon>
+                <DashboardIcon className={classes.icons} />
+              </ListItemIcon>
+              <ListItemText primary={'Dashboard'} className={classes.text} />
+            </ListItem>
+          </NavLink>
+          <NavLink style={{ textDecoration: 'none' }} to={'/leaderboard'}>
+            <ListItem button key={'Leaderboard'}>
+              <ListItemIcon>
+                <EqualizerIcon className={classes.icons} />
+              </ListItemIcon>
+              <ListItemText primary={'Leaderboard'} className={classes.text} />
+            </ListItem>
+          </NavLink>
+          <NavLink style={{ textDecoration: 'none' }} to={'/about'}>
+            <ListItem button key={'About'}>
+              <ListItemIcon>
+                <InfoIcon className={classes.icons} />
+              </ListItemIcon>
+              <ListItemText primary={'About'} className={classes.text} />
+            </ListItem>
+          </NavLink>
+
           <ListItem button key={'Help'}>
             <ListItemIcon>
               <HelpOutlineIcon className={classes.icons} />
             </ListItemIcon>
             <ListItemText primary={'Help'} />
-          </ListItem>
-          <ListItem button key={'Logout'}>
+          </ListItem> */}
+          <ListItem onClick={clickHandler} button key={'Logout'}>
             <ListItemIcon>
               <ExitToAppIcon className={classes.icons} />
             </ListItemIcon>
-            <ListItemText primary={'Logout'} />
+            <ListItemText primary={'Logout'} className={classes.text} />
           </ListItem>
         </List>
       </Drawer>

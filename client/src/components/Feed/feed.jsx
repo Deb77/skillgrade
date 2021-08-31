@@ -1,17 +1,14 @@
 import React from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import checkmark from '../assets/checkmark.png';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { Link, useParams } from 'react-router-dom';
+
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as UpvoteFeedActionCreator from '../actions/UpvoteFeed';
+import * as UpvoteFeedActionCreator from '../../actions/UpvoteFeed';
 import './feed.css';
 //additional styling
 const useStyles = makeStyles({
@@ -42,7 +39,7 @@ const useStyles = makeStyles({
 const Feed = ({ feed, params, Userdetails, UpvoteFeedAction }) => {
   const [upvotes, setUpvotes] = React.useState(feed.upvotes.length);
   const classes = useStyles();
-  console.log('feed', feed);
+  console.log(feed.work_upload);
   const Upvotetask = () => {
     UpvoteFeedAction.UpvoteFeed(params.id, feed.id, Userdetails, setUpvotes);
   };
@@ -71,7 +68,7 @@ const Feed = ({ feed, params, Userdetails, UpvoteFeedAction }) => {
           </Grid>
           <Typography align="left">
             <Button
-              disabled={feed.upvotes.indexOf(Userdetails) == -1 ? false : true}
+              disabled={feed.upvotes.indexOf(Userdetails) === -1 ? false : true}
               style={{ margin: '1rem 0rem 1rem 0rem' }}
               variant="contained"
               className={classes.button}

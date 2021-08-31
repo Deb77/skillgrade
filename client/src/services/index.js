@@ -18,3 +18,4 @@ export const checkTaskStatus = (user_id, task_id) =>
 export const updateTaskCompleteStatus = params =>
   axios.put(baseUrl + 'user-tasks/complete-user-task', params);
 export const upvoteTaskFeed = params => axios.post(baseUrl + 'task-feed/upvote', params);
+export const getLeaderBoard = () => axios.get(baseUrl + 'user/leaderboard');
