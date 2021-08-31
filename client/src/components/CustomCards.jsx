@@ -15,6 +15,7 @@ const useStyles = makeStyles({
     height: '170px',
     color: 'white',
     transition: '0.3s',
+
     '&:hover': {
       transform: 'translateY(-20px)'
     }
@@ -64,6 +65,7 @@ const useStyles = makeStyles({
   }
 });
 
+//data to be displayed on card based on course_name
 const courses = {
   UI_DESIGN: 'UI Design',
   CONTENT_WRITING: 'Content Writing',
@@ -72,12 +74,13 @@ const courses = {
   JAVA: 'Java',
   DEV_OPS: 'Dev Ops'
 };
+
 //component
 const CustomCards = props => {
   const classes = useStyles();
   const { course_name, desc, deadline, active } = props;
 
-  //function for setting color of card based on its category
+  //function for setting color of card based on course_name
   const setColor = title => {
     if (title === 'UI_DESIGN') return classes.purple;
     if (title === 'CONTENT_WRITING') return classes.red;
@@ -88,7 +91,7 @@ const CustomCards = props => {
   };
   return (
     <>
-      <div className="Customcards">
+      <div className="Customcards" style={{ textDecoration: 'none' }}>
         <Card raised={true} className={`${classes.root} ${setColor(course_name)}`}>
           <CardContent className={classes.card}>
             <Typography className={classes.title} gutterBottom>
@@ -99,7 +102,13 @@ const CustomCards = props => {
             </Typography>
             <Grid container direction="row" justifyContent="space-between" alignItems="center">
               <Grid item>
-                {deadline && <Typography className={classes.deadline}>{deadline} days left</Typography>}
+                {deadline > 0 ? (
+                  <Typography className={classes.deadline}>{deadline} days left</Typography>
+                ) : deadline < 0 ? (
+                  <Typography className={classes.deadline}>OverDue</Typography>
+                ) : (
+                  <></>
+                )}
               </Grid>
               <Grid item>
                 <CardActions>
