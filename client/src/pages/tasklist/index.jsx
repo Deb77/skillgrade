@@ -73,6 +73,7 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
   //fetching tasks by dispatching action
   useEffect(() => {
     CourseTasksAction.CourseTasks(params.id, Userdetails);
+    // eslint-disable-next-line
   }, []);
 
   return (

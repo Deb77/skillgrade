@@ -166,17 +166,17 @@ const Leaderboard = () => {
     });
   }, []);
   const leaderboarddata = () => {
-    let newdata = data?.map((item, index) => {
+    return data?.map((item, index) => {
       return {
         RANK: index + 1,
         NAME: item.name,
         SCORE: item.score
       };
     });
-    return newdata;
   };
   React.useEffect(() => {
     setRows(leaderboarddata);
+    // eslint-disable-next-line
   }, [data]);
 
   return (
@@ -208,7 +208,7 @@ const Leaderboard = () => {
                         const labelId = `enhanced-table-checkbox-${index}`;
 
                         return (
-                          <TableRow hover tabIndex={-1} key={row.name}>
+                          <TableRow hover tabIndex={-1} key={index}>
                             <TableCell component="th" align="center" id={labelId} scope="row" padding="none">
                               {row.RANK}
                             </TableCell>

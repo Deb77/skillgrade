@@ -91,9 +91,10 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails, Userdetails }) => {
   const classes = useStyles();
 
   //dispatching action
+
   useEffect(() => {
     IncompleteTasksAction.IncompleteTasks(Userdetails);
-    console.log(Carddetails[0]);
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -102,7 +103,6 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails, Userdetails }) => {
         {/* navbar */}
 
         <Navbar />
-
 
         <main className={classes.content}>
           <div className={classes.toolbar} />

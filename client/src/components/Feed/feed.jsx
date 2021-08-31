@@ -37,9 +37,9 @@ const useStyles = makeStyles({
 
 //component
 const Feed = ({ feed, params, Userdetails, UpvoteFeedAction }) => {
+  // eslint-disable-next-line
   const [upvotes, setUpvotes] = React.useState(feed.upvotes.length);
   const classes = useStyles();
-  console.log(feed.work_upload);
   const Upvotetask = () => {
     UpvoteFeedAction.UpvoteFeed(params.id, feed.id, Userdetails, setUpvotes);
   };

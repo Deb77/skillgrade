@@ -22,7 +22,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { useLocation } from 'react-router';
 //Navbar styling
@@ -140,7 +140,7 @@ const Navbar = ({ name, url }) => {
     history.push('/');
   };
   const active = path => {
-    if (location == path) {
+    if (location === path) {
       return classes.activelink;
     } else {
       return classes.inactivelink;
@@ -224,7 +224,7 @@ const Navbar = ({ name, url }) => {
         <List className={classes.text}>
           {navlinks.map(obj => {
             return (
-              <NavLink style={{ textDecoration: 'none' }} to={obj.path}>
+              <NavLink key={obj.key} style={{ textDecoration: 'none' }} to={obj.path}>
                 <ListItem button key={obj.key}>
                   <ListItemIcon className={active(obj.path)}>{obj.icon}</ListItemIcon>
                   <ListItemText primary={obj.key} className={classes.text} />
@@ -232,37 +232,7 @@ const Navbar = ({ name, url }) => {
               </NavLink>
             );
           })}
-          {/* <NavLink style={{ textDecoration: 'none' }} to={'/Dashboard'}>
-            <ListItem button key={'Dashboard'}>
-              <ListItemIcon>
-                <DashboardIcon className={classes.icons} />
-              </ListItemIcon>
-              <ListItemText primary={'Dashboard'} className={classes.text} />
-            </ListItem>
-          </NavLink>
-          <NavLink style={{ textDecoration: 'none' }} to={'/leaderboard'}>
-            <ListItem button key={'Leaderboard'}>
-              <ListItemIcon>
-                <EqualizerIcon className={classes.icons} />
-              </ListItemIcon>
-              <ListItemText primary={'Leaderboard'} className={classes.text} />
-            </ListItem>
-          </NavLink>
-          <NavLink style={{ textDecoration: 'none' }} to={'/about'}>
-            <ListItem button key={'About'}>
-              <ListItemIcon>
-                <InfoIcon className={classes.icons} />
-              </ListItemIcon>
-              <ListItemText primary={'About'} className={classes.text} />
-            </ListItem>
-          </NavLink>
 
-          <ListItem button key={'Help'}>
-            <ListItemIcon>
-              <HelpOutlineIcon className={classes.icons} />
-            </ListItemIcon>
-            <ListItemText primary={'Help'} />
-          </ListItem> */}
           <ListItem onClick={clickHandler} button key={'Logout'}>
             <ListItemIcon>
               <ExitToAppIcon className={classes.icons} />

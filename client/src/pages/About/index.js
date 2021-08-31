@@ -1,15 +1,11 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+
 import Navbar from '../../components/Navbar';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+
 import Container from '@material-ui/core/Container';
-import * as CourseTasksActionCreator from '../../actions/CourseTasks';
+
 import Typography from '@material-ui/core/Typography';
-import { useEffect } from 'react';
-import { useParams } from 'react-router';
-import TaskCard from '../../components/TaskCards';
 
 //additional styling
 const useStyles = makeStyles(theme => ({

@@ -152,12 +152,14 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
   const [description, setDiscription] = useState('');
   const [filedata, setFiledata] = useState('');
   const [status, setStatus] = useState('');
+  // eslint-disable-next-line
   const [trigger, setTrigger] = useState(false);
   const [loader1, setLoader1] = useState(false);
   const [loader2, setLoader2] = useState(false);
   //fetching tasks by dispatching action
   useEffect(() => {
     CourseTasksAction.CourseTasks(params.course, Userdetails);
+    // eslint-disable-next-line
   }, []);
 
   //filter tasks based on task id
@@ -166,6 +168,7 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
       return task.id === params.id;
     });
     setCarddata(carddata);
+    // eslint-disable-next-line
   }, [taskdetails]);
 
   // upload a file to post
@@ -217,6 +220,7 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
     checkTaskStatus(Userdetails, params.id).then(res => {
       setStatus(res.data.complete);
     });
+    // eslint-disable-next-line
   }, []);
 
   //to upload file for submission
@@ -265,10 +269,10 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
                 <Grid container>
                   <Grid item xs={12} sm={3} md={2} lg={3}>
                     <List subheader={<ListSubheader className={classes.resources}>Documents </ListSubheader>}>
-                      {carddata[0].docs.map(e => {
+                      {carddata[0]?.docs.map((e, index) => {
                         const t = JSON.parse(e);
                         return (
-                          <ListItemLink key={carddata[0].link} href={t.link}>
+                          <ListItemLink key={index} href={t.link}>
                             <ListItemText
                               primaryTypographyProps={{ variant: 'subtitle1' }}
                               primary={t.title}
@@ -280,10 +284,10 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
                   </Grid>
                   <Grid item xs={12} sm={3} md={2} lg={3}>
                     <List subheader={<ListSubheader className={classes.resources}>Videos</ListSubheader>}>
-                      {carddata[0].videos.map(e => {
+                      {carddata[0]?.videos.map((e, index) => {
                         const t = JSON.parse(e);
                         return (
-                          <ListItemLink key={carddata[0].link} href={t.link}>
+                          <ListItemLink key={index} href={t.link}>
                             <ListItemText
                               primaryTypographyProps={{ variant: 'subtitle1' }}
                               primary={t.title}
@@ -299,10 +303,10 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
                         <ListSubheader className={classes.resources}>Tools and Sources </ListSubheader>
                       }
                     >
-                      {carddata[0].tools_and_sources.map(e => {
+                      {carddata[0]?.tools_and_sources.map((e, index) => {
                         const t = JSON.parse(e);
                         return (
-                          <ListItemLink key={carddata[0].link} href={t.link}>
+                          <ListItemLink key={index} href={t.link}>
                             <ListItemText
                               primaryTypographyProps={{ variant: 'subtitle1' }}
                               primary={t.title}
@@ -320,7 +324,7 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
               </Button>
             )}
             {status !== '' && (
-              <div className="submission" className={classes.spacing}>
+              <div className={`${classes.spacing} ${classes.submission}`}>
                 <Typography className={classes.heading} variant="subtitle1">
                   SUBMISSION
                 </Typography>
@@ -335,7 +339,7 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
                         <CircularProgress />
                       </div>
                     ) : (
-                      <label className={classes.fileinput} for="file">
+                      <label className={classes.fileinput} htmlFor="file">
                         <CloudUploadIcon style={{ marginRight: '.7rem' }} />
                         UPLOAD FILE
                       </label>
@@ -365,16 +369,12 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
                 width="100%"
               >
                 {carddata.length > 0 &&
-                  carddata[0].feed.map(feed => {
-                    return (
-                      <>
-                        <Feed feed={feed} params={params}></Feed>
-                      </>
-                    );
-                  })}
+                  carddata[0].feed.map((feed, index) => (
+                    <Feed feed={feed} key={index} params={params}></Feed>
+                  ))}
               </Carousel>
             </div>
-            <div className="sharework" className={classes.spacing}>
+            <div className={`${classes.spacing} ${classes.sharework}`}>
               <Typography className={classes.heading} variant="subtitle1">
                 SHARE WORK
               </Typography>
@@ -406,7 +406,7 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
                   <div className={classes.paper}>
                     <form className={classes.formstyle} noValidate autoComplete="off">
                       <input type="file" id="file" onChange={onChange} className={classes.file} />
-                      <label className={classes.fileinput} style={{ marginBottom: 0 }} for="file">
+                      <label className={classes.fileinput} style={{ marginBottom: 0 }} htmlFor="file">
                         CHOOSE IMAGE
                       </label>
                       <br />
