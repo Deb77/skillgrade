@@ -1,46 +1,47 @@
 import './App.css';
-import axios from 'axios';
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-function App() {
-  console.log(process.env);
-  const onChange = async e => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onloadend = () => {
-      const fileEncoded = reader.result;
+import PrivateRoute from './components/Common/PrivateRoute';
+import AdminPrivateRoute from './components/Common/AdminPrivateRoute';
 
-      // service goes here
+import store from './store';
+import { Provider } from 'react-redux';
 
-      axios
-        .post('https://skill-grade-backend.herokuapp.com/task-feed', {
-          work_upload: fileEncoded,
-          description: 'text',
-          task_id: '0539eb2c-37ad-4c69-a30e-96d2d92f4dc6',
-          user_id: 'b180aefb-35d2-47db-8f4a-88b53a50da43'
-        })
-        .then(res => console.log(res));
-    };
-    // const formData = new FormData();
-    // formData.set('encType', 'multipart/form-data');
-    // formData.append('file', file);
+const Landing = lazy(() => import('./pages/landing'));
+const Dashboard = lazy(() => import('./pages/dashboard'));
 
-    // try {
-    //   const res = await axios.put('http://localhost:7000/user-tasks/complete-user-task', formData, {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data'
-    //     }
-    //   });
-    // } catch (er) {
-    //   console.log(er);
-    // }
-  };
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const Admin = lazy(() => import('./pages/admin/Home'));
+const Examine = lazy(() => import('./pages/admin/Examine'));
+
+
+const Tasklist = lazy(() => import('./pages/tasklist'));
+const TaskPage = lazy(() => import('./pages/taskpage'));
+const Leaderboard = lazy(() => import('./pages/leaderboard'));
+const About = lazy(() => import('./pages/About'));
+
+const App = () => {
   return (
-    <div className="App">
-      <h1>Hello World</h1>
-      <input name="image" type="file" onChange={onChange} />
-    </div>
-  );
-}
+    <Provider store={store}>
+      <Router>
+        <Suspense fallback={<div></div>}>
+          <Switch>
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/admin" component={AdminLogin} />
+            <AdminPrivateRoute exact path="/admin/home" component={Admin} />
+            <AdminPrivateRoute exact path="/admin/examine" component={Examine} />
+            <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            <PrivateRoute exact path="/tasklist/:id" component={Tasklist} />
+            <PrivateRoute exact path="/taskpage/:course/:id" component={TaskPage} />
+            <PrivateRoute exact path="/leaderboard" component={Leaderboard} />
+            <PrivateRoute exact path="/about" component={About} />
+          </Switch>
+        </Suspense>
+      </Router>
+    </Provider>
+
+
+
 
 export default App;
