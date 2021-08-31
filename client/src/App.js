@@ -1,22 +1,30 @@
 import './App.css';
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './components/Common/PrivateRoute';
 import AdminPrivateRoute from './components/Common/AdminPrivateRoute';
 import store from './store';
 import { Provider } from 'react-redux';
+import Landing from './pages/landing';
+import Dashboard from './pages/dashboard';
+import AdminLogin from './pages/admin/AdminLogin';
+import Admin from './pages/admin/Home';
+import Examine from './pages/admin/Examine';
+import Tasklist from './pages/tasklist';
+import TaskPage from './pages/taskpage';
+import Leaderboard from './pages/leaderboard';
+import About from './pages/About';
+// const Landing = lazy(() => import('./pages/landing'));
+// const Dashboard = lazy(() => import('./pages/dashboard'));
 
-const Landing = lazy(() => import('./pages/landing'));
-const Dashboard = lazy(() => import('./pages/dashboard'));
+// const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+// const Admin = lazy(() => import('./pages/admin/Home'));
+// const Examine = lazy(() => import('./pages/admin/Examine'));
 
-const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
-const Admin = lazy(() => import('./pages/admin/Home'));
-const Examine = lazy(() => import('./pages/admin/Examine'));
-
-const Tasklist = lazy(() => import('./pages/tasklist'));
-const TaskPage = lazy(() => import('./pages/taskpage'));
-const Leaderboard = lazy(() => import('./pages/leaderboard'));
-const About = lazy(() => import('./pages/About'));
+// const Tasklist = lazy(() => import('./pages/tasklist'));
+// const TaskPage = lazy(() => import('./pages/taskpage'));
+// const Leaderboard = lazy(() => import('./pages/leaderboard'));
+// const About = lazy(() => import('./pages/About'));
 
 const App = () => {
   return (
