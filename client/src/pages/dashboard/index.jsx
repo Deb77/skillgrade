@@ -100,7 +100,9 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails, Userdetails }) => {
     <>
       <div className="dashboard">
         {/* navbar */}
-        <Navbar></Navbar>
+
+        <Navbar />
+
 
         <main className={classes.content}>
           <div className={classes.toolbar} />
