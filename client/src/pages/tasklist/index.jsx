@@ -158,7 +158,7 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
                                 <TaskCard
                                   title={task.name}
                                   days={task.time_complete}
-                                  completion={true}
+                                  completion={task.status}
                                   color="purple"
                                   id={task.id}
                                   coursename={params.id}
@@ -210,7 +210,7 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
                                 <TaskCard
                                   title={task.name}
                                   days={task.time_complete}
-                                  completion={false}
+                                  completion={task.status}
                                   id={task.id}
                                   coursename={params.id}
                                   color="orange"
