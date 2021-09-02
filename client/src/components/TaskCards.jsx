@@ -56,7 +56,7 @@ const TaskCard = ({ title, days, completion, color, id, coursename }) => {
             <Grid container justifyContent="space-between" alignItems="center">
               <Grid item>
                 <Typography className={classes.subtitle}>{title}</Typography>
-                <Typography>Time: {days}</Typography>
+                <Typography>Time: {days} days</Typography>
               </Grid>
               <Grid item>
                 {completion ? (

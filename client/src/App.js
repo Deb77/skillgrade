@@ -14,6 +14,7 @@ import Tasklist from './pages/tasklist';
 import TaskPage from './pages/taskpage';
 import Leaderboard from './pages/leaderboard';
 import About from './pages/About';
+import Help from './pages/Help';
 // const Landing = lazy(() => import('./pages/landing'));
 // const Dashboard = lazy(() => import('./pages/dashboard'));
 
@@ -41,6 +42,7 @@ const App = () => {
             <PrivateRoute exact path="/taskpage/:course/:id" component={TaskPage} />
             <PrivateRoute exact path="/leaderboard" component={Leaderboard} />
             <PrivateRoute exact path="/about" component={About} />
+            <PrivateRoute exact path="/help" component={Help} />
           </Switch>
         </Suspense>
       </Router>

@@ -1,5 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
+import Hidden from '@material-ui/core/Hidden';
+import withWidth from '@material-ui/core/withWidth';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
@@ -95,7 +98,7 @@ const useStyles = makeStyles(theme => ({
     color: 'white'
   },
   icons: {
-    fill: ' white',
+    fill: 'white',
     marginBottom: '1rem',
     marginTop: '1rem'
   },
@@ -122,7 +125,9 @@ const Navbar = ({ name, url }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const history = useHistory();
-  const location = useLocation().pathname;
+
+  const location = useLocation().pathname.split('/')[1];
+  console.log(location);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -130,40 +135,38 @@ const Navbar = ({ name, url }) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
   const clickHandler = () => {
     localStorage.removeItem('user_id');
     localStorage.removeItem('name');
     localStorage.removeItem('imageUrl');
     localStorage.removeItem('token');
-    console.log(history);
     history.push('/');
   };
   const active = path => {
-    if (location === path) {
+    const val = path.find(ele => ele === location);
+    console.log(val);
+    if (val) {
       return classes.activelink;
-    } else {
-      return classes.inactivelink;
-    }
+    } else return classes.inactivelink;
   };
   const navlinks = [
     {
-      path: '/Dashboard',
+      path: ['dashboard', 'tasklist', 'taskpage'],
       key: 'Dashboard',
       icon: <DashboardIcon />
     },
     {
-      path: '/leaderboard',
+      path: ['leaderboard'],
       key: 'Leaderboard',
       icon: <EqualizerIcon />
     },
     {
-      path: '/about',
+      path: ['about'],
       key: 'About',
       icon: <InfoIcon />
     },
     {
-      path: '/help',
+      path: ['help'],
       key: 'Help',
       icon: <HelpOutlineIcon />
     }
@@ -194,7 +197,9 @@ const Navbar = ({ name, url }) => {
           </Typography>
           <div>
             <Grid container justifyContent="center" alignItems="center" spacing={2}>
-              <Grid item>{name}</Grid>
+              <Grid item>
+                <Hidden xsDown>{name}</Hidden>
+              </Grid>
               <Grid item>
                 <Avatar alt={name} src={url} className={classes.small} />
               </Grid>
@@ -224,9 +229,9 @@ const Navbar = ({ name, url }) => {
         <List className={classes.text}>
           {navlinks.map(obj => {
             return (
-              <NavLink key={obj.key} style={{ textDecoration: 'none' }} to={obj.path}>
+              <NavLink key={obj.key} style={{ textDecoration: 'none' }} to={'/' + obj.path[0]}>
                 <ListItem button key={obj.key}>
-                  <ListItemIcon className={active(obj.path)}>{obj.icon}</ListItemIcon>
+                  <ListItemIcon className={`${active(obj.path)} ${classes.icons}`}>{obj.icon}</ListItemIcon>
                   <ListItemText primary={obj.key} className={classes.text} />
                 </ListItem>
               </NavLink>
@@ -252,5 +257,8 @@ const mapStateToProps = state => {
     url: state.auth.imageUrl
   };
 };
+Navbar.propTypes = {
+  width: PropTypes.oneOf(['lg', 'md', 'sm', 'xl', 'xs']).isRequired
+};
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps)(withWidth()(Navbar));

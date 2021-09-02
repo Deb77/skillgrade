@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     fontSize: 16,
     fontWeight: 400,
     letterSpacing: '0px',
-    lineHeight: '19px'
+    lineHeight: '23px'
   },
 
   card: {
@@ -91,7 +91,7 @@ const CustomCards = props => {
   };
   return (
     <>
-      <div className="Customcards" style={{ textDecoration: 'none' }}>
+      <div className="Customcards" style={{ textDecoration: 'none', margin: '0rem 1rem 2.5rem .5rem' }}>
         <Card raised={true} className={`${classes.root} ${setColor(course_name)}`}>
           <CardContent className={classes.card}>
             <Typography className={classes.title} gutterBottom>

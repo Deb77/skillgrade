@@ -2,7 +2,9 @@ import React from 'react';
 import Navbar from '../../components/Navbar';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import Carousel_img1 from '../../assets/Carousel_img1.png';
+import Carousel_img1 from '../../assets/Carousel_img1.jpg';
+import Carousel_img2 from '../../assets/Carousel_img2.jpg';
+import Carousel_img3 from '../../assets/Carousel_img3.jpg';
 import CustomCards from '../../components/CustomCards';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
@@ -40,13 +42,18 @@ const useStyles = makeStyles(theme => ({
   tagline: {
     textAlign: 'start',
     fontFamily: 'Montserrat',
-    fontWeight: '500',
+    fontWeight: 'bolder',
     color: 'white',
     position: 'absolute',
+    textShadow: '2px 2px #ff0000',
     top: '150px',
     letterSpacing: '0.04em',
     left: '15%',
     fontSize: 'clamp(2rem, 3vw, 5rem)'
+  },
+  img: {
+    width: '100%',
+    height: 'auto'
   }
 }));
 
@@ -55,18 +62,20 @@ const courseapi = {
   UI_DESIGN: 'ui-design',
   CONTENT_WRITING: 'content-writing',
   WEB_DEV: 'web-dev',
-  SKETCHING: 'sketching'
+  SKETCHING: 'sketching',
+  JAVA: 'java',
+  DEV_OPS: 'dev-ops'
 };
 
 //data to be displayed on cards
 const CategoryCards = [
   {
     course_name: 'UI_DESIGN',
-    desc: 'Hone your designing skills by creating eyestrucking visualsfor your favourite apps.'
+    desc: 'Hone your designing skills by creating eyestrucking visuals for your favourite apps.'
   },
   {
     course_name: 'CONTENT_WRITING',
-    desc: 'Hone your designing skills by creating eyestrucking visualsfor your favourite apps.'
+    desc: 'Showcase how words can express and create a significant impact to an idea'
   },
   {
     course_name: 'WEB_DEV',
@@ -74,7 +83,7 @@ const CategoryCards = [
   },
   {
     course_name: 'SKETCHING',
-    desc: 'Hone your designing skills by creating eyestrucking visualsfor your favourite apps.'
+    desc: 'Take your canvas and start sketching things that tell a story '
   },
   {
     course_name: 'JAVA',
@@ -116,14 +125,42 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails, Userdetails }) => {
               infiniteLoop={true}
               showStatus={false}
               showThumbs={false}
+              interval="2500"
+              transitionTime="700"
               width="100%"
             >
               <div>
-                <img src={Carousel_img1} style={{ height: '40vh' }} alt="carousel_img_1" />
+                <img
+                  src={Carousel_img1}
+                  style={{ height: '50vh', objectFit: 'cover' }}
+                  alt="carousel_img_1"
+                />
                 <h1 className={classes.tagline}>Create.. Learn.. Explore..</h1>
               </div>
               <div>
-                <img src={Carousel_img1} style={{ height: '40vh' }} alt="carousel_img2" />
+                <img
+                  src={Carousel_img2}
+                  style={{
+                    height: '50vh',
+                    objectFit: 'cover',
+                    objectPosition: ' 100% 80%'
+                  }}
+                  alt="carousel_img2"
+                />
+                <h1 className={classes.tagline}>Show Your Creativity</h1>
+              </div>
+              <div>
+                <img
+                  src={Carousel_img3}
+                  style={{
+                    height: '50vh',
+                    objectFit: 'cover',
+                    objectPosition: ' 100% 85%',
+                    filter: 'contrast(150%)'
+                  }}
+                  alt="carousel_img3"
+                />
+                <h1 className={classes.tagline}>Create Amazing Projects </h1>
               </div>
             </Carousel>
           </div>
@@ -161,7 +198,7 @@ const Dashboard = ({ IncompleteTasksAction, Carddetails, Userdetails }) => {
             {/* categories */}
 
             <Typography className={classes.heading}>CATEGORIES</Typography>
-            <Grid container spacing={5} style={{ marginBottom: '2rem' }}>
+            <Grid container spacing={0} style={{ marginBottom: '2rem' }}>
               {CategoryCards.map((card, index) => {
                 return (
                   <Grid key={index} item xs={12} sm={6} md={4} lg={3}>

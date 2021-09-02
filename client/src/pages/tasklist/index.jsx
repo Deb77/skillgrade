@@ -44,6 +44,25 @@ const useStyles = makeStyles(theme => ({
   },
   taskcategory: {
     marginBottom: '2rem'
+  },
+  soon: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+
+    transform: 'translate(-50%,-50%)'
+  },
+  stay: {
+    textAlign: 'center',
+    fontFamily: 'Sansita Swashed',
+    lineHeight: '4.3rem',
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    fontSize: '50px',
+    color: '#7A64FF',
+    marginBottom: '1rem',
+    whiteSpace: 'nowrap',
+    marginleft: '7rem'
   }
 }));
 
@@ -53,11 +72,27 @@ const data = [
     id: 'ui-design',
     category_name: 'User Interface Designing ',
     introduction:
-      'User interface (UI) design is the process designers use to build interfaces in software or computerized devices, focusing on looks or style. in these tasks you will get to practice your design skills by doing some amazing projects and learning different tools. There are 3 different levels of tasks , we recommend you to start from beginner tasks.'
+      'User interface (UI) design is the process designers use to build interfaces in software or computerized devices, focusing on looks or style. In these tasks you will get to practice your design skills by working on some amazing projects and learning different tools. There are 3 different levels of tasks , we recommend you to start from beginner tasks. There are 3 different levels of tasks , we recommend you to start from beginner tasks.'
   },
-  { id: 'web-dev', category_name: 'Web Development', introduction: 'web developement intro ' },
-  { id: 'sketching', category_name: 'Sketching', introduction: 'Sketching introduction ' },
-  { id: 'content-writing', category_name: 'Content Writing', introduction: 'content writing intro ' }
+  {
+    id: 'web-dev',
+    category_name: 'Web Development',
+    introduction:
+      'Web development refers to the building, creating, and maintaining of websites. It includes aspects such as web design, web publishing, web programming, and database management. In these task you will be given to create websites using html, css and js.  '
+  },
+  {
+    id: 'sketching',
+    category_name: 'Sketching',
+
+    introduction:
+      'Sketching is all about making a quick drawing, a study, which helps you to represent a design idea. Sketching can be of various types such as Travel, fashion, industrial etc. In these tasks you will get to practice your sketching skill by turning the given concepts into visual art on paper. There are 3 different levels of tasks , we recommend you to start from beginner tasks.'
+  },
+  {
+    id: 'content-writing',
+    category_name: 'Content Writing',
+    introduction:
+      'Sketching is all about making a quick drawing, a study, which helps you to represent a design idea. Sketching can be of various types such as Travel, fashion, industrial etc. In these tasks you will get to practice your sketching skill by turning the given concepts into visual art on paper. In these tasks you will be asked to write content on various topics. There are 3 different levels of tasks , we recommend you to start from beginner tasks.'
+  }
 ];
 
 //component
@@ -82,109 +117,125 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
         <Navbar></Navbar>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <div className="title">
-            <Typography className={classes.title} align="center">
-              {category[0].category_name}
-            </Typography>
-          </div>
-          <Container>
-            <div className="introduction">
-              <Typography className={classes.subheading} variant="subtitle1">
-                INTRODUCTION
-              </Typography>
-              <Typography style={{ letterSpacing: '0.04em', marginBottom: '2rem' }}>
-                {category[0].introduction}
-              </Typography>
+          {category.length > 0 ? (
+            <div>
+              <div className="title">
+                <Typography className={classes.title} align="center">
+                  {category[0].category_name}
+                </Typography>
+              </div>
+              <Container>
+                <div className="introduction">
+                  <Typography className={classes.subheading} variant="subtitle1">
+                    INTRODUCTION
+                  </Typography>
+                  <Typography style={{ letterSpacing: '0.04em', marginBottom: '2rem' }}>
+                    {category[0].introduction}
+                  </Typography>
+                </div>
+                <div className="tasks">
+                  <Typography
+                    className={classes.subheading}
+                    style={{ marginBottom: '2rem' }}
+                    align="center"
+                    variant="h6"
+                  >
+                    TASKS
+                  </Typography>
+                  <div className={classes.taskcategory}>
+                    <Typography className={classes.subheading} variant="subtitle1">
+                      BEGINNERS
+                    </Typography>
+                    <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
+                      {taskdetails.length > 0 &&
+                        taskdetails
+                          .filter(e => {
+                            return e.level === 'BEGINNER';
+                          })
+                          .map(task => {
+                            return (
+                              <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
+                                <TaskCard
+                                  title={task.name}
+                                  days={task.time_complete}
+                                  completion={true}
+                                  color="purple"
+                                  id={task.id}
+                                  coursename={params.id}
+                                ></TaskCard>
+                              </Grid>
+                            );
+                          })}
+                    </Grid>
+                  </div>
+                  <div className={classes.taskcategory}>
+                    <Typography className={classes.subheading} variant="subtitle1">
+                      INTERMEDIATE
+                    </Typography>
+                    <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
+                      {taskdetails.length > 0 &&
+                        taskdetails
+                          .filter(e => {
+                            return e.level === 'INTERMEDIATE';
+                          })
+                          .map(task => {
+                            return (
+                              <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
+                                <TaskCard
+                                  title={task.name}
+                                  days={task.time_complete}
+                                  completion={task.status}
+                                  id={task.id}
+                                  color="red"
+                                  coursename={params.id}
+                                ></TaskCard>
+                              </Grid>
+                            );
+                          })}
+                    </Grid>
+                  </div>
+                  <div className={classes.taskcategory}>
+                    <Typography className={classes.subheading} variant="subtitle1">
+                      ADVANCED
+                    </Typography>
+                    <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
+                      {taskdetails.length > 0 &&
+                        taskdetails
+                          .filter(e => {
+                            return e.level === 'ADVANCED';
+                          })
+                          .map(task => {
+                            return (
+                              <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
+                                <TaskCard
+                                  title={task.name}
+                                  days={task.time_complete}
+                                  completion={false}
+                                  id={task.id}
+                                  coursename={params.id}
+                                  color="orange"
+                                ></TaskCard>
+                              </Grid>
+                            );
+                          })}
+                    </Grid>
+                  </div>
+                </div>
+              </Container>
             </div>
-            <div className="tasks">
-              <Typography
-                className={classes.subheading}
-                style={{ marginBottom: '2rem' }}
-                align="center"
-                variant="h6"
-              >
-                TASKS
-              </Typography>
-              <div className={classes.taskcategory}>
-                <Typography className={classes.subheading} variant="subtitle1">
-                  BEGINNERS
+          ) : (
+            <Container>
+              <div className={classes.soon}>
+                <Typography className={classes.stay}>Stay Tuned</Typography>
+                <Typography
+                  className={classes.subheading}
+                  style={{ fontSize: '24px', textAlign: 'center', whiteSpace: 'nowrap' }}
+                >
+                  Coming Soon...
                 </Typography>
-                <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                  {taskdetails.length > 0 &&
-                    taskdetails
-                      .filter(e => {
-                        return e.level === 'BEGINNER';
-                      })
-                      .map(task => {
-                        return (
-                          <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
-                            <TaskCard
-                              title={task.name}
-                              days={task.time_complete}
-                              completion={true}
-                              color="purple"
-                              id={task.id}
-                              coursename={params.id}
-                            ></TaskCard>
-                          </Grid>
-                        );
-                      })}
-                </Grid>
               </div>
-              <div className={classes.taskcategory}>
-                <Typography className={classes.subheading} variant="subtitle1">
-                  INTERMEDIATE
-                </Typography>
-                <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                  {taskdetails.length > 0 &&
-                    taskdetails
-                      .filter(e => {
-                        return e.level === 'INTERMEDIATE';
-                      })
-                      .map(task => {
-                        return (
-                          <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
-                            <TaskCard
-                              title={task.name}
-                              days={task.time_complete}
-                              completion={task.status}
-                              id={task.id}
-                              color="red"
-                              coursename={params.id}
-                            ></TaskCard>
-                          </Grid>
-                        );
-                      })}
-                </Grid>
-              </div>
-              <div className={classes.taskcategory}>
-                <Typography className={classes.subheading} variant="subtitle1">
-                  ADVANCED
-                </Typography>
-                <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                  {taskdetails.length > 0 &&
-                    taskdetails
-                      .filter(e => {
-                        return e.level === 'ADVANCED';
-                      })
-                      .map(task => {
-                        return (
-                          <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
-                            <TaskCard
-                              title={task.name}
-                              days={task.time_complete}
-                              completion={false}
-                              id={task.id}
-                              coursename={params.id}
-                              color="orange"
-                            ></TaskCard>
-                          </Grid>
-                        );
-                      })}
-                </Grid>
-              </div>
-            </div>
-          </Container>
+            </Container>
+          )}
         </main>
       </div>
     </>

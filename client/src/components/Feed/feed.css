@@ -40,3 +40,10 @@
   transform: rotate(135deg);
   -webkit-transform: rotate(135deg);
 }
+
+@media screen and (max-width: 600px) {
+  .carousel .control-prev.control-arrow,
+  .carousel .control-next.control-arrow {
+    display: none;
+  }
+}
