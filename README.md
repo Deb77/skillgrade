@@ -61,17 +61,17 @@ Step 2: Based on your selection it will take you to tasklist page where there ar
 
 Step 3: Next you will be redirected to the selected task. This page contains all the information such as task introduction and resources that can be used. You can use this and start working on the task. (It is mandatory to prepare a pdf document of your work)
 
-Step 4: After completing the task you can upload your file in the submission section. You will be scored after our experts review your tasks. That's it!! You've completed a task.
+Step 4: After completing the task you can upload your file in the submission section. You will be scored after we review your tasks. That's it!! You've completed a task.
 
 Step 5: We also have a feed where you can post images of your work and gain and likes from other students. You can also use the feed to take inspiration and get ideas.
 
 ### What is the Leaderboard?
 
-The leaderboard page shows you your current rank among all other registered students. The ranks is based on points that are allocated to you on task completion. So try your best to complete maximum tasks and climb up to the top!!
+The leaderboard page shows you your current rank among all other registered students. The rank is based on points that are allocated to you on task completion. So try your best to complete maximum tasks and climb up to the top!!
 
 ### What does "Your Tasks" sections imply on the dashboard?
 
-"Your tasks" section contains all the tasks that have been started by you but are not yet submitted. It shows no. of days left till the due date and would alert overdue if due date has been crossed. Remeber the points of the tasks keep decreasing after the due date so hurry up and complete all pending tasks!
+"Your tasks" section contains all the tasks that have been started by you but are not yet submitted. It shows no. of days left till the due date and would alert overdue if due date has been crossed. Remember, the points of the tasks keep decreasing after the due date so hurry up and complete all pending tasks!
 
 ### Built With
 
