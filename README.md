@@ -25,9 +25,14 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#what-is-skill-grade">What is skill grade?</a></li>
+        <li><a href="#what-are-the-steps-to-start-a-task">What are the steps to start a task?</a></li>
+        <li><a href="#what-is-the-leaderboard">What is the Leaderboard?</a></li>
+        <li><a href="#what-does-your-tasks-sections-imply-on-the-dashboard">What does "Your Tasks" sections imply on the dashboard?</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
+    <li><a href="#usage">Usage</a></li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
@@ -44,8 +49,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<img src="https://res.cloudinary.com/dzxtxkngg/image/upload/v1630776933/skillshare_feed/WhatsApp_Image_2021-09-04_at_23.05.16_wavvff.jpg"/>
-
 ### What is skill grade?
 
 Skill Grade is an online platform that caters to streamlined learning in various tracks like web dev, UI design, etc.
@@ -58,17 +61,17 @@ Step 2: Based on your selection it will take you to tasklist page where there ar
 
 Step 3: Next you will be redirected to the selected task. This page contains all the information such as task introduction and resources that can be used. You can use this and start working on the task. (It is mandatory to prepare a pdf document of your work)
 
-Step 4: After completing the task you can upload your file in the submission section. You will be scored after we review your tasks. That's it!! You've completed a task.
+Step 4: After completing the task you can upload your file in the submission section. You will be scored after our experts review your tasks. That's it!! You've completed a task.
 
 Step 5: We also have a feed where you can post images of your work and gain and likes from other students. You can also use the feed to take inspiration and get ideas.
 
 ### What is the Leaderboard?
 
-The leaderboard page shows you your current rank among all other registered students. The rank is based on points that are allocated to you on task completion. So try your best to complete maximum tasks and climb up to the top!!
+The leaderboard page shows you your current rank among all other registered students. The ranks is based on points that are allocated to you on task completion. So try your best to complete maximum tasks and climb up to the top!!
 
 ### What does "Your Tasks" sections imply on the dashboard?
 
-"Your tasks" section contains all the tasks that have been started by you but are not yet submitted. It shows no. of days left till the due date and would alert overdue if due date has been crossed. Remember, the points of the tasks keep decreasing after the due date so hurry up and complete all pending tasks!
+"Your tasks" section contains all the tasks that have been started by you but are not yet submitted. It shows no. of days left till the due date and would alert overdue if due date has been crossed. Remeber the points of the tasks keep decreasing after the due date so hurry up and complete all pending tasks!
 
 ### Built With
 
@@ -80,7 +83,18 @@ The leaderboard page shows you your current rank among all other registered stud
 * [Clouding](https://cloudinary.com)
 * [AWS S3](https://aws.amazon.com/s3)
 
+## Usage
+The working parts are as follows:
 
+ 1. The dashboard page to view all available course tracks
+  <img src="https://res.cloudinary.com/dzxtxkngg/image/upload/v1630778975/skillshare_feed/WhatsApp_Image_2021-09-04_at_23.26.14_kz7gl2.jpg"/><br><br>
+ 
+ 2. The tasks page which lets you view tasks of a particular course along with your progress
+ <img src="https://res.cloudinary.com/dzxtxkngg/image/upload/v1630779030/skillshare_feed/WhatsApp_Image_2021-09-04_at_23.26.46_gaukko.jpg"/><br><br>
+ 
+ 3. A page to view the details of each task along with a provision to submit your work and a feed to view other peers' work
+ <img src="https://res.cloudinary.com/dzxtxkngg/image/upload/v1630779141/skillshare_feed/WhatsApp_Image_2021-09-04_at_23.27.36_pcatgf.jpg"/><br><br>
+ 
 <!-- GETTING STARTED -->
 ## Getting Started
 
