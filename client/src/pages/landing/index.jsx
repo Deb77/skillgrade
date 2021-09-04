@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { GoogleLogin } from 'react-google-login';
 import './landing.css';
 import { bindActionCreators } from 'redux';
@@ -49,11 +51,13 @@ const useStyles = makeStyles({
 });
 
 const Landing = ({ authActions }) => {
+  const [loading, setLoading] = useState(false);
   const classes = useStyles();
   const history = useHistory();
 
   const googleSuccess = async res => {
     const { name, email, imageUrl } = await res.profileObj;
+    setLoading(true);
     const token = await res.tokenId;
     const params = {
       name,
@@ -61,8 +65,6 @@ const Landing = ({ authActions }) => {
       imageUrl,
       token
     };
-
-    localStorage.setItem('skill_grade_token', token);
     authActions.login(params, history);
   };
 
@@ -79,7 +81,7 @@ const Landing = ({ authActions }) => {
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
           render={renderProps => (
             <Button className={classes.root} onClick={renderProps.onClick} disabled={renderProps.disabled}>
-              Get Started
+              {loading && <CircularProgress style={{ height: 20, width: 20, marginRight: 10 }} />} Get Started
             </Button>
           )}
           onSuccess={googleSuccess}

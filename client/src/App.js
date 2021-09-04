@@ -15,17 +15,6 @@ import TaskPage from './pages/taskpage';
 import Leaderboard from './pages/leaderboard';
 import About from './pages/About';
 import Help from './pages/Help';
-// const Landing = lazy(() => import('./pages/landing'));
-// const Dashboard = lazy(() => import('./pages/dashboard'));
-
-// const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
-// const Admin = lazy(() => import('./pages/admin/Home'));
-// const Examine = lazy(() => import('./pages/admin/Examine'));
-
-// const Tasklist = lazy(() => import('./pages/tasklist'));
-// const TaskPage = lazy(() => import('./pages/taskpage'));
-// const Leaderboard = lazy(() => import('./pages/leaderboard'));
-// const About = lazy(() => import('./pages/About'));
 
 const App = () => {
   return (
