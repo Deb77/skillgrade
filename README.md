@@ -80,7 +80,7 @@ The leaderboard page shows you your current rank among all other registered stud
 * [React](https://reactjs.org)
 * [Redux](https://redux.js.org)
 * [Node.js](https://nodejs.org)
-* [Clouding](https://cloudinary.com)
+* [Cloudinary](https://cloudinary.com)
 * [AWS S3](https://aws.amazon.com/s3)
 
 ## Usage
