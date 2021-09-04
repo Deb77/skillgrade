@@ -23,8 +23,8 @@ const useStyles = makeStyles({
     }
   },
   image: {
-    height: '300px',
-    width: '512px'
+    height: '100%',
+    width: '100%'
   },
   heading: {
     fontWeight: 600,

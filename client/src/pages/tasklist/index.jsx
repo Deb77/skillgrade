@@ -104,7 +104,10 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
   const category = data.filter(e => {
     return e.id === params.id;
   });
-
+  const intermediate = taskdetails.filter(e => e.level === 'INTERMEDIATE');
+  const beginner = taskdetails.filter(e => e.level === 'BEGINNER');
+  const advanced = taskdetails.filter(e => e.level === 'ADVANCED');
+  console.log(intermediate);
   //fetching tasks by dispatching action
   useEffect(() => {
     CourseTasksAction.CourseTasks(params.id, Userdetails);
@@ -146,12 +149,9 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
                     <Typography className={classes.subheading} variant="subtitle1">
                       BEGINNERS
                     </Typography>
-                    <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                      {taskdetails.length > 0 &&
-                      taskdetails.filter(e => {
-                        return e.level === 'BEGINNER';
-                      }).length > 0 ? (
-                        taskdetails.map(task => {
+                    {beginner.length > 0 ? (
+                      <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
+                        {beginner.map(task => {
                           return (
                             <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
                               <TaskCard
@@ -164,22 +164,19 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
                               ></TaskCard>
                             </Grid>
                           );
-                        })
-                      ) : (
-                        <Typography>Stay tuned, Tasks will be added soon!</Typography>
-                      )}
-                    </Grid>
+                        })}
+                      </Grid>
+                    ) : (
+                      <Typography>Stay tuned, Tasks will be added soon!</Typography>
+                    )}
                   </div>
                   <div className={classes.taskcategory}>
                     <Typography className={classes.subheading} variant="subtitle1">
                       INTERMEDIATE
                     </Typography>
-                    <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                      {taskdetails.length > 0 &&
-                      taskdetails.filter(e => {
-                        return e.level === 'INTERMEDIATE';
-                      }).length > 0 ? (
-                        taskdetails.map(task => {
+                    {intermediate.length > 0 ? (
+                      <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
+                        {intermediate.map(task => {
                           return (
                             <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
                               <TaskCard
@@ -192,22 +189,20 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
                               ></TaskCard>
                             </Grid>
                           );
-                        })
-                      ) : (
-                        <Typography>Stay tuned, Tasks will be added soon!</Typography>
-                      )}
-                    </Grid>
+                        })}
+                      </Grid>
+                    ) : (
+                      <Typography>Stay tuned, Tasks will be added soon!</Typography>
+                    )}
                   </div>
                   <div className={classes.taskcategory}>
                     <Typography className={classes.subheading} variant="subtitle1">
                       ADVANCED
                     </Typography>
-                    <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
-                      {taskdetails.length > 0 &&
-                      taskdetails.filter(e => {
-                        return e.level === 'ADVANCED';
-                      }).length > 0 ? (
-                        taskdetails.map(task => {
+
+                    {advanced.length > 0 ? (
+                      <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
+                        {advanced.map(task => {
                           return (
                             <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
                               <TaskCard
@@ -220,11 +215,11 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
                               ></TaskCard>
                             </Grid>
                           );
-                        })
-                      ) : (
-                        <Typography>Stay tuned, Tasks will be added soon!</Typography>
-                      )}
-                    </Grid>
+                        })}
+                      </Grid>
+                    ) : (
+                      <Typography>Stay tuned, Tasks will be added soon!</Typography>
+                    )}
                   </div>
                 </div>
               </Container>

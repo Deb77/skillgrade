@@ -69,7 +69,7 @@ const Landing = ({ authActions }) => {
   };
 
   const googleFailure = async error => {
-    alert('You need to "');
+    alert('Please enable allow cookies in chrome settings');
     console.log(error);
   };
 

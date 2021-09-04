@@ -130,6 +130,10 @@ const useStyles = makeStyles(theme => ({
     '& > * + *': {
       marginLeft: theme.spacing(2)
     }
+  },
+  feed: {
+    height: '90%',
+    width: '90%'
   }
 }));
 //for lists
@@ -360,7 +364,7 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
               TASK FEED
             </Typography>
             {carddata.length > 0 && carddata[0].feed.length > 0 ? (
-              <div className="feed">
+              <div className={classes.feed}>
                 <Carousel
                   infiniteLoop={true}
                   showStatus={false}
