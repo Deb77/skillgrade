@@ -137,13 +137,13 @@ Contributions are what make the open source community such an amazing place to l
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-[contributors-shield]: https://img.shields.io/github/contributors/Deb77/skillshare?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/Deb77/skillgrade?style=for-the-badge
 [contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Deb77/skillgrade
+[forks-shield]: https://img.shields.io/github/forks/Deb77/skillgrade?style=for-the-badge
 [forks-url]: https://github.com/Deb77/skillgrade/network/members
-[stars-shield]: https://img.shields.io/github/stars/Deb77/skillgrade
+[stars-shield]: https://img.shields.io/github/stars/Deb77/skillgrade?style=for-the-badge
 [stars-url]: https://github.com/Deb77/skillgrade/stargazers
-[issues-shield]: 	https://img.shields.io/github/issues/Deb77/skillgrade
+[issues-shield]: 	https://img.shields.io/github/issues/Deb77/skillgrade?style=for-the-badge
 [issues-url]: https://github.com/Deb77/skillgrade/issues
-[license-shield]: https://img.shields.io/github/license/Deb77/skillgrade
+[license-shield]: https://img.shields.io/github/license/Deb77/skillgrade?style=for-the-badge
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
