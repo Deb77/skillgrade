@@ -168,11 +168,12 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
       return task.id === params.id;
     });
     setCarddata(carddata);
+
     // eslint-disable-next-line
   }, [taskdetails]);
 
   // upload a file to post
-  const onChange = e => {
+  const Post = e => {
     e.preventDefault();
     const reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
@@ -180,11 +181,12 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
       const fileEncoded = reader.result;
       setFiledata(fileEncoded);
     };
+    console.log('post clicked');
   };
-  //data to be passed to addtaskfeed action (data to be posted to feed)
 
   //to post to the feed on submiting the form and clicking post
   const handleSubmit = e => {
+    e.preventDefault();
     const feeddata = {
       work_upload: filedata,
       description: description,
@@ -192,7 +194,6 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
       user_id: Userdetails
     };
 
-    e.preventDefault();
     setLoader2(true);
     AddTaskFeed.PostTask(feeddata, setTrigger, setLoader2, handleClose);
   };
@@ -233,13 +234,12 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
     formData.append('file', file);
     formData.append('user_id', Userdetails);
     formData.append('task_id', params.id);
-
-    console.log(formData);
     updateTaskCompleteStatus(formData).then(res => {
       console.log(res.data);
       setLoader1(false);
       setStatus('IN_REVIEW');
     });
+    console.log('upload also clicked');
   };
   const classes = useStyles();
   return (
@@ -359,21 +359,24 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
             <Typography className={classes.heading} variant="subtitle1">
               TASK FEED
             </Typography>
-            <div className="feed">
-              <Carousel
-                infiniteLoop={true}
-                showStatus={false}
-                showThumbs={false}
-                showIndicators={false}
-                autoPlay={false}
-                width="100%"
-              >
-                {carddata.length > 0 &&
-                  carddata[0].feed.map((feed, index) => (
+            {carddata.length > 0 && carddata[0].feed.length > 0 ? (
+              <div className="feed">
+                <Carousel
+                  infiniteLoop={true}
+                  showStatus={false}
+                  showThumbs={false}
+                  showIndicators={false}
+                  autoPlay={false}
+                  width="100%"
+                >
+                  {carddata[0].feed.map((feed, index) => (
                     <Feed feed={feed} key={index} params={params}></Feed>
                   ))}
-              </Carousel>
-            </div>
+                </Carousel>
+              </div>
+            ) : (
+              <Typography>The feed is empty :{`(`} Please do the honours! </Typography>
+            )}
             <div className={`${classes.spacing} ${classes.sharework}`}>
               <Typography className={classes.heading} variant="subtitle1">
                 SHARE WORK
@@ -405,8 +408,8 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
                 <Fade in={open}>
                   <div className={classes.paper}>
                     <form className={classes.formstyle} noValidate autoComplete="off">
-                      <input type="file" id="file" onChange={onChange} className={classes.file} />
-                      <label className={classes.fileinput} style={{ marginBottom: 0 }} htmlFor="file">
+                      <input type="file" id="file2" onChange={Post} className={classes.file} />
+                      <label className={classes.fileinput} style={{ marginBottom: 0 }} htmlFor="file2">
                         CHOOSE IMAGE
                       </label>
                       <br />

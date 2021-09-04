@@ -148,24 +148,26 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
                     </Typography>
                     <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
                       {taskdetails.length > 0 &&
-                        taskdetails
-                          .filter(e => {
-                            return e.level === 'BEGINNER';
-                          })
-                          .map(task => {
-                            return (
-                              <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
-                                <TaskCard
-                                  title={task.name}
-                                  days={task.time_complete}
-                                  completion={task.status}
-                                  color="purple"
-                                  id={task.id}
-                                  coursename={params.id}
-                                ></TaskCard>
-                              </Grid>
-                            );
-                          })}
+                      taskdetails.filter(e => {
+                        return e.level === 'BEGINNER';
+                      }).length > 0 ? (
+                        taskdetails.map(task => {
+                          return (
+                            <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
+                              <TaskCard
+                                title={task.name}
+                                days={task.time_complete}
+                                completion={task.status}
+                                color="purple"
+                                id={task.id}
+                                coursename={params.id}
+                              ></TaskCard>
+                            </Grid>
+                          );
+                        })
+                      ) : (
+                        <Typography>Stay tuned, Tasks will be added soon!</Typography>
+                      )}
                     </Grid>
                   </div>
                   <div className={classes.taskcategory}>
@@ -174,24 +176,26 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
                     </Typography>
                     <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
                       {taskdetails.length > 0 &&
-                        taskdetails
-                          .filter(e => {
-                            return e.level === 'INTERMEDIATE';
-                          })
-                          .map(task => {
-                            return (
-                              <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
-                                <TaskCard
-                                  title={task.name}
-                                  days={task.time_complete}
-                                  completion={task.status}
-                                  id={task.id}
-                                  color="red"
-                                  coursename={params.id}
-                                ></TaskCard>
-                              </Grid>
-                            );
-                          })}
+                      taskdetails.filter(e => {
+                        return e.level === 'INTERMEDIATE';
+                      }).length > 0 ? (
+                        taskdetails.map(task => {
+                          return (
+                            <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
+                              <TaskCard
+                                title={task.name}
+                                days={task.time_complete}
+                                completion={task.status}
+                                id={task.id}
+                                color="red"
+                                coursename={params.id}
+                              ></TaskCard>
+                            </Grid>
+                          );
+                        })
+                      ) : (
+                        <Typography>Stay tuned, Tasks will be added soon!</Typography>
+                      )}
                     </Grid>
                   </div>
                   <div className={classes.taskcategory}>
@@ -200,24 +204,26 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
                     </Typography>
                     <Grid style={{ marginTop: '.1rem' }} container spacing={3}>
                       {taskdetails.length > 0 &&
-                        taskdetails
-                          .filter(e => {
-                            return e.level === 'ADVANCED';
-                          })
-                          .map(task => {
-                            return (
-                              <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
-                                <TaskCard
-                                  title={task.name}
-                                  days={task.time_complete}
-                                  completion={task.status}
-                                  id={task.id}
-                                  coursename={params.id}
-                                  color="orange"
-                                ></TaskCard>
-                              </Grid>
-                            );
-                          })}
+                      taskdetails.filter(e => {
+                        return e.level === 'ADVANCED';
+                      }).length > 0 ? (
+                        taskdetails.map(task => {
+                          return (
+                            <Grid key={task.id} item xs={12} sm={6} md={4} lg={4}>
+                              <TaskCard
+                                title={task.name}
+                                days={task.time_complete}
+                                completion={task.status}
+                                id={task.id}
+                                coursename={params.id}
+                                color="orange"
+                              ></TaskCard>
+                            </Grid>
+                          );
+                        })
+                      ) : (
+                        <Typography>Stay tuned, Tasks will be added soon!</Typography>
+                      )}
                     </Grid>
                   </div>
                 </div>

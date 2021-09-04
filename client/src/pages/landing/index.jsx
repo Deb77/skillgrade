@@ -67,6 +67,7 @@ const Landing = ({ authActions }) => {
   };
 
   const googleFailure = async error => {
+    alert('You need to "');
     console.log(error);
   };
 
