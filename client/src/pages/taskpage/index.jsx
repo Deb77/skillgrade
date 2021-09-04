@@ -151,7 +151,7 @@ function ListItemLink(props) {
 //component
 const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) => {
   const params = useParams();
-
+  const [filename, setFilename] = useState('');
   const [carddata, setCarddata] = useState([]);
   const [description, setDiscription] = useState('');
   const [filedata, setFiledata] = useState('');
@@ -179,8 +179,10 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
   // upload a file to post
   const Post = e => {
     e.preventDefault();
+    setFilename(e.target.files[0].name);
     const reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
+
     reader.onloadend = () => {
       const fileEncoded = reader.result;
       setFiledata(fileEncoded);
@@ -232,6 +234,7 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
   const FileUpload = e => {
     e.preventDefault();
     setLoader1(true);
+
     const file = e.target.files[0];
     const formData = new FormData();
     formData.set('encType', 'multipart/form-data');
@@ -416,6 +419,7 @@ const Taskpage = ({ taskdetails, Userdetails, CourseTasksAction, AddTaskFeed }) 
                       <label className={classes.fileinput} style={{ marginBottom: 0 }} htmlFor="file2">
                         CHOOSE IMAGE
                       </label>
+                      <Typography>{filename}</Typography>
                       <br />
                       <TextField
                         id="outlined-multiline-static"

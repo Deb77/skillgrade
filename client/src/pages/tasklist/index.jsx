@@ -104,10 +104,12 @@ const Tasklist = ({ CourseTasksAction, taskdetails, Userdetails }) => {
   const category = data.filter(e => {
     return e.id === params.id;
   });
+
+  //filtering task based on level
   const intermediate = taskdetails.filter(e => e.level === 'INTERMEDIATE');
   const beginner = taskdetails.filter(e => e.level === 'BEGINNER');
   const advanced = taskdetails.filter(e => e.level === 'ADVANCED');
-  console.log(intermediate);
+
   //fetching tasks by dispatching action
   useEffect(() => {
     CourseTasksAction.CourseTasks(params.id, Userdetails);
