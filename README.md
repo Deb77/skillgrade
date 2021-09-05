@@ -138,7 +138,7 @@ Contributions are what make the open source community such an amazing place to l
 Distributed under the MIT License. See `LICENSE` for more information.
 
 [contributors-shield]: https://img.shields.io/github/contributors/Deb77/skillgrade?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[contributors-url]: https://github.com/Deb77/skillgrade/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/Deb77/skillgrade?style=for-the-badge
 [forks-url]: https://github.com/Deb77/skillgrade/network/members
 [stars-shield]: https://img.shields.io/github/stars/Deb77/skillgrade?style=for-the-badge
