@@ -59,11 +59,11 @@ Step 1: Choose the category you want to learn and work on from the dashboard pag
 
 Step 2: Based on your selection it will take you to tasklist page where there are various kinds of projects divided into 3 categories namely, beginner, intermediate and advanced level. You can choose between them. It is recommended you start from the beginner tasks.
 
-Step 3: Next you will be redirected to the selected task. This page contains all the information such as task introduction and resources that can be used. You can use this and start working on the task. (It is mandatory to prepare a pdf document of your work)
+Step 3: Next you will be redirected to the selected task. This page contains all the information such as task details and resources that can be used. You can use this and start working on the task. (It is mandatory to prepare a pdf document of your work)
 
 Step 4: After completing the task you can upload your file in the submission section. You will be scored after we review your tasks. That's it!! You've completed a task.
 
-Step 5: We also have a feed where you can post images of your work and gain and likes from other students. You can also use the feed to take inspiration and get ideas.
+Step 5: We also have a feed where you can post images of your work and gain upvotes from other students. You can also use the feed to take inspiration and get ideas.
 
 ### What is the Leaderboard?
 
